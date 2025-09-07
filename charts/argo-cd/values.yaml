@@ -1,4 +1,5 @@
 argo-cd:
+  createAggregateRoles: false
   dex:
     enabled: false
   notifications:
