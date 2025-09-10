@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+    spec:
+      containers:
+        - image: "mysql:{{ .Chart.AppVersion }}"
+          name: mysql
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-secrets
+                  key: root
+            - name: MYSQL_DATABASE
+              value: "{{ .Values.database }}"
+            - name: MYSQL_USER
+              value: "{{ .Values.user }}"
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-secrets
+                  key: {{ .Values.user }}
+          volumeMounts:
+            - name: mysql-pv-storage
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: mysql-pv-storage
+          persistentVolumeClaim:
+            claimName: {{ .Release.Name }}-pvc

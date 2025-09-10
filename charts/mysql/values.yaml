@@ -1,0 +1,6 @@
+tag: 8.0.40
+
+database: skywin
+user: skywin
+size: 10Gi
+storageClass: local-path-persistent
