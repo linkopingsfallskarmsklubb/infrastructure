@@ -1,0 +1,6 @@
+apiVersion: v2
+name: secret-store
+description: Sets up the secret store
+type: application
+version: 0.1.0
+appVersion: "1.16.0"
