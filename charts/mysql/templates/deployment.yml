@@ -30,7 +30,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: {{ .Release.Name }}-secrets
-                  key: {{ .Values.user }}
+                  key: user
           volumeMounts:
             - name: mysql-pv-storage
               mountPath: /var/lib/mysql

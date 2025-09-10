@@ -1,6 +1,7 @@
-tag: 8.0.40
-
 database: skywin
+secretStore: secret-store
+rootPasswordRef: mysql-root-password
 user: skywin
+userPasswordRef: mysql-skywin-password
 size: 10Gi
 storageClass: local-path-persistent
