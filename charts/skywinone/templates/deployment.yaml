@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: skywinone
+          image: "europe-west1-docker.pkg.dev/bitnami-ch3rudc/docker/skywinone:{{ .Chart.AppVersion }}"
+          imagePullPolicy: Always
+          env:
+            - name: SKYWIN_CONFIG_DIR
+              value: /opt/skywin/config
+            - name: SKYWIN_LOG_DIR
+              value: /var/log/skywin
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          volumeMounts:
+            - mountPath: "/opt/skywin/config"
+              name: config
+              readOnly: true
+      volumes:
+        - name: config
+          secret:
+            secretName: {{ .Release.Name }}
