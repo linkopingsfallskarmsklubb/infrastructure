@@ -1,0 +1,9 @@
+mirrors:
+  europe-west1-docker.pkg.dev:
+    endpoint:
+      - "https://europe-west1-docker.pkg.dev"
+configs:
+  europe-west1-docker.pkg.dev:
+    auth:
+      username: _json_key
+      password: |-

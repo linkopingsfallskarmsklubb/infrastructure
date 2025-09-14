@@ -10,25 +10,29 @@
 
 ### Service account
 
-#### Create account
+```bash
+PROJECT_ID=bitnami-ch3rudc
+GCP_SA=sa-k3s
+```
 
-NOTE: One time action
+#### Create Account
+
+`NOTE:` One time action, only here as reference.
 
 ```bash
-PROJECT_ID=[gcp project id]
-GCP_SA=sa-external-secrets
+
 gcloud iam service-accounts create ${GCP_SA}
 gcloud projects add-iam-policy-binding $PROJECT_ID \
   --role="roles/secretmanager.secretAccessor" \
+  --role="roles/artifactregistry.reader" \
   --member "serviceAccount:${GCP_SA}@${PROJECT_ID}.iam.gserviceaccount.com"
 ```
 
 #### Create key
 
 ```bash
-cp charts/k3s/secret-manager-account.yaml .
 gcloud iam service-accounts keys create key.json \
-  --iam-account=${GCP_SA}@${PROJECT_ID}.iam.gserviceaccount.com >> secret-manager-account.yaml
+  --iam-account=${GCP_SA}@${PROJECT_ID}.iam.gserviceaccount.com
 ```
 
 ## Setup
@@ -36,16 +40,32 @@ gcloud iam service-accounts keys create key.json \
 ### Configure k3s
 
 ```bash
-cp /etc/rancher/k3s/k3s.yaml .kube/config
-cp charts/k3s/traefik-config.yaml charts/k3s/storageclass.yaml  /var/lib/rancher/k3s/server/manifests/
+# GCP Artifact registry
+cp charts/k3s/registries.yaml . && cat key.json | sed 's/^/        /' >> registries.yaml
+sudo mv registries.yaml /etc/rancher/k3s/registries.yaml
+
+# Storage class
+sudo cp charts/k3s/traefik-config.yaml charts/k3s/storageclass.yaml  /var/lib/rancher/k3s/server/manifests/
+
+# Kubectl access
+sudo cp /etc/rancher/k3s/k3s.yaml .kube/config
+
+sudo systemctl restart k3s
 ```
 
-### Prepare installation
+### Prepare Secret Manager access
 
 ```bash
+# Create Kubernetes secret
+cp charts/k3s/secret-manager-account.yaml .
+cat key.json 's/^/    /' >> secret-manager-account.yaml
+
+# Apply
 kubectl create ns core
 kubectl apply -f secret-manager-account.yaml --namespace core
-rm secret-manager-account.yaml
+
+# Cleanup
+rm key.json secret-manager-account.yaml
 ```
 
 ### Install Argo CD
