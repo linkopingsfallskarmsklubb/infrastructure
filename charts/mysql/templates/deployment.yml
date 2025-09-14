@@ -16,6 +16,9 @@ spec:
       containers:
         - image: "mysql:{{ .Chart.AppVersion }}"
           name: mysql
+          ports:
+            - containerPort: 3306
+              name: mysql
           env:
             - name: MYSQL_ROOT_PASSWORD
               valueFrom:
