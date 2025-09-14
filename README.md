@@ -41,11 +41,11 @@ gcloud iam service-accounts keys create key.json \
 
 ```bash
 # GCP Artifact registry
-cp charts/k3s/registries.yaml . && cat key.json | sed 's/^/        /' >> registries.yaml
+cp k3s/registries.yaml . && cat key.json | sed 's/^/        /' >> registries.yaml
 sudo mv registries.yaml /etc/rancher/k3s/registries.yaml
 
 # Storage class
-sudo cp charts/k3s/traefik-config.yaml charts/k3s/storageclass.yaml  /var/lib/rancher/k3s/server/manifests/
+sudo cp k3s/traefik-config.yaml charts/k3s/storageclass.yaml  /var/lib/rancher/k3s/server/manifests/
 
 # Kubectl access
 sudo cp /etc/rancher/k3s/k3s.yaml .kube/config
