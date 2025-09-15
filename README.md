@@ -24,9 +24,14 @@ GCP_SA=sa-k3s
 gcloud iam service-accounts create ${GCP_SA}
 gcloud projects add-iam-policy-binding $PROJECT_ID \
   --role="roles/secretmanager.secretAccessor" \
+  --member "serviceAccount:${GCP_SA}@${PROJECT_ID}.iam.gserviceaccount.com"
+gcloud projects add-iam-policy-binding $PROJECT_ID \
   --role="roles/artifactregistry.reader" \
+  --member "serviceAccount:${GCP_SA}@${PROJECT_ID}.iam.gserviceaccount.com"
+gcloud projects add-iam-policy-binding $PROJECT_ID \
   --role="roles/storage.objectUser" \
   --member "serviceAccount:${GCP_SA}@${PROJECT_ID}.iam.gserviceaccount.com"
+
 ```
 
 #### Create key
