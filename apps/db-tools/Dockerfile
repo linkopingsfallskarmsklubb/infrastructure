@@ -8,6 +8,6 @@ RUN curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cl
   ./google-cloud-sdk/install.sh
 ENV PATH="/usr/src/scripts/google-cloud-sdk/bin:${PATH}"
 
-COPY scripts/*.sh .
+COPY scripts/* .
 
 ENTRYPOINT ["/bin/sh"]
