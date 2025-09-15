@@ -1,0 +1,15 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: db-tools
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/linkopingsfallskarmsklubb/infrastructure
+    path: charts/db-tools
+    targetRevision: HEAD
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: core
