@@ -45,7 +45,7 @@ mysql --protocol=tcp \
 # Rename tables: https://skywin.se/download
 RENAME_FILE=rename.sql
 echo "Importing $RENAME_FILE into $MYSQL_DATABASE"
-curl https://www.skywinner.se/skywin/_files/sql_ddl/MySQL.Rename_all_tables.sql | sed 's/<my_skywin>/skywin' >$RENAME_FILE
+curl https://www.skywinner.se/skywin/_files/sql_ddl/MySQL.Rename_all_tables.sql | sed 's/<my_skywin>/skywin/' >$RENAME_FILE
 mysql --protocol=tcp \
   --host="$MYSQL_HOST" \
   --user="$MYSQL_USER" \
