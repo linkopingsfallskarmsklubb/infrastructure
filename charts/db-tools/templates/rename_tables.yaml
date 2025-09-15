@@ -12,7 +12,7 @@ spec:
           containers:
           - name: dbtools
             image: "europe-west1-docker.pkg.dev/bitnami-ch3rudc/docker/dbtools:{{ .Chart.AppVersion }}"
-            command: ["/bin/sh", "rename_tables.sh"]
+            command: ["/bin/bash", "rename_tables.sh"]
             env:
               - name: MYSQL_PASSWORD
                 valueFrom:
