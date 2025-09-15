@@ -5,6 +5,7 @@ metadata:
 spec:
   ports:
     - port: 3306
-      targetPort: 3306
-      protocol: TCP
-      name: mysql
+  selector:
+    app: {{ .Release.Name }}
+  clusterIP: None
+

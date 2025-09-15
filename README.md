@@ -25,6 +25,7 @@ gcloud iam service-accounts create ${GCP_SA}
 gcloud projects add-iam-policy-binding $PROJECT_ID \
   --role="roles/secretmanager.secretAccessor" \
   --role="roles/artifactregistry.reader" \
+  --role="roles/storage.objectUser" \
   --member "serviceAccount:${GCP_SA}@${PROJECT_ID}.iam.gserviceaccount.com"
 ```
 
@@ -40,14 +41,14 @@ gcloud iam service-accounts keys create key.json \
 ### Configure k3s
 
 ```bash
-# GCP Artifact registry
+# GCP Artifact Registry
 cp k3s/registries.yaml . && cat key.json | sed 's/^/        /' >> registries.yaml
 sudo mv registries.yaml /etc/rancher/k3s/registries.yaml
 
-# Storage class
+# Persistant storage class
 sudo cp k3s/traefik-config.yaml charts/k3s/storageclass.yaml  /var/lib/rancher/k3s/server/manifests/
 
-# Kubectl access
+# kubectl access
 sudo cp /etc/rancher/k3s/k3s.yaml .kube/config
 
 sudo systemctl restart k3s
@@ -57,8 +58,8 @@ sudo systemctl restart k3s
 
 ```bash
 # Create Kubernetes secret
-cp charts/k3s/secret-manager-account.yaml .
-cat key.json 's/^/    /' >> secret-manager-account.yaml
+cp k3s/secret-manager-account.yaml .
+cat key.json | sed 's/^/    /' >> secret-manager-account.yaml
 
 # Apply
 kubectl create ns core
