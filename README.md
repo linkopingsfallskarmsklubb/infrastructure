@@ -79,7 +79,6 @@ rm key.json secret-manager-account.yaml
 Inspired by the following [guide](https://www.arthurkoziel.com/setting-up-argocd-with-helm/).
 
 ```bash
-
 kubectl create ns argocd
 helm install argo-cd charts/argo-cd/ --namespace argocd
 helm template charts/root-app/ | kubectl apply --namespace argocd -f -
