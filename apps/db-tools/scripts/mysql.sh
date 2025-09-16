@@ -18,6 +18,23 @@ import_sql_file() {
   echo "Successfully imported $file into $MYSQL_DATABASE"
 }
 
+run_query() {
+  local query="$1"
+  mysql --protocol=tcp \
+    --host="$MYSQL_HOST" \
+    --user="$MYSQL_USER" \
+    --password="$MYSQL_PASSWORD" \
+    --port="$MYSQL_PORT" \
+    --default-character-set=utf8 \
+    --comments \
+    --database="$MYSQL_DATABASE" \
+    -e "$query"
+  if [ $? -ne 0 ]; then
+    echo "Failed to run query: $query"
+    exit 4
+  fi
+}
+
 MYSQL_HOST="${MYSQL_HOST:-mysql.core.svc}"
 MYSQL_PORT="${MYSQL_PORT:-3306}"
 MYSQL_USER="${MYSQL_USER:-root}"

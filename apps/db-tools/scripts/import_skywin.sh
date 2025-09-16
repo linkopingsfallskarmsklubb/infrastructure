@@ -11,6 +11,7 @@ fi
 
 SKYWIN_FILE="skywin.sql"
 download_file $latest_file $SKYWIN_FILE
+run_query "DROP DATABASE IF EXISTS $MYSQL_DATABASE;"
 import_sql_file $SKYWIN_FILE
 
 echo "Import completed successfully."
