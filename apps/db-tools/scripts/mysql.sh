@@ -5,39 +5,51 @@ import_sql_file() {
   echo "Importing $file into $MYSQL_DATABASE."
   mysql --protocol=tcp \
     --host="$MYSQL_HOST" \
-    --user="$MYSQL_USER" \
-    --password="$MYSQL_PASSWORD" \
+    --user="$MYSQL_ROOT_USER" \
+    --password="$MYSQL_ROOT_PASSWORD" \
     --port="$MYSQL_PORT" \
     --default-character-set=utf8 \
     --comments \
     --database="$MYSQL_DATABASE" <"$file"
-  if [ $? -ne 0 ]; then
-    echo "Failed to import $file into MySQL."
-    exit 3
-  fi
-  echo "Successfully imported $file into $MYSQL_DATABASE"
 }
 
 run_query() {
   local query="$1"
   mysql --protocol=tcp \
     --host="$MYSQL_HOST" \
-    --user="$MYSQL_USER" \
-    --password="$MYSQL_PASSWORD" \
+    --user="$MYSQL_ROOT_USER" \
+    --password="$MYSQL_ROOT_PASSWORD" \
     --port="$MYSQL_PORT" \
     --default-character-set=utf8 \
     --comments \
     --database="$MYSQL_DATABASE" \
     -e "$query"
-  if [ $? -ne 0 ]; then
-    echo "Failed to run query: $query"
-    exit 4
-  fi
+}
+
+drop_database() {
+  run_query "DROP DATABASE IF EXISTS \`$MYSQL_DATABASE\`;"
+}
+
+create_database() {
+  run_query "CREATE DATABASE IF NOT EXISTS \`$MYSQL_DATABASE\`;"
+}
+
+create_user() {
+  run_query "CREATE USER IF NOT EXISTS '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSWORD';"
+  run_query "GRANT ALL ON $MYSQL_DATABASE.* TO '$MYSQL_USER'@'%';"
+}
+
+recreate_database() {
+  drop_database
+  create_database
+  create_user
 }
 
 MYSQL_HOST="${MYSQL_HOST:-mysql.core.svc}"
 MYSQL_PORT="${MYSQL_PORT:-3306}"
-MYSQL_USER="${MYSQL_USER:-root}"
+MYSQL_ROOT_USER="${MYSQL_USER:-root}"
+MYSQL_ROOT_PASSWORD="${MYSQL_PASSWORD}"
+MYSQL_USER="${MYSQL_USER:-skywin}"
 MYSQL_PASSWORD="${MYSQL_PASSWORD}"
 MYSQL_DATABASE="${MYSQL_DATABASE:-skywin}"
 
