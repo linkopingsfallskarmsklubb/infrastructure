@@ -10,7 +10,7 @@ if [ -z "$latest_file" ]; then
 fi
 
 SKYWIN_FILE="skywin.sql"
-download_latest_file $latest_file $SKYWIN_FILE
+download_file $latest_file $SKYWIN_FILE
 import_sql_file $SKYWIN_FILE
 
 echo "Import completed successfully."
