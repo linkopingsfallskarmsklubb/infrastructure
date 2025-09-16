@@ -12,7 +12,7 @@ fi
 file="skywin.sql"
 download_file $latest_file $file
 
-recreate_database
+recreate_database $MYSQL_DATABASE $MYSQL_USER $MYSQL_PASSWORD
 if [ $? -ne 0 ]; then
   echo "Failed to recreate database."
   exit 1

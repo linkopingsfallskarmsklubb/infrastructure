@@ -22,33 +22,44 @@ run_query() {
     --port="$MYSQL_PORT" \
     --default-character-set=utf8 \
     --comments \
-    --database="$MYSQL_DATABASE" \
     -e "$query"
 }
 
 drop_database() {
-  run_query "DROP DATABASE IF EXISTS \`$MYSQL_DATABASE\`;"
+  local database="$1"
+  echo "Dropping database $database."
+  run_query "DROP DATABASE IF EXISTS \`$database\`;"
 }
 
 create_database() {
-  run_query "CREATE DATABASE IF NOT EXISTS \`$MYSQL_DATABASE\`;"
+  local database="$1"
+  echo "Creating database $database if not exists."
+  run_query "CREATE DATABASE IF NOT EXISTS \`$database\`;"
 }
 
 create_user() {
-  run_query "CREATE USER IF NOT EXISTS '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSWORD';"
-  run_query "GRANT ALL ON $MYSQL_DATABASE.* TO '$MYSQL_USER'@'%';"
+  local database="$1"
+  local user="$2"
+  local password="$3"
+  echo "Creating user $user with access to database $database."
+  run_query "CREATE USER IF NOT EXISTS '$user'@'%' IDENTIFIED BY '$password';"
+  run_query "GRANT ALL ON $database.* TO '$user'@'%';"
 }
 
 recreate_database() {
-  drop_database
-  create_database
-  create_user
+  local database="$1"
+  local user="$2"
+  local password="$3"
+  echo "Recreating database $database and user $user."
+  drop_database "$database"
+  create_database "$database"
+  create_user "$database" "$user" "$password"
 }
 
 MYSQL_HOST="${MYSQL_HOST:-mysql.core.svc}"
 MYSQL_PORT="${MYSQL_PORT:-3306}"
-MYSQL_ROOT_USER="${MYSQL_USER:-root}"
-MYSQL_ROOT_PASSWORD="${MYSQL_PASSWORD}"
+MYSQL_ROOT_USER="${MYSQL_ROOT_USER:-root}"
+MYSQL_ROOT_PASSWORD="${MYSQL_ROOT_PASSWORD}"
 MYSQL_USER="${MYSQL_USER:-skywin}"
 MYSQL_PASSWORD="${MYSQL_PASSWORD}"
 MYSQL_DATABASE="${MYSQL_DATABASE:-skywin}"
