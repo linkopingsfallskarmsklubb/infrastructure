@@ -3,8 +3,7 @@
 . gcloud.sh
 . mysql.sh
 
-file="import.sql"
-curl https://www.skywinner.se/skywin/_files/skywinone/sql/SkyWinOne_tables.sql | sed 's/<my_skywin>/skywin/' >$file
+file="sql/01_create_skywinone_custom.sql"
 
 import_sql_file "$file"
 if [ $? -ne 0 ]; then

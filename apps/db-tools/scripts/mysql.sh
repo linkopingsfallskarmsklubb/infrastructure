@@ -34,7 +34,7 @@ drop_database() {
 create_database() {
   local database="$1"
   echo "Creating database $database if not exists."
-  run_query "CREATE DATABASE IF NOT EXISTS \`$database\`;"
+  run_query "CREATE DATABASE IF NOT EXISTS \`$database\` CHARACTER SET utf8mb4 COLLATE utf8mb4_swedish_ci;;"
 }
 
 create_user() {
