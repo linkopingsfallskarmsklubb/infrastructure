@@ -25,8 +25,6 @@ spec:
                 secretKeyRef:
                   name: {{ .Release.Name }}-secrets
                   key: root
-            - name: MYSQL_DATABASE
-              value: "{{ .Values.database }}"
             - name: MYSQL_LOWER_CASE_TABLE_NAMES
               value: "1"
           volumeMounts:
