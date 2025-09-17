@@ -1,4 +1,4 @@
-FROM mysql:8.0.43
+FROM mysql:8.0
 
 WORKDIR /usr/src/scripts
 
