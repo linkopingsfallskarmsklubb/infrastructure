@@ -25,12 +25,18 @@ spec:
                 secretKeyRef:
                   name: {{ .Release.Name }}-secrets
                   key: root
-            - name: MYSQL_LOWER_CASE_TABLE_NAMES
-              value: "1"
           volumeMounts:
             - name: mysql-pv-storage
               mountPath: /var/lib/mysql
+            - name: mysql-cnf
+              mountPath: /etc/mysql/conf.d/
       volumes:
         - name: mysql-pv-storage
           persistentVolumeClaim:
             claimName: {{ .Release.Name }}-pvc
+        - name: mysql-cnf
+          configMap: 
+            name: {{ .Release.Name }}
+            items:
+              - key: mysql.cnf
+                path: mysql.cnf
