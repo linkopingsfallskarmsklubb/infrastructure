@@ -1,0 +1,16 @@
+version: 2
+updates:
+  # Dockerfiles in all subdirectories of apps/
+  - package-ecosystem: "docker"
+    directories:
+      - "/apps/*"
+    schedule:
+      interval: "weekly"
+
+  # Helm charts in all subdirectories of charts/
+  - package-ecosystem: "helm"
+    directories:
+      - "/charts/*"
+    schedule:
+      interval: "weekly"
+
