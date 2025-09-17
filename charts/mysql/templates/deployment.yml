@@ -27,13 +27,8 @@ spec:
                   key: root
             - name: MYSQL_DATABASE
               value: "{{ .Values.database }}"
-            - name: MYSQL_USER
-              value: "{{ .Values.user }}"
-            - name: MYSQL_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Release.Name }}-secrets
-                  key: user
+            - name: MYSQL_LOWER_CASE_TABLE_NAMES
+              value: "1"
           volumeMounts:
             - name: mysql-pv-storage
               mountPath: /var/lib/mysql
