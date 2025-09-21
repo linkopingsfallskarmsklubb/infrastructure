@@ -51,7 +51,10 @@ cp k3s/registries.yaml . && cat key.json | sed 's/^/        /' >> registries.yam
 sudo mv registries.yaml /etc/rancher/k3s/registries.yaml
 
 # Persistant storage class
-sudo cp k3s/traefik-config.yaml charts/k3s/storageclass.yaml  /var/lib/rancher/k3s/server/manifests/
+sudo cp k3s/storageclass.yaml  /var/lib/rancher/k3s/server/manifests/
+
+# Traefik config
+sudo cp k3s/traefik-config.yaml  /var/lib/rancher/k3s/server/manifests/
 
 # kubectl access
 sudo cp /etc/rancher/k3s/k3s.yaml .kube/config
@@ -79,6 +82,8 @@ rm key.json secret-manager-account.yaml
 Inspired by the following [guide](https://www.arthurkoziel.com/setting-up-argocd-with-helm/).
 
 ```bash
+helm repo add argo https://argoproj.github.io/argo-helm
+helm dependency update charts/argo-cd/
 kubectl create ns argocd
 helm install argo-cd charts/argo-cd/ --namespace argocd
 helm template charts/root-app/ | kubectl apply --namespace argocd -f -
@@ -88,6 +93,6 @@ Apply `argocd-ingress.yaml` TODO: add to argocd chart
 
 #### Update admin password
 
-1. Get password: `kubectl get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d`
+1. Get password: `kubectl get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" --namespace argocd | base64 -d`
 1. Login to webui, change password
 1. Delete initial password: `kubectl delete secret -l owner=helm,name=argo-cd`
