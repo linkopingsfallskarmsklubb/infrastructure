@@ -13,4 +13,4 @@ spec:
               service:
                 name: {{ .Release.Name }}-argocd-server
                 port:
-                  number: 8080
+                  number: 80
