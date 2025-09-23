@@ -9,3 +9,6 @@ argo-cd:
   server:
     extraArgs:
       - --insecure
+
+ingress:
+  enabled: false

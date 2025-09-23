@@ -1,7 +1,22 @@
+{{- if not .Values.ingress.enabled }}
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: {{ .Release.Name }}
+  namespace: ingress
+spec:
+  stripPrefix:
+    forceSlash: false
+    prefixes:
+      - /argocd
+---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ .Release.Name }}
+  annotations:
+    traefik.ingress.kubernetes.io/router.middlewares: argocd-{{ .Release.Name }}@kubernetescrd
 spec:
   rules:
     - host: 
@@ -14,3 +29,4 @@ spec:
                 name: {{ .Release.Name }}-argocd-server
                 port:
                   number: 80
+{{- end }}
