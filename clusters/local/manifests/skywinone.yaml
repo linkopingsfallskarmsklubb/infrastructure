@@ -5,13 +5,14 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "4"
   finalizers:
-  - resources-finalizer.argocd.argoproj.io
+    - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
     repoURL: https://github.com/linkopingsfallskarmsklubb/infrastructure
     path: charts/skywinone
     targetRevision: HEAD
+    valueFile: clusters/local/values-skywinone.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: core
