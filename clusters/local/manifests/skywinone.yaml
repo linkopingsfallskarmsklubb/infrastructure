@@ -14,7 +14,7 @@ spec:
     targetRevision: HEAD
     helm:
       valueFiles:
-        - values/values-local.yaml
+        - values/local.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: core
