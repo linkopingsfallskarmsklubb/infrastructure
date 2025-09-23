@@ -14,7 +14,7 @@ spec:
     targetRevision: HEAD
     helm:
       valueFiles:
-        - clusters/local/values-skywinone.yaml
+        - values/values-cloud.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: core
