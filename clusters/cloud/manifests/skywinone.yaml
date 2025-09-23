@@ -12,7 +12,9 @@ spec:
     repoURL: https://github.com/linkopingsfallskarmsklubb/infrastructure
     path: charts/skywinone
     targetRevision: HEAD
-    valueFile: clusters/cloud/values-skywinone.yaml
+    helm:
+      valueFiles:
+        - clusters/local/values-skywinone.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: core
