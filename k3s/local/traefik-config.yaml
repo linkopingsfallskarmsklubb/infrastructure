@@ -1,0 +1,15 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChartConfig
+metadata:
+  name: traefik
+  namespace: kube-system
+spec:
+  valuesContent: |-
+    ports:
+      mysql:
+        port: 3306
+        expose:
+          default: true
+      exposedPort: 3306
+    globalArguments:
+    - "--serversTransport.insecureSkipVerify=true"
