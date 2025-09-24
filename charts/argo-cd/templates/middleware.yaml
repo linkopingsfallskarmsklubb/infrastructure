@@ -9,4 +9,4 @@ spec:
     forceSlash: false
     prefixes:
       - /argocd
-{{- if not .Values.ingress.enabled }}
+{{- end }}
