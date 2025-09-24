@@ -1,0 +1,12 @@
+{{- if not .Values.ingress.enabled }}
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: {{ .Release.Name }}
+  namespace: ingress
+spec:
+  stripPrefix:
+    forceSlash: false
+    prefixes:
+      - /argocd
+{{- if not .Values.ingress.enabled }}
