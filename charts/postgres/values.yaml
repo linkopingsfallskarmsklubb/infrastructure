@@ -1,0 +1,6 @@
+database: authentik
+secretStore: secret-store
+user: authentik
+userPasswordRef: authentik-postgres-password
+size: 1Gi
+storageClass: local-path-persistent

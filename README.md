@@ -53,8 +53,8 @@ sudo mv registries.yaml /etc/rancher/k3s/registries.yaml
 # Persistant storage class
 sudo cp k3s/storageclass.yaml  /var/lib/rancher/k3s/server/manifests/
 
-# Traefik config
-sudo cp k3s/traefik-config.yaml  /var/lib/rancher/k3s/server/manifests/
+# Traefik config (local)
+sudo cp k3s/local/traefik-config.yaml  /var/lib/rancher/k3s/server/manifests/
 
 # kubectl access
 sudo cp /etc/rancher/k3s/k3s.yaml .kube/config
@@ -86,10 +86,13 @@ helm repo add argo https://argoproj.github.io/argo-helm
 helm dependency update charts/argo-cd/
 kubectl create ns argocd
 helm install argo-cd charts/argo-cd/ --namespace argocd
-helm template charts/root-app/ | kubectl apply --namespace argocd -f -
-```
 
-Apply `argocd-ingress.yaml` TODO: add to argocd chart
+# local
+kubectl apply -f clusters/local/root-app.yaml -n argocd
+
+# cloud
+kubectl apply -f clusters/local/root-app.yaml -n argocd
+```
 
 #### Update admin password
 
