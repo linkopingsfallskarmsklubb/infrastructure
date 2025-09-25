@@ -7,8 +7,7 @@ argo-cd:
   applicationSet:
     enabled: false
   server:
-    extraArgs:
-      - --insecure
+    rootpath: /argocd
 
 ingress:
   enabled: false
