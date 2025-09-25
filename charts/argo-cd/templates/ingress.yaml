@@ -5,6 +5,10 @@ metadata:
   name: {{ .Release.Name }}
   annotations:
     traefik.ingress.kubernetes.io/router.middlewares: argocd-{{ .Release.Name }}@kubernetescrd
+    {{- if .Values.host }}
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls.certresolver: default
+    {{- end }}
 spec:
   rules:
     {{- if .Values.host }}
@@ -21,4 +25,9 @@ spec:
                 name: {{ .Release.Name }}-argocd-server
                 port:
                   number: 80
+  {{- if .Values.host }}
+  tls:
+    - hosts:
+      - {{ .Values.host }}
+  {{- end }}
 {{- end }}
