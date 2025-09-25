@@ -5,13 +5,16 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "0"
   finalizers:
-  - resources-finalizer.argocd.argoproj.io
+    - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
     repoURL: https://github.com/linkopingsfallskarmsklubb/infrastructure
     path: charts/argo-cd
     targetRevision: HEAD
+    helm:
+      valueFiles:
+        - values/cloud.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd

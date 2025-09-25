@@ -1,0 +1,5 @@
+authentik:
+  server:
+    ingress:
+      hosts:
+        - insidan.linkopingsfallskarmsklubb.se

@@ -12,6 +12,9 @@ spec:
     repoURL: https://github.com/linkopingsfallskarmsklubb/infrastructure
     path: charts/authentik
     targetRevision: HEAD
+    helm:
+      valueFiles:
+        - values/cloud.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: core

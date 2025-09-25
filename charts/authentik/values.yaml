@@ -11,7 +11,7 @@ authentik:
       enabled: true
       ingressClassName: traefik
       hosts:
-        - "localhost"
+        - ""
     volumes:
       - name: authentik-secrets
         secret:
