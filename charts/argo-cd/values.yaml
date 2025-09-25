@@ -6,8 +6,9 @@ argo-cd:
     enabled: false
   applicationSet:
     enabled: false
-  server:
-    rootpath: /argocd
+  configs:
+    params:
+      server.rootpath: "/argocd"
 
 ingress:
   enabled: false
