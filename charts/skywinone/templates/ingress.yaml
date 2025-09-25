@@ -4,7 +4,11 @@ metadata:
   name: {{ .Release.Name }}
 spec:
   rules:
-    - host: {{ ne .Values.host "" }}
+    {{- if .Values.host }}
+    - host: {{ .Values.host }}
+    {{- else }}
+    - host:
+    {{- end }}
       http:
         paths:
           - path: "/skywinone"

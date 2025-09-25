@@ -7,7 +7,11 @@ metadata:
     traefik.ingress.kubernetes.io/router.middlewares: argocd-{{ .Release.Name }}@kubernetescrd
 spec:
   rules:
-    - host: {{ ne .Values.host "" }}
+    {{- if .Values.host }}
+    - host: {{ .Values.host }}
+    {{- else }}
+    - host:
+    {{- end }}
       http:
         paths:
           - path: "/argocd"
