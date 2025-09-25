@@ -9,6 +9,7 @@ argo-cd:
   configs:
     params:
       server.rootpath: "/argocd"
+      server.insecure: true
 
 ingress:
   enabled: false
