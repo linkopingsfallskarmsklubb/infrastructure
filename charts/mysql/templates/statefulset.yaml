@@ -1,13 +1,13 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: {{ .Release.Name }}
 spec:
+  serviceName: {{ .Release.Name }}
   selector:
     matchLabels:
       app: {{ .Release.Name }}
-  strategy:
-    type: Recreate
+  replicas: 1
   template:
     metadata:
       labels:
@@ -31,12 +31,18 @@ spec:
             - name: mysql-cnf
               mountPath: /etc/mysql/conf.d/
       volumes:
-        - name: mysql-pv-storage
-          persistentVolumeClaim:
-            claimName: {{ .Release.Name }}-pvc
         - name: mysql-cnf
           configMap: 
             name: {{ .Release.Name }}
             items:
               - key: mysql.cnf
                 path: mysql.cnf
+  volumeClaimTemplates:
+    - metadata:
+        name: mysql-pv-storage
+      spec:
+        storageClassName: {{ .Values.storageClass }}
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: {{ .Values.size | default "8Gi" }}
