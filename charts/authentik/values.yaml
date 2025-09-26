@@ -1,6 +1,8 @@
 authentik:
   authentik:
     secret_key: file:///authentik-secrets/secret-key
+    web:
+      path: /authentik/
     postgresql:
       host: postgres
       user: authentik
