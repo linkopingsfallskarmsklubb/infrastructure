@@ -1,13 +1,13 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: {{ .Release.Name }}
 spec:
+  serviceName: {{ .Release.Name }}
   selector:
     matchLabels:
       app: {{ .Release.Name }}
-  strategy:
-    type: Recreate
+  replicas: 1
   template:
     metadata:
       labels:
@@ -32,7 +32,12 @@ spec:
           volumeMounts:
             - name: postgres-pv-storage
               mountPath: /var/lib/postgresql
-      volumes:
-        - name: postgres-pv-storage
-          persistentVolumeClaim:
-            claimName: {{ .Release.Name }}-pvc
+  volumeClaimTemplates:
+    - metadata:
+        name: postgres-pv-storage
+      spec:
+        storageClassName: {{ .Values.storageClass }}
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: {{ .Values.size | default "8Gi" }}
