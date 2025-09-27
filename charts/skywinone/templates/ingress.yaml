@@ -19,7 +19,11 @@ spec:
               service:
                 name: {{ .Release.Name }}
                 port:
+                {{- if .Values.proxy }}
+                  number: 80
+                {{- else }}
                   number: 8080
+                {{- end }}
   {{- if .Values.proxy }}
   tls:
     - hosts:

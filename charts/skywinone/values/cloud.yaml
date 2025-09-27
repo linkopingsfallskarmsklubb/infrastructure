@@ -1,3 +1,4 @@
 proxy: true
+host: insidan.linkopingsfallskarmsklubb.se
 serviceHost: insidan.linkopingsfallskarmsklubb.se
 externalHost: 192.168.30.114
