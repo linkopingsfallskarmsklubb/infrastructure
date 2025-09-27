@@ -1,2 +1,3 @@
 replicaCount: 1
 secretStore: secret-store
+proxy: false
