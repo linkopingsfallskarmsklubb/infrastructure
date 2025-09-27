@@ -10,11 +10,7 @@ metadata:
   {{- end}}
 spec:
   rules:
-    {{- if .Values.proxy }}
     - host: {{ .Values.host }}
-    {{- else }}
-    - host:
-    {{- end }}
       http:
         paths:
           - path: "/skywinone"
