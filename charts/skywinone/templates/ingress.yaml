@@ -23,5 +23,5 @@ spec:
   {{- if .Values.proxy }}
   tls:
     - hosts:
-      - {{ .Values.host }}
+      - {{ .Values.serviceHost }}
   {{- end }}
