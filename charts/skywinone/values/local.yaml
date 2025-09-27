@@ -1,2 +1,3 @@
 host: insidan.linkopingsfallskarmsklubb.se
+serviceHost: 192.168.30.114
 skywinonePropertiesRef: skywinone-properties-local
