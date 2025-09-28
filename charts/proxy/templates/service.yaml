@@ -7,4 +7,6 @@ spec:
   externalName: {{ .Values.localHost }}
   ports:
     - port: 80
+      name: http
     - port: 3306
+      name: mysql
