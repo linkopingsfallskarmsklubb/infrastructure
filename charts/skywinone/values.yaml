@@ -1,3 +1,3 @@
 replicaCount: 1
 secretStore: secret-store
-skywinonePropertiesRef: skywinone-properties-local
+skywinonePropertiesRef: skywinone-properties
