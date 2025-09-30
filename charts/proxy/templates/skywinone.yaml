@@ -5,7 +5,6 @@ metadata:
   annotations:
       traefik.ingress.kubernetes.io/router.entrypoints: websecure
       traefik.ingress.kubernetes.io/router.tls.certresolver: default
-      traefik.ingress.kubernetes.io/router.middlewares: core-middlewares-authentik@kubernetescrd
 spec:
   rules:
     - host: {{ .Values.host }}
