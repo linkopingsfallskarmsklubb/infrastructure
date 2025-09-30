@@ -91,7 +91,10 @@ helm install argo-cd charts/argo-cd/ --namespace argocd
 kubectl apply -f clusters/local/root-app.yaml -n argocd
 
 # cloud
-kubectl apply -f clusters/local/root-app.yaml -n argocd
+kubectl apply -f clusters/cloud/root-app.yaml -n argocd
+
+# development
+kubectl apply -f clusters/development/root-app.yaml -n argocd
 ```
 
 #### Update admin password
