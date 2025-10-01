@@ -14,7 +14,7 @@ metadata:
   name: acme-sync-clusterrolebinding
 subjects:
 - kind: ServiceAccount
-  name: acme-sync
+  name: acme-sync-sa
   namespace: kube-system   # namespace where your CronJob runs
 roleRef:
   kind: ClusterRole
