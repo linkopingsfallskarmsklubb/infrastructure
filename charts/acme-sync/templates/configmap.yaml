@@ -20,8 +20,8 @@ data:
 
     echo "Extracting cert for domain: $DOMAIN"
 
-    CERT=$(jq -r --arg domain "$DOMAIN" '.default.Certificates[] | select(.domain.main == $domain) | .certificate' $ACME_FILE)
-    KEY=$(jq -r --arg domain "$DOMAIN" '.default.Certificates[] | select(.domain.main == $domain) | .key' $ACME_FILE)
+    CERT=$(jq -r --arg domain "$DOMAIN" '.default.Certificates[] | select(.domain.main == $domain) | .certificate' "$ACME_FILE" | base64 -d)
+    KEY=$(jq -r --arg domain "$DOMAIN" '.default.Certificates[] | select(.domain.main == $domain) | .key' "$ACME_FILE" | base64 -d)
 
     if [ -z "$CERT" ] || [ -z "$KEY" ] || [ "$CERT" = "null" ] || [ "$KEY" = "null" ]; then
       echo "ERROR: No certificate found for domain $DOMAIN"
