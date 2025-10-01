@@ -10,17 +10,23 @@ data:
 
     ACME_FILE="/data/acme.json"
     SECRET_NAME="letsencrypt-cert"
-    NAMESPACE="kanidm"
+    NAMESPACE={{ .Values.namespace }}
+    DOMAIN={{ .Values.domain }}
 
     if [ ! -f "$ACME_FILE" ]; then
       echo "ERROR: $ACME_FILE not found"
       exit 1
     fi
 
-    echo "Extracting cert from $ACME_FILE ..."
+    echo "Extracting cert for domain: $DOMAIN"
 
-    CERT=$(jq -r '.letsencrypt.Certificates[0].certificate' $ACME_FILE)
-    KEY=$(jq -r '.letsencrypt.Certificates[0].key' $ACME_FILE)
+    CERT=$(jq -r --arg domain "$DOMAIN" '.default.Certificates[] | select(.domain.main == $domain) | .certificate' $ACME_FILE)
+    KEY=$(jq -r --arg domain "$DOMAIN" '.default.Certificates[] | select(.domain.main == $domain) | .key' $ACME_FILE)
+
+    if [ -z "$CERT" ] || [ -z "$KEY" ] || [ "$CERT" = "null" ] || [ "$KEY" = "null" ]; then
+      echo "ERROR: No certificate found for domain $DOMAIN"
+      exit 1
+    fi
 
     echo "$CERT" > /tmp/tls.crt
     echo "$KEY" > /tmp/tls.key
