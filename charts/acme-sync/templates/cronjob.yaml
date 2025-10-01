@@ -10,7 +10,7 @@ spec:
       template:
         spec:
           restartPolicy: OnFailure
-          serviceAccountName: acme-sync
+          serviceAccountName: acme-sync-sa
           containers:
           - name: sync
             image: alpine/kubectl:1.30.0
