@@ -25,4 +25,4 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: acme-sync-sa
-  namespace: kanidm
+  namespace: kube-system
