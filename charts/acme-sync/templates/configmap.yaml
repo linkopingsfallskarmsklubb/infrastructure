@@ -19,8 +19,8 @@ data:
 
     echo "Extracting cert from $ACME_FILE ..."
 
-    CERT=$(jq -r '.letsencrypt.Certificates[0].certificate' $ACME_FILE | base64 -d)
-    KEY=$(jq -r '.letsencrypt.Certificates[0].key' $ACME_FILE | base64 -d)
+    CERT=$(jq -r '.letsencrypt.Certificates[0].certificate' $ACME_FILE)
+    KEY=$(jq -r '.letsencrypt.Certificates[0].key' $ACME_FILE)
 
     echo "$CERT" > /tmp/tls.crt
     echo "$KEY" > /tmp/tls.key
