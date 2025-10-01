@@ -9,4 +9,4 @@ logLevel: "info"
 
 ingress:
   className: traefik
-  tlsSecretName: kanidm-tls
+  tlsSecretName: letsencrypt-cert
