@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: acme-sync-script
+  namespace: kube-system
+data:
+  sync.sh: |
+    #!/bin/sh
+    set -e
+
+    ACME_FILE="/data/acme.json"
+    SECRET_NAME="letsencrypt-cert"
+    NAMESPACE="kanidm"
+
+    if [ ! -f "$ACME_FILE" ]; then
+      echo "ERROR: $ACME_FILE not found"
+      exit 1
+    fi
+
+    echo "Extracting cert from $ACME_FILE ..."
+
+    CERT=$(jq -r '.letsencrypt.Certificates[0].certificate' $ACME_FILE | base64 -d)
+    KEY=$(jq -r '.letsencrypt.Certificates[0].key' $ACME_FILE | base64 -d)
+
+    echo "$CERT" > /tmp/tls.crt
+    echo "$KEY" > /tmp/tls.key
+
+    echo "Updating secret $SECRET_NAME in namespace $NAMESPACE ..."
+    kubectl -n $NAMESPACE create secret tls $SECRET_NAME \
+      --cert=/tmp/tls.crt \
+      --key=/tmp/tls.key \
+      --dry-run=client -o yaml | kubectl apply -f -
