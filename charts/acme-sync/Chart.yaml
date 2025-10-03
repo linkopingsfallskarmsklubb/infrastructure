@@ -1,0 +1,6 @@
+apiVersion: v2
+name: acme-sync
+description: Syncs certificates from traefik to be used by backend services for TLS passthrough
+type: application
+version: 0.1.0
+appVersion: "0.1.0"

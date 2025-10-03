@@ -1,0 +1,33 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: acme-sync
+  namespace: kube-system
+spec:
+  schedule: "0 3 * * *" # run daily at 03:00
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          serviceAccountName: acme-sync-sa
+          containers:
+          - name: sync
+            image: alpine/kubectl:1.34.1
+            command: ["/bin/sh", "-c"]
+            args:
+              - |
+                apk add --no-cache jq
+                sh /scripts/sync.sh
+            volumeMounts:
+            - name: acme
+              mountPath: /data
+            - name: scripts
+              mountPath: /scripts
+          volumes:
+          - name: acme
+            persistentVolumeClaim:
+              claimName: traefik
+          - name: scripts
+            configMap:
+              name: acme-sync-script
