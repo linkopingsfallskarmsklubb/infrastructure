@@ -8,6 +8,7 @@ spec:
       Secret: "urn:k8s:secret:{{ .Release.Name }}-secret:pluginSecret"
       Provider:
         Url: {{ .Values.providerUrl }}
+        CallbackUrl: /skywinone/oidc/callback
         ClientId: {{ .Values.clientId }}
         ClientSecret: "urn:k8s:secret:{{ .Release.Name }}-secret:providerClientSecret"
         UsePkce: true
