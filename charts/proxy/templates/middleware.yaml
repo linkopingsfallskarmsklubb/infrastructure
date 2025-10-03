@@ -6,9 +6,9 @@ spec:
   plugin:
     traefik-oidc-auth:
       Secret: "urn:k8s:secret:{{ .Release.Name }}-secret:pluginSecret"
+      CallbackUri: /skywinone/oidc/callback
       Provider:
         Url: {{ .Values.providerUrl }}
-        CallbackUri: /skywinone/oidc/callback
         ClientId: {{ .Values.clientId }}
         ClientSecret: "urn:k8s:secret:{{ .Release.Name }}-secret:providerClientSecret"
         UsePkce: true
