@@ -7,5 +7,6 @@ spec:
     traefik-oidc-auth:
       Secret: "urn:k8s:secret:{{ .Release.Name }}-secret:pluginSecret"
       Provider:
-        ClientId: "98db7edc-4314-4efd-b299-d06c389bd422"
+        Url: {{ .Values.providerUrl }}
+        ClientId: {{ .Values.clientId }}
         ClientSecret: "urn:k8s:secret:{{ .Release.Name }}-secret:providerClientSecret"
