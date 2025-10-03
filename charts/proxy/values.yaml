@@ -2,4 +2,4 @@ host: insidan.linkopingsfallskarmsklubb.se
 localHost: 192.168.30.114
 secretStore: secret-store
 pluginSecretRef: skywinone-plugin-secret
-providerSecretRef: skywinone-client-secret
+providerClientSecretRef: skywinone-client-secret
