@@ -1,7 +1,7 @@
 host: insidan.linkopingsfallskarmsklubb.se
 localHost: 192.168.30.114
 secretStore: secret-store
-providerUrl: https://idm.linkopingsfallskarmsklubb.se/oauth2/openid/98db7edc-4314-4efd-b299-d06c389bd422/
+providerUrl: https://idm.linkopingsfallskarmsklubb.se/oauth2/openid/skywinone/
 clientId: 98db7edc-4314-4efd-b299-d06c389bd422
 pluginSecretRef: skywinone-plugin-secret
 providerClientSecretRef: skywinone-client-secret
