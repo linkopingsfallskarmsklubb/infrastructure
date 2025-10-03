@@ -1,7 +1,10 @@
-apiVersion: traefik.io/v1alpha1
 kind: Middleware
 metadata:
-  name: {{ .Release.Name }}-forward-auth
+  name: {{ .Release.Name }}-oidc
 spec:
-  forwardAuth:
-    address: https://idm.linkopingssfallskarmsklubb.se/oautn2/authorise
+  plugin:
+    traefik-oidc-auth:
+      Secret: "urn:k8s:secret:{{ .Release.Name }}-secret:pluginSecret"
+      Provider:
+        ClientId: "98db7edc-4314-4efd-b299-d06c389bd422"
+        ClientSecret: "urn:k8s:secret:{{ .Release.Name }}-secret:providerClientSecret"
