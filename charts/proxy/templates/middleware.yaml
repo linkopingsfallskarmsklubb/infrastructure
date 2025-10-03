@@ -10,3 +10,5 @@ spec:
         Url: {{ .Values.providerUrl }}
         ClientId: {{ .Values.clientId }}
         ClientSecret: "urn:k8s:secret:{{ .Release.Name }}-secret:providerClientSecret"
+        UsePkce: true
+      Scopes: ["openid", "profile", "email", "groups"]
