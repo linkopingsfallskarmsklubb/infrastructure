@@ -73,6 +73,9 @@ cat key.json | sed 's/^/    /' >> secret-manager-account.yaml
 kubectl create ns core
 kubectl apply -f secret-manager-account.yaml --namespace core
 
+kubectl create ns argocd
+kubectl apply -f secret-manager-account.yaml --namespace argocd
+
 # Cleanup
 rm key.json secret-manager-account.yaml
 ```

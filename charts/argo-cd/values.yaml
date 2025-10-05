@@ -18,7 +18,7 @@ argo-cd:
         config:
           issuer: https://idm.linkopingsfallskarmsklubb.se/oauth2/openid/argocd
           clientID: argocd
-          clientSecret: $argocd-custom-secrets:dex.kanidm.clientSecret
+          clientSecret: $argo-cd-custom-secrets:dex.kanidm.clientSecret
           redirectURI: https://insidan.linkopingsfallskarmsklubb.se/argocd/api/dex/callback
           scopes:
             - openid
