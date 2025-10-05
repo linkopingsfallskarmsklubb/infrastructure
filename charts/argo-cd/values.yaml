@@ -10,6 +10,29 @@ argo-cd:
     params:
       server.rootpath: "/argocd"
       server.insecure: true
+    dex.config: |
+      connectors:
+      - type: oidc
+        id: kanidm
+        name: Kanidm
+        config:
+          issuer: https://idm.linkopingsfallskarmsklubb.se/oauth2/openid/argocd
+          clientID: argocd
+          clientSecret: $dex.kanidm.clientSecret
+          redirectURI: https://insidan.linkopingsfallskarmsklubb.se/argocd/api/dex/callback
+          scopes:
+            - openid
+            - profile
+            - email
+            - groups
+    rbac:
+      policy.default: role:readonly
+      policy.csv: |
+        p, role:admin, applications, *, *, allow
+        g, argocd-admins, role:admin
 
 ingress:
   enabled: false
+
+secretStore: secret-store
+clientSecretRef: argocd-client-secret

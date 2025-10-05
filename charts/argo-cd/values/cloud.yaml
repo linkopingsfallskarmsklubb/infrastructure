@@ -1,1 +1,4 @@
 host: insidan.linkopingsfallskarmsklubb.se
+argo-cd:
+  dex:
+    enabled: true
