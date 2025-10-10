@@ -2,3 +2,29 @@ host: insidan.linkopingsfallskarmsklubb.se
 argo-cd:
   dex:
     enabled: true
+  configs:
+    params:
+      server.rootpath: "/argocd"
+      server.insecure: true
+    cm:
+      url: https://insidan.linkopingsfallskarmsklubb.se/argocd
+      dex.config: |
+        connectors:
+        - type: oidc
+          id: kanidm
+          name: Kanidm
+          config:
+            issuer: https://idm.linkopingsfallskarmsklubb.se/oauth2/openid/argocd
+            clientID: argocd
+            clientSecret: $argo-cd-custom-secrets:dex.kanidm.clientSecret
+            redirectURI: https://insidan.linkopingsfallskarmsklubb.se/argocd/api/dex/callback
+            scopes:
+              - openid
+              - profile
+              - email
+              - groups
+    rbac:
+      policy.default: role:readonly
+      policy.csv: |
+        p, role:admin, applications, *, *, allow
+        g, argocd-admins, role:admin
