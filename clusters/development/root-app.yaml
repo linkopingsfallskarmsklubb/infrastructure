@@ -10,7 +10,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/linkopingsfallskarmsklubb/infrastructure
-    path: clusters/decvelopment/manifests
+    path: clusters/development/manifests
     targetRevision: HEAD
   destination:
     server: https://kubernetes.default.svc
