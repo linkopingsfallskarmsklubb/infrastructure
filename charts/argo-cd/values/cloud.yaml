@@ -11,8 +11,8 @@ argo-cd:
       dex.config: |
         connectors:
         - type: oidc
-          id: kanidm
-          name: Kanidm
+          id: lfk
+          name: LFK Account
           config:
             issuer: https://idm.linkopingsfallskarmsklubb.se/oauth2/openid/argocd
             clientID: argocd
