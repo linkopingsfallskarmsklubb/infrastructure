@@ -87,7 +87,8 @@ Inspired by the following [guide](https://www.arthurkoziel.com/setting-up-argocd
 ```bash
 helm repo add argo https://argoproj.github.io/argo-helm
 helm dependency update charts/argo-cd/
-kubectl create ns argocd
+kubectl apply -f "https://raw.githubusercontent.com/external-secrets/external-secrets/main/deploy/crds/bundle.yaml" --server-side
+
 helm install argo-cd charts/argo-cd/ --namespace argocd
 
 # local
