@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: root-app
+  name: root-cloud
   annotations:
     argocd.argoproj.io/sync-wave: "1"
   finalizers:

@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: development-root
+  name: root-development
   annotations:
     argocd.argoproj.io/sync-wave: "1"
   finalizers:
