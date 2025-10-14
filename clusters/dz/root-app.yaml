@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: root-app
+  name: root-dz
   annotations:
     argocd.argoproj.io/sync-wave: "1"
   finalizers:
@@ -10,7 +10,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/linkopingsfallskarmsklubb/infrastructure
-    path: clusters/local/manifests
+    path: clusters/dz/manifests
     targetRevision: HEAD
   destination:
     server: https://kubernetes.default.svc
