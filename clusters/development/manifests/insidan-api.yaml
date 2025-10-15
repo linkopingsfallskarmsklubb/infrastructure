@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: insidan-api
+  annotations:
+    argocd.argoproj.io/sync-wave: "4"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/linkopingsfallskarmsklubb/infrastructure
+    path: charts/insidan-api
+    targetRevision: HEAD
+    helm:
+      valueFiles:
+        - values/development.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: core
+  syncPolicy:
+    automated:
+      selfHeal: true
