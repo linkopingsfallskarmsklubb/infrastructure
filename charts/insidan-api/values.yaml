@@ -6,7 +6,7 @@ kanidm:
   tokenRef: insidan-kanidm-token
 
 skywin:
-  url: http://skywinone:8080/skywinone
+  url: http://proxy/skywinone
   user: insidanapi
   passwordRef: insidan-skywin-password
 
