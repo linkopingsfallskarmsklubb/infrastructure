@@ -119,5 +119,5 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
 # Create secret
 gcloud iam service-accounts keys create key.json \
   --iam-account=${GCP_SA}@${PROJECT_ID}.iam.gserviceaccount.com
- gcloud secrets versions add gcp-service-account --data-file key.json
+gcloud secrets versions add gcp-service-account --data-file key.json
 ```
