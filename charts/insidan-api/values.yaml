@@ -1,0 +1,15 @@
+replicaCount: 1
+secretStore: secret-store
+
+kanidm:
+  url: https://idm.linkopingsfallskarmsklubb.se
+  tokenRef: insidan-kanidm-token
+
+skywin:
+  url: http://skywinone:8080/skywinone
+  user: insidanapi
+  passwordRef: insidan-skywin-password
+
+smtp:
+  server: smtp-relay.gmail.com
+  sender: Linköpings Fallskärmsklubb <do-not-reply@linkopingsfallskarmsklubb.se>

@@ -1,0 +1,51 @@
+{{- if not .Values.proxy }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: api
+          image: "europe-west1-docker.pkg.dev/bitnami-ch3rudc/docker/insidanapi:{{ .Chart.AppVersion }}"
+          imagePullPolicy: Always
+          env:
+            - name: API_SERVER_HOST
+              value: "0.0.0.0"
+            - name: API_SERVER_PORT
+              value: "8000"
+            - name: API_KANIDM_URL
+              value: {{ .Values.kanidm.url }}
+            - name: API_KANIDM_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}
+                  key: kanidm-token
+            - name: API_SKYWIN_URL
+              value: {{ .Values.skywin.url }}
+            - name: API_SKYWIN_USER
+              value: {{ .Values.skywin.user }}
+            - name: API_SKYWIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}
+                  key: skywin-password
+            - name: API_SMTP_SERVER
+              value: {{ .Values.smtp.server }}
+            - name: API_SMTP_SENDER
+              value: {{ .Values.smtp.sender }}
+          ports:
+            - name: http
+              containerPort: 8000
+              protocol: TCP
+{{- end }}
