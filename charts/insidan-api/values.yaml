@@ -6,7 +6,7 @@ oauth2:
   clientSecretRef: insidan-client-secret
   authUrl: https://idm.linkopingsfallskarmsklubb.se/ui/oauth2
   tokenUrl: https://idm.linkopingsfallskarmsklubb.se/oauth2/token
-  redirectUrl: /api/auth/callback
+  redirectUrl: https://insidan.linkopingsfallskarmsklubb.se/api/auth/callback
   finalRedirect: /
 
 kanidm:
