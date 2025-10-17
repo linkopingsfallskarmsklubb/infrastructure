@@ -20,29 +20,46 @@ spec:
           image: "europe-west1-docker.pkg.dev/bitnami-ch3rudc/docker/insidanapi:{{ .Chart.AppVersion }}"
           imagePullPolicy: Always
           env:
-            - name: API_SERVER_HOST
+            - name: API_SERVER__HOST
               value: "0.0.0.0"
-            - name: API_SERVER_PORT
+            - name: API_SERVER__PORT
               value: "8000"
-            - name: API_KANIDM_URL
+            - name: API_OAUTH2__CLIENT_ID
+              value: {{ .Values.oauth2.clientId }}
+            - name: API_OAUTH2__CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}
+                  key: insidan-client-secret
+            - name: API_OAUTH2__AUTH_URL
+              value: {{ .Values.oauth2.authUrl }}
+            - name: API_OAUTH2__TOKEN_URL
+              value: {{ .Values.oauth2.tokenUrl }}
+            - name: API_OAUTH2__REDIRECT_URL
+              value: {{ .Values.oauth2.redirectUrl }}
+            - name: API_OAUTH2__FINAL_REDIRECT
+              value: {{ .Values.oauth2.finalRedirect }}
+            - name: API_OAUTH2__SCOPES
+              value: "[openid,profile,email,groups]"
+            - name: API_KANIDM__URL
               value: {{ .Values.kanidm.url }}
-            - name: API_KANIDM_TOKEN
+            - name: API_KANIDM__TOKEN
               valueFrom:
                 secretKeyRef:
                   name: {{ .Release.Name }}
                   key: kanidm-token
-            - name: API_SKYWIN_URL
+            - name: API_SKYWIN__URL
               value: {{ .Values.skywin.url }}
-            - name: API_SKYWIN_USER
+            - name: API_SKYWIN__USER
               value: {{ .Values.skywin.user }}
-            - name: API_SKYWIN_PASSWORD
+            - name: API_SKYWIN__PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: {{ .Release.Name }}
                   key: skywin-password
-            - name: API_SMTP_SERVER
+            - name: API_SMTP__SERVER
               value: {{ .Values.smtp.server }}
-            - name: API_SMTP_SENDER
+            - name: API_SMTP__SENDER
               value: {{ .Values.smtp.sender }}
           ports:
             - name: http

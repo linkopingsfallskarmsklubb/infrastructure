@@ -37,9 +37,6 @@ sudo cp k3s/cloud/traefik-config.yaml  /var/lib/rancher/k3s/server/manifests/
 sudo systemctl restart k3s
 ```
 
-```bash
-```
-
 ### Kubectl access
 
 ```bash

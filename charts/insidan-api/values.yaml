@@ -1,6 +1,14 @@
 replicaCount: 1
 secretStore: secret-store
 
+oauth2:
+  clientId: insidan
+  clientSecretRef: insidan-client-secret
+  authUrl: https://idm.linkopingsfallskarmsklubb.se/ui/oauth2
+  tokenUrl: https://idm.linkopingsfallskarmsklubb.se/oauth2/token
+  redirectUrl: /api/auth/callback
+  finalRedirect: /
+
 kanidm:
   url: https://idm.linkopingsfallskarmsklubb.se
   tokenRef: insidan-kanidm-token
