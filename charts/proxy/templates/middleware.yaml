@@ -13,3 +13,6 @@ spec:
         ClientSecret: "urn:k8s:secret:{{ .Release.Name }}-secret:providerClientSecret"
         UsePkce: true
       Scopes: ["openid", "profile", "email", "groups"]
+  headers:
+    customResponseHeaders:
+      X-Frame-Options: "SAMEORIGIN"
