@@ -1,2 +1,10 @@
+oauth2:
+  clientId: insidandev
+  clientSecretRef: insidandev-client-secret
+  authUrl: https://idm.linkopingsfallskarmsklubb.se/ui/oauth2
+  tokenUrl: https://idm.linkopingsfallskarmsklubb.se/oauth2/token
+  redirectUrl: http://localhost/api/auth/callback
+  defaultRedirect: http://localhost
+
 skywin:
   url: http://skywinone:8080/skywinone
