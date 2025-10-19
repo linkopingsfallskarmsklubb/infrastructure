@@ -37,8 +37,8 @@ spec:
               value: {{ .Values.oauth2.tokenUrl }}
             - name: API_OAUTH2__REDIRECT_URL
               value: {{ .Values.oauth2.redirectUrl }}
-            - name: API_OAUTH2__FINAL_REDIRECT
-              value: {{ .Values.oauth2.finalRedirect }}
+            - name: API_OAUTH2__DEFAULT_REDIRECT
+              value: {{ .Values.oauth2.defaultRedirect }}
             - name: API_OAUTH2__SCOPES
               value: "[openid,profile,email,groups]"
             - name: API_KANIDM__URL

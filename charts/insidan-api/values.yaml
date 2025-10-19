@@ -7,7 +7,7 @@ oauth2:
   authUrl: https://idm.linkopingsfallskarmsklubb.se/ui/oauth2
   tokenUrl: https://idm.linkopingsfallskarmsklubb.se/oauth2/token
   redirectUrl: https://insidan.linkopingsfallskarmsklubb.se/api/auth/callback
-  finalRedirect: /
+  defaultRedirect: /
 
 kanidm:
   url: https://idm.linkopingsfallskarmsklubb.se
