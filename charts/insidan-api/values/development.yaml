@@ -8,3 +8,6 @@ oauth2:
 
 skywin:
   url: http://skywinone:8080/skywinone
+
+skywinDb:
+  uriRef: insidandev-mysql-uri
