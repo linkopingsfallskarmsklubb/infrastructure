@@ -59,6 +59,11 @@ spec:
                   key: skywin-password
             - name: API_SKYWIN__REGISTER
               value: "{{ .Values.skywin.register }}"
+            - name: API_SKYWIN_DB__URI
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}
+                  key: {{ .Values.skwyinDb.uriRef }}
             - name: API_SMTP__SERVER
               value: {{ .Values.smtp.server }}
             - name: API_SMTP__SENDER

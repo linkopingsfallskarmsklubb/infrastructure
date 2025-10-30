@@ -19,6 +19,9 @@ skywin:
   passwordRef: insidan-skywin-password
   register: 113
 
+skywinDb:
+  uriRef: insidan-mysql-uri
+
 smtp:
   server: smtp-relay.gmail.com
   sender: Linköpings Fallskärmsklubb <do-not-reply@linkopingsfallskarmsklubb.se>
