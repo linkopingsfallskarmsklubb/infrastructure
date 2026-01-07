@@ -63,7 +63,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: {{ .Release.Name }}
-                  key: {{ .Values.skwyinDb.uriRef }}
+                  key: skywin-db-uri
             - name: API_SMTP__SERVER
               value: {{ .Values.smtp.server }}
             - name: API_SMTP__SENDER
