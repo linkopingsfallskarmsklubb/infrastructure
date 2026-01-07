@@ -5,4 +5,4 @@
 
 file="skywin_backup.sql"
 export_database $file
-upload_file $file gs://lfk-backup/skywin/skywin-$(date +%Y%m%d-%H%M%S).sql
+upload_file $file $SKYWIN_BACKUP_LOCATION/skywin-$(date +%Y%m%d-%H%M%S).sql

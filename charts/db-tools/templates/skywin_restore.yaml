@@ -24,6 +24,8 @@ spec:
                   secretKeyRef:
                     name: mysql-secrets
                     key: user
+              - name: SKYWIN_BACKUP_LOCATION
+                value: "{{ .Values.skywinBackup.location }}"
             volumeMounts:
               - mountPath: "/usr/src/credentials"
                 name: application-credentials
