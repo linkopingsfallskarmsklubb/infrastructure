@@ -1,2 +1,2 @@
 skywinBackup:
-  location: gs://lfk-backup/skywin
+  location: gs://lfk-backup-prod/skywin
