@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: import-skywin-db
+  name: skywin-restore
 spec:
   schedule: "0 0 * * *"
   suspend: true
@@ -12,7 +12,7 @@ spec:
           containers:
           - name: dbtools
             image: "europe-west1-docker.pkg.dev/bitnami-ch3rudc/docker/dbtools:{{ .Chart.AppVersion }}"
-            command: ["/bin/bash", "import_skywin.sh"]
+            command: ["/bin/bash", "skywin_restore.sh"]
             env:
               - name: MYSQL_ROOT_PASSWORD
                 valueFrom:

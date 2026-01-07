@@ -1,9 +1,9 @@
 #!/bin/bash
 
-. gcloud.sh
-. mysql.sh
+. lib_gcloud.sh
+. lib_mysql.sh
 
-latest_file=$(find_latest_file gs://lfk-backup/sql/skywin-*.sql)
+latest_file=$(find_latest_file gs://lfk-backup/skywin/skywin-*.sql)
 if [ -z "$latest_file" ]; then
   echo "No files found in bucket $GCS_BUCKET."
   exit 1

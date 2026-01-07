@@ -1,0 +1,38 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: skywin-backup
+spec:
+  schedule: "0 0 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: dbtools
+            image: "europe-west1-docker.pkg.dev/bitnami-ch3rudc/docker/dbtools:{{ .Chart.AppVersion }}"
+            command: ["/bin/bash", "skywin_backup.sh"]
+            env:
+              - name: MYSQL_ROOT_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: mysql-secrets
+                    key: root
+              - name: MYSQL_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: mysql-secrets
+                    key: user
+            volumeMounts:
+              - mountPath: "/usr/src/credentials"
+                name: application-credentials
+                readOnly: true
+          restartPolicy: Never
+          volumes:
+            - name: application-credentials
+              secret:
+                secretName: gcp-sa-secret
+                items:
+                  - key: secret-access-credentials
+                    path: application-credentials.json
+

@@ -1,7 +1,7 @@
 #!/bin/bash
 
-. gcloud.sh
-. mysql.sh
+. lib_gcloud.sh
+. lib_mysql.sh
 
 file="sql/01_create_skywinone_custom.sql"
 

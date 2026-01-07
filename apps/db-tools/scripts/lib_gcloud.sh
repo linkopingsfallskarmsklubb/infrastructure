@@ -24,4 +24,14 @@ download_file() {
   echo "Successfully downloaded file into $local_file."
 }
 
+upload_file() {
+  local local_file="$1"
+  local remote_path="$2"
+  if ! gsutil cp "$local_file" "$remote_path"; then
+    echo "Failed to upload file to GCS."
+    exit 2
+  fi
+  echo "Successfully uploaded $local_file to $remote_path."
+}
+
 gcloud_auth

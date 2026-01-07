@@ -56,6 +56,22 @@ recreate_database() {
   create_user "$database" "$user" "$password"
 }
 
+export_database() {
+  local file="$1"
+  echo "Exporting database $MYSQL_DATABASE into $file."
+  mysqldump --protocol=tcp \
+    --host="$MYSQL_HOST" \
+    --user="$MYSQL_ROOT_USER" \
+    --password="$MYSQL_ROOT_PASSWORD" \
+    --port="$MYSQL_PORT" \
+    --default-character-set=utf8 \
+    --comments \
+    --routines \
+    --triggers \
+    --single-transaction \
+    --databases "$MYSQL_DATABASE" >"$file"
+}
+
 MYSQL_HOST="${MYSQL_HOST:-mysql.core.svc}"
 MYSQL_PORT="${MYSQL_PORT:-3306}"
 MYSQL_ROOT_USER="${MYSQL_ROOT_USER:-root}"
