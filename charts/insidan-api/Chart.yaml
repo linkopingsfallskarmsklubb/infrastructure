@@ -3,4 +3,4 @@ name: insidan-api
 description: Insidan API
 type: application
 version: 0.1.0
-appVersion: "0.0.7"
+appVersion: "0.0.8"
