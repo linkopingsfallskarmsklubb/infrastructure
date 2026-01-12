@@ -1,0 +1,26 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: weather
+spec:
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: weather
+            image: "europe-west1-docker.pkg.dev/bitnami-ch3rudc/docker/weather:{{ .Chart.AppVersion }}"
+            env:
+              - name: HOLFUY_API_KEY
+                valueFrom:
+                  secretKeyRef:
+                    name: holfuy-api-key
+                    key: key
+              - name: POSTGRES_URL
+                valueFrom:
+                  secretKeyRef:
+                    name: postgres-url
+                    key: url
+          restartPolicy: Never
+
