@@ -1,6 +1,6 @@
-database: authentik
+database: shared
 secretStore: secret-store
-user: authentik
-userPasswordRef: authentik-postgres-password
-size: 1Gi
+user: shared
+userPasswordRef: shared-postgres-password
+size: 10Gi
 storageClass: local-path-persistent
