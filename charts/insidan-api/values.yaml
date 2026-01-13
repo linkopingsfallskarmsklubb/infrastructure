@@ -22,6 +22,9 @@ skywin:
 skywinDb:
   uriRef: insidan-mysql-uri
 
+commonDb:
+  uriRef: postgres-url
+
 smtp:
   server: smtp-relay.gmail.com
   sender: Linköpings Fallskärmsklubb <do-not-reply@linkopingsfallskarmsklubb.se>
