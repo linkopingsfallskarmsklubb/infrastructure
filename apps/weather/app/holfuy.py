@@ -1,4 +1,5 @@
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
 import niquests
 from pydantic import BaseModel, field_validator
@@ -25,7 +26,8 @@ class Measurement(BaseModel):
     @field_validator("dateTime", mode="before")
     def parse_datetime(cls, value):
         if isinstance(value, str):
-            return datetime.strptime(value, "%Y-%m-%d %H:%M:%S")
+            dt = datetime.strptime(value, "%Y-%m-%d %H:%M:%S")
+            return dt.replace(tzinfo=ZoneInfo("Europe/Stockholm"))
         return value
 
 
