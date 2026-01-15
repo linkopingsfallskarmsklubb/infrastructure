@@ -46,12 +46,37 @@ async def get_altitude_winds(url: str) -> List[WindDataPoint]:
             raise ValueError("Wind/temperature block not found")
         block_text = area_text[block_start:]
 
+        # Find the date
+        date_match = re.search(r"GÄLLANDE DEN (\d{1,2} \w+ \d{4})", area_text)
+        if not date_match:
+            logger.error("Date not found in LFV data")
+            raise ValueError("Date not found")
+        date_str = date_match.group(1)
+        # Handle Swedish month names
+        month_map = {
+            "JANUARI": "JANUARY",
+            "FEBRUARI": "FEBRUARY",
+            "MARS": "MARCH",
+            "APRIL": "APRIL",
+            "MAJ": "MAY",
+            "JUNI": "JUNE",
+            "JULI": "JULY",
+            "AUGUSTI": "AUGUST",
+            "SEPTEMBER": "SEPTEMBER",
+            "OKTOBER": "OCTOBER",
+            "NOVEMBER": "NOVEMBER",
+            "DECEMBER": "DECEMBER",
+        }
+        for swe, eng in month_map.items():
+            date_str = date_str.replace(swe, eng.upper())
+
+        prognos_date = datetime.strptime(date_str, "%d %B %Y").date()
+
         # Parse flight levels and their data
         flight_levels = ["2000ft", "FL050", "FL100"]
         data_points = []
         lines = block_text.splitlines()
         cet = pytz.timezone("Europe/Stockholm")
-        now_cet = datetime.now(cet)
         # Find indices for each flight level
         level_indices = []
         for i, line in enumerate(lines):
@@ -69,14 +94,9 @@ async def get_altitude_winds(url: str) -> List[WindDataPoint]:
             for line in fl_lines:
                 line = line.strip()
                 m = re.match(
-                    r"([0-9]{2})-([0-9]{2})UTC:\s*(Vrb|[0-9]+)/([0-9]+)kt\s*(-?[0-9]+)",
+                    r"([0-9]{2})-([0-9]{2})UTC:\s*(Vrb|[0-9]+)/([0-9]+)kt\s*([+-]?[0-9]+)\.?",
                     line,
                 )
-                if not m:
-                    m = re.match(
-                        r"([0-9]{2})-([0-9]{2})UTC:\s*(Vrb|[0-9]+)/([0-9]+)kt\s*(-?[0-9]+)\.",
-                        line,
-                    )
                 if m:
                     start_hour = int(m.group(1))
                     end_hour = int(m.group(2))
@@ -85,9 +105,8 @@ async def get_altitude_winds(url: str) -> List[WindDataPoint]:
                     wind_dir = None if wind_dir_raw == "Vrb" else int(wind_dir_raw)
                     wind_speed = int(m.group(4))
                     temp = int(m.group(5))
-                    start_date = now_cet.date()
                     start_dt = cet.localize(
-                        datetime.combine(start_date, datetime.min.time())
+                        datetime.combine(prognos_date, datetime.min.time())
                     )
                     start_datetime = start_dt.replace(hour=start_hour)
                     data_points.append(
