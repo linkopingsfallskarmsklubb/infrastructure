@@ -33,7 +33,6 @@ class PgClient:
                     id SERIAL PRIMARY KEY,
                     station_id INTEGER NOT NULL,
                     datetime TIMESTAMP WITH TIME ZONE NOT NULL,
-
                     wind_speed REAL NOT NULL,
                     wind_gust REAL NOT NULL,
                     wind_min REAL NOT NULL,
@@ -43,6 +42,7 @@ class PgClient:
                     pressure REAL NOT NULL,
                     UNIQUE (station_id, datetime)
                 );
+                CREATE INDEX IF NOT EXISTS ix_wind_holfuy_datetime ON {table_name} (datetime);
             """)
 
     async def create_lfv_table(self, table_name="wind_lfv"):
@@ -58,6 +58,7 @@ class PgClient:
                     temperature INTEGER NOT NULL,
                     UNIQUE (flight_level, start_time)
                 );
+                CREATE INDEX IF NOT EXISTS ix_wind_lfv_start_time ON {table_name} (start_time);
             """)
 
     async def drop_table(self, table_name):
