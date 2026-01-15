@@ -3,4 +3,4 @@ name: weather
 description: Fetches weather data and saves to postgres.
 type: application
 version: 0.1.0
-appVersion: "0.0.2"
+appVersion: "0.0.3"
