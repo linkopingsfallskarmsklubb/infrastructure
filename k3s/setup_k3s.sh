@@ -55,7 +55,7 @@ fi
 REGISTRIES_FILE="/etc/rancher/k3s/registries.yaml"
 if [ ! -f "$REGISTRIES_FILE" ]; then
   info "Configuring k3s container registry..."
-  cp k3s/registries.yaml . && cat key.json | sed 's/^        /' >> registries.yaml
+  cp k3s/registries.yaml . && cat key.json | sed 's/^/        /' >>registries.yaml
   sudo mv registries.yaml "$REGISTRIES_FILE"
 else
   info "k3s registries file already exists, skipping."
@@ -79,7 +79,7 @@ if [ -f "$TRAEFIK_CONFIG_SRC" ]; then
     info "Traefik config already exists, skipping."
   fi
 else
-    warning "Traefik config for $ENV not found at $TRAEFIK_CONFIG_SRC"
+  warning "Traefik config for $ENV not found at $TRAEFIK_CONFIG_SRC"
 fi
 
 info "Restarting k3s to apply changes..."
@@ -89,85 +89,91 @@ sudo systemctl restart k3s
 KUBECONFIG_DIR="$HOME/.kube"
 KUBECONFIG_FILE="$KUBECONFIG_DIR/config"
 if [ ! -f "$KUBECONFIG_FILE" ]; then
-    info "Setting up kubectl access..."
-    mkdir -p "$KUBECONFIG_DIR"
+  info "Setting up kubectl access..."
+  mkdir -p "$KUBECONFIG_DIR"
+  sudo cp /etc/rancher/k3s/k3s.yaml "$KUBECONFIG_FILE"
+  sudo chown $USER:$USER "$KUBECONFIG_FILE"
+else
+  read -p "kubeconfig file already exists. Overwrite? (y/N): " -n 1 -r
+  echo
+  if [[ $REPLY =~ ^[Yy]$ ]]; then
+    info "Overwriting existing kubeconfig."
     sudo cp /etc/rancher/k3s/k3s.yaml "$KUBECONFIG_FILE"
     sudo chown $USER:$USER "$KUBECONFIG_FILE"
-else
+  else
     info "kubectl config already exists, skipping."
+  fi
 fi
 
 # 4. Prepare Secret Manager access
 info "Preparing Secret Manager access..."
 if ! kubectl get ns core >/dev/null 2>&1; then
-    info "Creating 'core' namespace..."
-    kubectl create ns core
+  info "Creating 'core' namespace..."
+  kubectl create ns core
 else
-    info "'core' namespace already exists."
+  info "'core' namespace already exists."
 fi
 
 if ! kubectl get secret gcp-sa-key --namespace core >/dev/null 2>&1; then
-    info "Creating 'gcp-sa-key' secret in 'core' namespace..."
-    cp k3s/secret-manager-account.yaml .
-    cat key.json | sed 's/^/    /' >> secret-manager-account.yaml
-    kubectl apply -f secret-manager-account.yaml --namespace core
-    rm secret-manager-account.yaml
+  info "Creating 'gcp-sa-key' secret in 'core' namespace..."
+  cp k3s/secret-manager-account.yaml .
+  cat key.json | sed 's/^/    /' >>secret-manager-account.yaml
+  kubectl apply -f secret-manager-account.yaml --namespace core
+  rm secret-manager-account.yaml
 else
-    info "'gcp-sa-key' secret in 'core' namespace already exists."
+  info "'gcp-sa-key' secret in 'core' namespace already exists."
 fi
 
 if ! kubectl get ns argocd >/dev/null 2>&1; then
-    info "Creating 'argocd' namespace..."
-    kubectl create ns argocd
+  info "Creating 'argocd' namespace..."
+  kubectl create ns argocd
 else
-    info "'argocd' namespace already exists."
+  info "'argocd' namespace already exists."
 fi
 
 if ! kubectl get secret gcp-sa-key --namespace argocd >/dev/null 2>&1; then
-    info "Creating 'gcp-sa-key' secret in 'argocd' namespace..."
-    # Re-use the same file, but apply to a different namespace
-    cp k3s/secret-manager-account.yaml .
-    cat key.json | sed 's/^/    /' >> secret-manager-account.yaml
-    kubectl apply -f secret-manager-account.yaml --namespace argocd
-    rm secret-manager-account.yaml
+  info "Creating 'gcp-sa-key' secret in 'argocd' namespace..."
+  # Re-use the same file, but apply to a different namespace
+  cp k3s/secret-manager-account.yaml .
+  cat key.json | sed 's/^/    /' >>secret-manager-account.yaml
+  kubectl apply -f secret-manager-account.yaml --namespace argocd
+  rm secret-manager-account.yaml
 else
-    info "'gcp-sa-key' secret in 'argocd' namespace already exists."
+  info "'gcp-sa-key' secret in 'argocd' namespace already exists."
 fi
-
 
 # 5. Install Argo CD
 info "Installing Argo CD..."
 if ! helm repo list | grep -q "https://argoproj.github.io/argo-helm"; then
-    info "Adding Argo CD Helm repo..."
-    helm repo add argo https://argoproj.github.io/argo-helm
+  info "Adding Argo CD Helm repo..."
+  helm repo add argo https://argoproj.github.io/argo-helm
 else
-    info "Argo CD Helm repo already added."
+  info "Argo CD Helm repo already added."
 fi
 
 info "Updating Helm dependencies..."
 helm dependency update charts/argo-cd/
 
-if ! kubectl get crd/bgpconfigurations.crd.projectcalico.org >/dev/null 2>&1; then
-    info "Applying Argo CD CRDs..."
-    kubectl apply -f "https://raw.githubusercontent.com/external-secrets/external-secrets/main/deploy/crds/bundle.yaml" --server-side
+if ! kubectl get crd/externalsecrets.external-secrets.io >/dev/null 2>&1; then
+  info "Applying External Secrets CRDs..."
+  kubectl apply -f "https://raw.githubusercontent.com/external-secrets/external-secrets/main/deploy/crds/bundle.yaml" --server-side --force-conflicts
 else
-    info "Argo CD CRDs already applied."
+  info "External Secrets CRDs already applied."
 fi
 
-
 if ! helm status argo-cd -n argocd >/dev/null 2>&1; then
-    info "Installing Argo CD with Helm..."
-    helm install argo-cd charts/argo-cd/ --namespace argocd --create-namespace
+  info "Installing Argo CD with Helm..."
+  helm install argo-cd charts/argo-cd/ --namespace argocd --create-namespace
 else
-    info "Argo CD already installed."
+  info "Argo CD already installed."
 fi
 
 ROOT_APP_FILE="clusters/$ENV/root-app.yaml"
 if [ -f "$ROOT_APP_FILE" ]; then
-    info "Applying root app for $ENV environment..."
-    kubectl apply -f "$ROOT_APP_FILE" -n argocd
+  info "Applying root app for $ENV environment..."
+  kubectl apply -f "$ROOT_APP_FILE" -n argocd
 else
-    warning "Root app for $ENV not found at $ROOT_APP_FILE"
+  warning "Root app for $ENV not found at $ROOT_APP_FILE"
 fi
 
 # Cleanup
