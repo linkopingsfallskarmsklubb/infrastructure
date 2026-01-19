@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM python:3.13-slim AS builder
+FROM python:3.14-slim AS builder
 
 # Install build dependencies and uv
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -19,7 +19,7 @@ RUN python -m venv /venv \
   && /venv/bin/pip install uv \
   && /venv/bin/pip install .
 
-FROM python:3.13-slim
+FROM python:3.14-slim
 
 # Install runtime PostgreSQL libraries
 RUN apt-get update && apt-get install -y --no-install-recommends \
