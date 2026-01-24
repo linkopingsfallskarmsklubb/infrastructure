@@ -1,16 +1,47 @@
 version: 2
 updates:
-  # Dockerfiles in all subdirectories of apps/
+  # Docker
   - package-ecosystem: "docker"
-    directories:
-      - "/apps/*"
+    directory: "/apps/db-tools"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "docker"
+    directory: "/apps/skywinone"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "docker"
+    directory: "/apps/weather"
     schedule:
       interval: "weekly"
 
-  # Helm charts in all subdirectories of charts/
+  # Helm
   - package-ecosystem: "helm"
-    directories:
-      - "/charts/*"
+    directory: "/charts/acme-sync"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "helm"
+    directory: "/charts/argo-cd"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "helm"
+    directory: "/charts/kanidm"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "helm"
+    directory: "/charts/mysql"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "helm"
+    directory: "/charts/postgres"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "helm"
+    directory: "/charts/secret-store"
     schedule:
       interval: "weekly"
 
+  # Python (weather app)
+  - package-ecosystem: "pip"
+    directory: "/apps/weather"
+    schedule:
+      interval: "weekly"
