@@ -1,4 +1,4 @@
-FROM docker.io/mysql:8.0
+FROM docker.io/mysql:9.6
 
 WORKDIR /usr/src/scripts
 
