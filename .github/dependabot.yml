@@ -3,6 +3,7 @@ registries:
   google-artifact-registry:
     type: docker-registry
     url: https://europe-west1-docker.pkg.dev
+    replaces-base: true
     username: _json_key
     password: ${{ secrets.GCP_SA_KEY }}
 updates:
