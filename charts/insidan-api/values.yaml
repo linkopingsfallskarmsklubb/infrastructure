@@ -1,6 +1,6 @@
 replicaCount: 1
 image:
-  host: europe-west1-docker.pkg.dev
+  registry: europe-west1-docker.pkg.dev
   repository: bitnami-ch3rudc/docker/insidanapi
   tag: "0.0.15"
   pullPolicy: Always
