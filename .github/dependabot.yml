@@ -32,13 +32,13 @@ updates:
   - package-ecosystem: "helm"
     directory: "/charts/insidan-api"
     schedule:
-      interval: "weekly"
+      interval: "daily"
     registries:
       - google-artifact-registry
   - package-ecosystem: "helm"
     directory: "/charts/insidan-web"
     schedule:
-      interval: "weekly"
+      interval: "daily"
     registries:
       - google-artifact-registry
   - package-ecosystem: "helm"
