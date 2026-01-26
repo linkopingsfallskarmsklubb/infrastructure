@@ -17,8 +17,8 @@ spec:
     spec:
       containers:
         - name: api
-          image: "europe-west1-docker.pkg.dev/bitnami-ch3rudc/docker/insidanapi:{{ .Chart.AppVersion }}"
-          imagePullPolicy: Always
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: API_SERVER__HOST
               value: "0.0.0.0"

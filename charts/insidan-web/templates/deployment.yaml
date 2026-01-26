@@ -17,8 +17,8 @@ spec:
     spec:
       containers:
         - name: web
-          image: "europe-west1-docker.pkg.dev/bitnami-ch3rudc/docker/insidanweb:{{ .Chart.AppVersion }}"
-          imagePullPolicy: Always
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
               containerPort: 3000

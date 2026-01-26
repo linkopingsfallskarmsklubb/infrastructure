@@ -1,4 +1,9 @@
 replicaCount: 1
+image:
+  repository: europe-west1-docker.pkg.dev/bitnami-ch3rudc/docker/insidanapi
+  tag: "0.0.15"
+  pullPolicy: Always
+
 secretStore: secret-store
 
 oauth2:
