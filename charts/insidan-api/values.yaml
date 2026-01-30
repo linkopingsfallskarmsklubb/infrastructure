@@ -2,7 +2,7 @@ replicaCount: 1
 image:
   containerRegistry: europe-west1-docker.pkg.dev
   repository: bitnami-ch3rudc/docker/insidanapi
-  tag: "0.0.21"
+  tag: "0.0.22"
   pullPolicy: Always
 
 secretStore: secret-store
@@ -34,4 +34,3 @@ commonDb:
 smtp:
   server: smtp-relay.gmail.com
   sender: Linköpings Fallskärmsklubb <do-not-reply@linkopingsfallskarmsklubb.se>
-
