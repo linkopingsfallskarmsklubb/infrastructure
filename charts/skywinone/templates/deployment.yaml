@@ -17,8 +17,8 @@ spec:
     spec:
       containers:
         - name: skywinone
-          image: "europe-west1-docker.pkg.dev/bitnami-ch3rudc/docker/skywinone:{{ .Chart.AppVersion }}"
-          imagePullPolicy: Always
+          image: "{{ .Values.image.containerRegistry }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: SKYWIN_CONFIG_DIR
               value: /opt/skywin/config

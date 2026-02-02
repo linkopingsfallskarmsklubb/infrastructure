@@ -10,7 +10,8 @@ spec:
         spec:
           containers:
           - name: dbtools
-            image: "europe-west1-docker.pkg.dev/bitnami-ch3rudc/docker/dbtools:{{ .Chart.AppVersion }}"
+            image: "{{ .Values.image.containerRegistry }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+            imagePullPolicy: {{ .Values.image.pullPolicy }}
             command: ["/bin/bash", "skywin_reset_wishlist.sh", "delete"]
             env:
               - name: MYSQL_PASSWORD
@@ -32,7 +33,8 @@ spec:
         spec:
           containers:
           - name: dbtools
-            image: "europe-west1-docker.pkg.dev/bitnami-ch3rudc/docker/dbtools:{{ .Chart.AppVersion }}"
+            image: "{{ .Values.image.containerRegistry }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+            imagePullPolicy: {{ .Values.image.pullPolicy }}
             command: ["/bin/bash", "skywin_reset_wishlist.sh", "shuffle"]
             env:
               - name: MYSQL_PASSWORD

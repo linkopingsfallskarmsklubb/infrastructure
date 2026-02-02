@@ -10,7 +10,8 @@ spec:
         spec:
           containers:
           - name: dbtools
-            image: "europe-west1-docker.pkg.dev/bitnami-ch3rudc/docker/dbtools:{{ .Chart.AppVersion }}"
+            image: "{{ .Values.image.containerRegistry }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+            imagePullPolicy: {{ .Values.image.pullPolicy }}
             command: ["/bin/bash", "pg_backup.sh"]
             env:
               - name: PG_HOST

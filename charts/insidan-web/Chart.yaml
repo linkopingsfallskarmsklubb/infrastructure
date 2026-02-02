@@ -2,5 +2,3 @@ apiVersion: v2
 name: insidan-web
 description: Insidan Web
 type: application
-version: 0.1.0
-appVersion: "0.0.19"
