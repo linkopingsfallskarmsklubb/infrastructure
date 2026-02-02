@@ -1,0 +1,41 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: pg-restore
+spec:
+  schedule: "0 0 * * *"
+  suspend: true
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: dbtools
+            image: "europe-west1-docker.pkg.dev/bitnami-ch3rudc/docker/dbtools:{{ .Chart.AppVersion }}"
+            command: ["/bin/bash", "pg_restore.sh"]
+            env:
+              - name: PG_HOST
+                value: "postgres"
+              - name: PG_USER
+                value: "shared"
+              - name: PG_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: postgres-secrets
+                    key: password
+              - name: PG_DATABASE
+                value: "shared"
+              - name: PG_BACKUP_LOCATION
+                value: "{{ .Values.pgBackup.location }}"
+            volumeMounts:
+              - mountPath: "/usr/src/credentials"
+                name: application-credentials
+                readOnly: true
+          restartPolicy: Never
+          volumes:
+            - name: application-credentials
+              secret:
+                secretName: gcp-sa-secret
+                items:
+                  - key: secret-access-credentials
+                    path: application-credentials.json

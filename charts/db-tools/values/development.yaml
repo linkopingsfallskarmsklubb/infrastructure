@@ -1,2 +1,5 @@
 skywinBackup:
   location: gs://lfk-backup-dev/skywin
+
+pgBackup:
+  location: gs://lfk-backup-dev/postgres
