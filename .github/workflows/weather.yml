@@ -1,0 +1,93 @@
+name: weather
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "apps/weather/**"
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "apps/weather/**"
+  workflow_dispatch:
+
+jobs:
+  check-and-test:
+    name: Check and Test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/weather
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Set up Python
+        run: uv python install
+
+      - name: Install the project
+        run: uv sync --all-extras --dev
+
+      - name: Run tests
+        run: uv run python -m pytest tests
+
+  build-and-release:
+    name: Build, Push, and Release
+    needs: check-and-test
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install GitVersion
+        uses: gittools/actions/gitversion/setup@v4
+        with:
+          versionSpec: "6.x"
+
+      - name: Determine Version
+        id: gitversion
+        uses: gittools/actions/gitversion/execute@v4
+        with:
+          useConfigFile: true
+          configFilePath: apps/weather/GitVersion.yml
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v3
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Configure Docker to use Google Artifact Registry
+        run: gcloud auth configure-docker europe-west1-docker.pkg.dev
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v6
+        with:
+          context: apps/weather
+          push: true
+          tags: |
+            europe-west1-docker.pkg.dev/bitnami-ch3rudc/docker/weather:${{ steps.gitversion.outputs.majorMinorPatch }}
+            europe-west1-docker.pkg.dev/bitnami-ch3rudc/docker/weather:latest
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: weather/${{ steps.gitversion.outputs.majorMinorPatch }}
+          name: weather ${{ steps.gitversion.outputs.majorMinorPatch }}
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

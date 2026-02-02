@@ -1,0 +1,17 @@
+mode: ContinuousDeployment
+tag-prefix: db-tools/
+major-version-bump-message: "(?i)^breaking(:|\\()|BREAKING CHANGE"
+minor-version-bump-message: "(?i)^feat(:|\\()"
+patch-version-bump-message: "(?i)^fix(:|\\()"
+branches:
+  main:
+    regex: ^main$
+    mode: ContinuousDeployment
+    tag: ''
+    increment: Patch
+    prevent-increment-of-merged-branch-version: true
+    track-merge-target: false
+    tracks-release-branches: false
+    is-release-branch: false
+ignore:
+  sha: []
