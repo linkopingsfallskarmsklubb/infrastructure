@@ -7,7 +7,7 @@ branches:
   main:
     regex: ^main$
     mode: ContinuousDeployment
-    tag: ''
+    label: ''
     increment: Patch
     prevent-increment-of-merged-branch-version: true
     track-merge-target: false
