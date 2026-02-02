@@ -12,28 +12,6 @@ on:
   workflow_dispatch:
 
 jobs:
-  check-and-test:
-    name: Check and Test
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: apps/weather
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Install uv
-        uses: astral-sh/setup-uv@v5
-
-      - name: Set up Python
-        run: uv python install
-
-      - name: Install the project
-        run: uv sync --all-extras --dev
-
-      - name: Run tests
-        run: uv run python -m pytest tests
-
   build-and-release:
     name: Build, Push, and Release
     needs: check-and-test
