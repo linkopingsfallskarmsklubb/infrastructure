@@ -31,6 +31,12 @@ updates:
     schedule:
       interval: "weekly"
   - package-ecosystem: "helm"
+    directory: "/charts/db-tools"
+    schedule:
+      interval: "daily"
+    registries:
+      - google-artifact-registry
+  - package-ecosystem: "helm"
     directory: "/charts/insidan-api"
     schedule:
       interval: "daily"
@@ -58,6 +64,18 @@ updates:
     directory: "/charts/secret-store"
     schedule:
       interval: "weekly"
+  - package-ecosystem: "helm"
+    directory: "/charts/skywinone"
+    schedule:
+      interval: "daily"
+    registries:
+      - google-artifact-registry
+  - package-ecosystem: "helm"
+    directory: "/charts/weather"
+    schedule:
+      interval: "weekly"
+    registries:
+      - google-artifact-registry
 
   # Python (weather app)
   - package-ecosystem: "pip"

@@ -58,7 +58,6 @@ jobs:
           push: true
           tags: |
             europe-west1-docker.pkg.dev/bitnami-ch3rudc/docker/skywinone:${{ steps.gitversion.outputs.majorMinorPatch }}
-            europe-west1-docker.pkg.dev/bitnami-ch3rudc/docker/skywinone:latest
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
