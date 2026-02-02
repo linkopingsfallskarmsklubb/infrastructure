@@ -26,5 +26,7 @@ spec:
                   secretKeyRef:
                     name: postgres-url
                     key: url
+              - name: LFV_URL
+                value: "{{ .Values.lfvUrl }}"
           restartPolicy: Never
 
