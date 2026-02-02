@@ -14,11 +14,6 @@ spec:
             image: "europe-west1-docker.pkg.dev/bitnami-ch3rudc/docker/dbtools:{{ .Chart.AppVersion }}"
             command: ["/bin/bash", "skywinone_tables.sh"]
             env:
-              - name: MYSQL_ROOT_PASSWORD
-                valueFrom:
-                  secretKeyRef:
-                    name: mysql-secrets
-                    key: root
               - name: MYSQL_PASSWORD
                 valueFrom:
                   secretKeyRef:

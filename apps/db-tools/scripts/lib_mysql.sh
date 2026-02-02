@@ -5,8 +5,8 @@ import_sql_file() {
   echo "Importing $file into $MYSQL_DATABASE."
   mysql --protocol=tcp \
     --host="$MYSQL_HOST" \
-    --user="$MYSQL_ROOT_USER" \
-    --password="$MYSQL_ROOT_PASSWORD" \
+    --user="$MYSQL_USER" \
+    --password="$MYSQL_PASSWORD" \
     --port="$MYSQL_PORT" \
     --default-character-set=utf8 \
     --comments \
@@ -14,6 +14,18 @@ import_sql_file() {
 }
 
 run_query() {
+  local query="$1"
+  mysql --protocol=tcp \
+    --host="$MYSQL_HOST" \
+    --user="$MYSQL_USER" \
+    --password="$MYSQL_PASSWORD" \
+    --port="$MYSQL_PORT" \
+    --default-character-set=utf8 \
+    --comments \
+    -e "$query"
+}
+
+run_root_query() {
   local query="$1"
   mysql --protocol=tcp \
     --host="$MYSQL_HOST" \
@@ -28,13 +40,13 @@ run_query() {
 drop_database() {
   local database="$1"
   echo "Dropping database $database."
-  run_query "DROP DATABASE IF EXISTS \`$database\`;"
+  run_root_query "DROP DATABASE IF EXISTS \`$database\`;"
 }
 
 create_database() {
   local database="$1"
   echo "Creating database $database if not exists."
-  run_query "CREATE DATABASE IF NOT EXISTS \`$database\` CHARACTER SET utf8mb4 COLLATE utf8mb4_swedish_ci;;"
+  run_root_query "CREATE DATABASE IF NOT EXISTS \`$database\` CHARACTER SET utf8mb4 COLLATE utf8mb4_swedish_ci;;"
 }
 
 create_user() {
@@ -42,8 +54,8 @@ create_user() {
   local user="$2"
   local password="$3"
   echo "Creating user $user with access to database $database."
-  run_query "CREATE USER IF NOT EXISTS '$user'@'%' IDENTIFIED BY '$password';"
-  run_query "GRANT ALL ON $database.* TO '$user'@'%';"
+  run_root_query "CREATE USER IF NOT EXISTS '$user'@'%' IDENTIFIED BY '$password';"
+  run_root_query "GRANT ALL ON $database.* TO '$user'@'%';"
 }
 
 recreate_database() {
@@ -61,8 +73,8 @@ export_database() {
   echo "Exporting database $MYSQL_DATABASE into $file."
   mysqldump --protocol=tcp \
     --host="$MYSQL_HOST" \
-    --user="$MYSQL_ROOT_USER" \
-    --password="$MYSQL_ROOT_PASSWORD" \
+    --user="$MYSQL_USER" \
+    --password="$MYSQL_PASSWORD" \
     --port="$MYSQL_PORT" \
     --default-character-set=utf8 \
     --comments \
