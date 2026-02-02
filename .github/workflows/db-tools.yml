@@ -57,7 +57,7 @@ jobs:
           context: apps/db-tools
           push: true
           tags: |
-            europe-west1-docker.pkg.dev/bitnami-ch3rudc/docker/db-tools:${{ steps.gitversion.outputs.majorMinorPatch }}
+            europe-west1-docker.pkg.dev/bitnami-ch3rudc/docker/dbtools:${{ steps.gitversion.outputs.majorMinorPatch }}
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
