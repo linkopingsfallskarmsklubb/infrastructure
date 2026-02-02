@@ -1,3 +1,4 @@
+{{- if .Values.postgres.enabled }}
 apiVersion: batch/v1
 kind: CronJob
 metadata:
@@ -39,3 +40,4 @@ spec:
                 items:
                   - key: secret-access-credentials
                     path: application-credentials.json
+{{- end }}

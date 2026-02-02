@@ -1,8 +1,14 @@
 image:
   containerRegistry: europe-west1-docker.pkg.dev
   repository: bitnami-ch3rudc/docker/dbtools
-  tag: "0.3.0"
+  tag: "0.1.9"
   pullPolicy: IfNotPresent
+
+postgres:
+  enabled: true
+
+mysql:
+  enabled: true
 
 skywinBackup:
   location: gs://lfk-backup-prod/skywin

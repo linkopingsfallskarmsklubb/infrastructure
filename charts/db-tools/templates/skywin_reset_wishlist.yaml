@@ -1,3 +1,4 @@
+{{- if .Values.mysql.enabled }}
 apiVersion: batch/v1
 kind: CronJob
 metadata:
@@ -43,3 +44,4 @@ spec:
                     name: mysql-secrets
                     key: user
           restartPolicy: Never
+{{- end }}
