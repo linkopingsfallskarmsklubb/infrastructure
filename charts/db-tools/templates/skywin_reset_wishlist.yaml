@@ -1,0 +1,53 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: skywin-delete-requests
+spec:
+  schedule: "0 7 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: dbtools
+            image: "europe-west1-docker.pkg.dev/bitnami-ch3rudc/docker/dbtools:{{ .Chart.AppVersion }}"
+            command: ["/bin/bash", "skywin_reset_wishlist.sh", "delete"]
+            env:
+              - name: MYSQL_ROOT_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: mysql-secrets
+                    key: root
+              - name: MYSQL_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: mysql-secrets
+                    key: user
+          restartPolicy: Never
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: skywin-shuffle-requests
+spec:
+  schedule: "0 8 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: dbtools
+            image: "europe-west1-docker.pkg.dev/bitnami-ch3rudc/docker/dbtools:{{ .Chart.AppVersion }}"
+            command: ["/bin/bash", "skywin_reset_wishlist.sh", "shuffle"]
+            env:
+              - name: MYSQL_ROOT_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: mysql-secrets
+                    key: root
+              - name: MYSQL_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: mysql-secrets
+                    key: user
+          restartPolicy: Never
