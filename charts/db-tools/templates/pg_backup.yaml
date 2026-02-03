@@ -22,7 +22,7 @@ spec:
               - name: PG_PASSWORD
                 valueFrom:
                   secretKeyRef:
-                    name: postgres-secrets
+                    name: pg-secrets
                     key: password
               - name: PG_DATABASE
                 value: "shared"
