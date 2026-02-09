@@ -32,7 +32,7 @@ kanidm system oauth2 add-redirect-url skywinone https://insidan.linkopingsfallsk
 kanidm system oauth2 update-scope-map skywinone idm_all_persons openid profile groups
 
 # Get client secret, add to secret manager
-kanidm system oauth2 show-basic-secret argocd
+kanidm system oauth2 show-basic-secret skywinone
 ```
 
 ## Insidan
@@ -48,5 +48,5 @@ kanidm system oauth2 add-redirect-url insidan https://insidan.linkopingsfallskar
 kanidm system oauth2 update-scope-map insidan idm_all_persons openid profile email groups
 
 # Get client secret, add to secret manager
-kanidm system oauth2 show-basic-secret argocd
+kanidm system oauth2 show-basic-secret insidan
 ```
