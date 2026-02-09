@@ -2,7 +2,7 @@ replicaCount: 1
 image:
   containerRegistry: europe-west1-docker.pkg.dev
   repository: bitnami-ch3rudc/docker/insidanapi
-  tag: "0.0.22"
+  tag: "0.0.23"
   pullPolicy: Always
 
 secretStore: secret-store
