@@ -5,7 +5,7 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "0"
   finalizers:
-  - resources-finalizer.argocd.argoproj.io
+    - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
@@ -18,3 +18,5 @@ spec:
   syncPolicy:
     automated:
       selfHeal: true
+    syncOptions:
+      - ServerSideApply=true
