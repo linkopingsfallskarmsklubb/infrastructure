@@ -18,7 +18,7 @@ data:
       password_reset:
         disable: true
       file:
-        path: /config/users_database.yml
+        path: /secrets/users_database.yml
 
     storage:
       postgres:

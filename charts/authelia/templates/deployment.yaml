@@ -45,10 +45,6 @@ spec:
             - name: secrets
               mountPath: /secrets
               readOnly: true
-            - name: users-db
-              mountPath: /config/users_database.yml
-              subPath: users_database.yml
-              readOnly: true
       volumes:
         - name: config
           configMap:
@@ -56,6 +52,25 @@ spec:
         - name: secrets
           secret:
             secretName: {{ .Release.Name }}-secrets
+            items:
+              - key: jwt-secret
+                path: jwt-secret
+              - key: session-secret
+                path: session-secret
+              - key: storage-encryption-key
+                path: storage-encryption-key
+              - key: oidc-issuer-private-key
+                path: oidc-issuer-private-key
+              - key: oidc-hmac-secret
+                path: oidc-hmac-secret
+              - key: postgres-password
+                path: postgres-password
+              - key: users_database.yml
+                path: users_database.yml
+              {{- range .Values.clients }}
+              - key: client-{{ .id }}-secret
+                path: client-{{ .id }}-secret
+              {{- end }}
         - name: users-db
           secret:
             secretName: {{ .Release.Name }}-secrets
