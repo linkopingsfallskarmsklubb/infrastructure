@@ -36,7 +36,7 @@ data:
 
     notifier:
       filesystem:
-        filename: /config/notification.txt
+        filename: /tmp/notification.txt
 
     identity_providers:
       oidc:

@@ -71,9 +71,3 @@ spec:
               - key: client-{{ .id }}-secret
                 path: client-{{ .id }}-secret
               {{- end }}
-        - name: users-db
-          secret:
-            secretName: {{ .Release.Name }}-secrets
-            items:
-              - key: users_database.yml
-                path: users_database.yml

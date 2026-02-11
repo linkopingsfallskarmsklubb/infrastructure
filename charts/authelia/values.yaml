@@ -30,7 +30,7 @@ secrets:
   postgresPassword: authelia-postgres-password
 
 postgres:
-  host: postgres.shared.svc.cluster.local
+  host: pg.core.svc.cluster.local
   port: 5432
   database: authelia
   user: authelia
