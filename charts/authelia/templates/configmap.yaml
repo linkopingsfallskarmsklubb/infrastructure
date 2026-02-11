@@ -48,10 +48,10 @@ data:
             - introspection
           allowed_origins:
             - https://insidan.linkopingsfallskarmsklubb.se
-            - https://insidan.linkopingsfallskarmsklubb.se/argocd
         clients:
           {{- range .Values.clients }}
           - id: {{ .id }}
+            client_secret: "OVERRIDDEN_BY_ENV_VAR"
             description: {{ .name }}
             public: false
             authorization_policy: one_factor
