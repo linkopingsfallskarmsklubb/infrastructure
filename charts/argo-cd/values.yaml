@@ -11,4 +11,4 @@ ingress:
   enabled: false
 
 secretStore: secret-store
-clientSecretRef: argocd-client-secret
+clientSecretRef: authelia-client-argocd-secret

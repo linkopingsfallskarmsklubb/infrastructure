@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+  labels:
+    app: {{ .Release.Name }}
+spec:
+  replicas: {{ .Values.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: authelia
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: 9091
+              name: http
+          env:
+            - name: AUTHELIA_JWT_SECRET_FILE
+              value: /secrets/jwt-secret
+            - name: AUTHELIA_SESSION_SECRET_FILE
+              value: /secrets/session-secret
+            - name: AUTHELIA_STORAGE_ENCRYPTION_KEY_FILE
+              value: /secrets/storage-encryption-key
+            - name: AUTHELIA_IDENTITY_PROVIDERS_OIDC_ISSUER_PRIVATE_KEY_FILE
+              value: /secrets/oidc-issuer-private-key
+            - name: AUTHELIA_IDENTITY_PROVIDERS_OIDC_HMAC_SECRET_FILE
+              value: /secrets/oidc-hmac-secret
+            - name: AUTHELIA_STORAGE_POSTGRES_PASSWORD_FILE
+              value: /secrets/postgres-password
+            # Client secrets mapping
+            {{- range $index, $client := .Values.clients }}
+            - name: AUTHELIA_IDENTITY_PROVIDERS_OIDC_CLIENTS_{{ $index }}_SECRET_FILE
+              value: /secrets/client-{{ $client.id }}-secret
+            {{- end }}
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: secrets
+              mountPath: /secrets
+              readOnly: true
+            - name: users-db
+              mountPath: /config/users_database.yml
+              subPath: users_database.yml
+              readOnly: true
+      volumes:
+        - name: config
+          configMap:
+            name: {{ .Release.Name }}-config
+        - name: secrets
+          secret:
+            secretName: {{ .Release.Name }}-secrets
+        - name: users-db
+          secret:
+            secretName: {{ .Release.Name }}-secrets
+            items:
+              - key: users_database.yml
+                path: users_database.yml

@@ -29,9 +29,20 @@ spec:
               value: {{ .Values.user }}
             - name: POSTGRES_DB
               value: {{ .Values.database }}
+            - name: AUTHELIA_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-secrets
+                  key: authelia-password
           volumeMounts:
             - name: postgres-pv-storage
               mountPath: /var/lib/postgresql
+            - name: init-scripts
+              mountPath: /docker-entrypoint-initdb.d
+      volumes:
+        - name: init-scripts
+          configMap:
+            name: {{ .Release.Name }}-init-scripts
   volumeClaimTemplates:
     - metadata:
         name: postgres-pv-storage

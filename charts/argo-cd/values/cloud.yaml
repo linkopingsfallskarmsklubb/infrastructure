@@ -14,9 +14,9 @@ argo-cd:
           id: lfk
           name: LFK Account
           config:
-            issuer: https://idm.linkopingsfallskarmsklubb.se/oauth2/openid/argocd
+            issuer: https://auth.linkopingsfallskarmsklubb.se
             clientID: argocd
-            clientSecret: $argo-cd-custom-secrets:dex.kanidm.clientSecret
+            clientSecret: $argo-cd-custom-secrets:dex.authelia.clientSecret
             redirectURI: https://insidan.linkopingsfallskarmsklubb.se/argocd/api/dex/callback
             scopes:
               - openid

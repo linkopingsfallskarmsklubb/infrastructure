@@ -1,7 +1,7 @@
 host: insidan.linkopingsfallskarmsklubb.se
 localHost: 192.168.30.114
 secretStore: secret-store
-providerUrl: https://idm.linkopingsfallskarmsklubb.se/oauth2/openid/insidan/
+providerUrl: https://auth.linkopingsfallskarmsklubb.se
 clientId: insidan
 pluginSecretRef: skywinone-plugin-secret
-providerClientSecretRef: insidan-client-secret
+providerClientSecretRef: authelia-client-insidan-secret

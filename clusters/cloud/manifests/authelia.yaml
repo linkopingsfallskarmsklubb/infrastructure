@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: kanidm
+  name: authelia
   annotations:
     argocd.argoproj.io/sync-wave: "4"
   finalizers:
@@ -10,11 +10,11 @@ spec:
   project: default
   source:
     repoURL: https://github.com/linkopingsfallskarmsklubb/infrastructure
-    path: charts/kanidm
+    path: charts/authelia
     targetRevision: HEAD
   destination:
     server: https://kubernetes.default.svc
-    namespace: kanidm
+    namespace: authelia
   syncPolicy:
     automated:
       selfHeal: true
