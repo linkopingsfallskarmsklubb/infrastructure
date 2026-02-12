@@ -5,8 +5,7 @@ metadata:
 data:
   configuration.yml: |
     server:
-      host: 0.0.0.0
-      port: 9091
+      address: tcp://0.0.0.0:9091
 
     log:
       level: debug
@@ -34,22 +33,21 @@ data:
           mail: mail
           group_name: cn
         user: {{ .Values.lldap.user }}
-        password: "OVERRIDDEN_BY_ENV_VAR"
 
     storage:
       postgres:
-        host: {{ .Values.postgres.host }}
-        port: {{ .Values.postgres.port }}
+        address: tcp://{{ .Values.postgres.host }}:{{ .Values.postgres.port }}
         database: {{ .Values.postgres.database }}
         username: {{ .Values.postgres.user }}
-        password: "OVERRIDDEN_BY_ENV_VAR"
 
     session:
       name: authelia_session
       expiration: 1h
       inactivity: 5m
       remember_me_duration: 1M
-      domain: linkopingsfallskarmsklubb.se
+      cookies:
+        - domain: {{ .Values.domain | replace "auth." "" }}
+          authelia_url: https://{{ .Values.domain }}
 
     notifier:
       filesystem:
@@ -67,9 +65,9 @@ data:
             - https://insidan.linkopingsfallskarmsklubb.se
         clients:
           {{- range .Values.clients }}
-          - id: {{ .id }}
+          - client_id: {{ .id }}
+            client_name: {{ .name }}
             client_secret: "OVERRIDDEN_BY_ENV_VAR"
-            description: {{ .name }}
             public: false
             authorization_policy: one_factor
             redirect_uris:
@@ -81,7 +79,7 @@ data:
               - profile
               - email
               - groups
-            userinfo_signing_algorithm: none
+            userinfo_signed_response_alg: none
             pkce_challenge_method: S256
           {{- end }}
 
@@ -101,12 +99,11 @@ data:
           policy: one_factor
 
         # Insidan (default) restricted to users group
-        # This covers the root and other paths on insidan domain
         - domain: "insidan.linkopingsfallskarmsklubb.se"
           subject: ["group:users"]
           policy: one_factor
 
-        # Authelia dashboard/config itself - usually allows all authenticated
+        # Authelia dashboard/config itself
         - domain: "auth.linkopingsfallskarmsklubb.se"
           policy: one_factor
 
@@ -115,7 +112,7 @@ data:
           subject: ["group:admins"]
           policy: one_factor
 
-        # Catch-all for other subdomains if any, requiring at least users group
+        # Catch-all
         - domain: "*.linkopingsfallskarmsklubb.se"
           subject: ["group:users"]
           policy: one_factor

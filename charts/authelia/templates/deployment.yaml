@@ -38,7 +38,7 @@ spec:
               value: /secrets/lldap-password
             # Client secrets mapping
             {{- range $index, $client := .Values.clients }}
-            - name: AUTHELIA_IDENTITY_PROVIDERS_OIDC_CLIENTS_{{ $index }}_SECRET_FILE
+            - name: AUTHELIA_IDENTITY_PROVIDERS_OIDC_CLIENTS_{{ $index }}_CLIENT_SECRET_FILE
               value: /secrets/client-{{ $client.id }}-secret
             {{- end }}
           volumeMounts:
