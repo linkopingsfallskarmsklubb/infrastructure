@@ -24,7 +24,7 @@ data:
         start_tls: false
         base_dn: {{ .Values.lldap.base_dn }}
         additional_users_dn: ou=people
-        users_filter: "(&(|(uid={input})(mail={input}))(objectClass=person))"
+        users_filter: "(&(|({username_attribute}={input})(mail={input}))(objectClass=person))"
         additional_groups_dn: ou=groups
         groups_filter: "(member={dn})"
         group_search_mode: filter
