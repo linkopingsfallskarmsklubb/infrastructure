@@ -22,50 +22,6 @@ spec:
           ports:
             - containerPort: 9091
               name: http
-          env:
-            - name: AUTHELIA_IDENTITY_VALIDATION_RESET_PASSWORD_JWT_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Release.Name }}-secrets
-                  key: jwt-secret
-            - name: AUTHELIA_SESSION_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Release.Name }}-secrets
-                  key: session-secret
-            - name: AUTHELIA_STORAGE_ENCRYPTION_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Release.Name }}-secrets
-                  key: storage-encryption-key
-            - name: AUTHELIA_IDENTITY_PROVIDERS_OIDC_HMAC_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Release.Name }}-secrets
-                  key: oidc-hmac-secret
-            - name: AUTHELIA_STORAGE_POSTGRES_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Release.Name }}-secrets
-                  key: postgres-password
-            - name: AUTHELIA_AUTHENTICATION_BACKEND_LDAP_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Release.Name }}-secrets
-                  key: lldap-password
-            - name: AUTHELIA_IDENTITY_PROVIDERS_OIDC_JWKS_0_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Release.Name }}-secrets
-                  key: oidc-issuer-private-key
-            # Client secrets mapping
-            {{- range $index, $client := .Values.clients }}
-            - name: AUTHELIA_IDENTITY_PROVIDERS_OIDC_CLIENTS_{{ $index }}_CLIENT_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: {{ $.Release.Name }}-secrets
-                  key: client-{{ $client.id }}-secret
-            {{- end }}
           volumeMounts:
             - name: config
               mountPath: /config
@@ -74,8 +30,11 @@ spec:
               readOnly: true
       volumes:
         - name: config
-          configMap:
-            name: {{ .Release.Name }}-config
+          secret:
+            secretName: {{ .Release.Name }}-secrets
+            items:
+              - key: configuration.yml
+                path: configuration.yml
         - name: secrets
           secret:
             secretName: {{ .Release.Name }}-secrets
