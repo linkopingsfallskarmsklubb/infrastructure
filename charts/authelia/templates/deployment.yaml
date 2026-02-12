@@ -14,6 +14,7 @@ spec:
       labels:
         app: {{ .Release.Name }}
     spec:
+      enableServiceLinks: false
       containers:
         - name: authelia
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -22,13 +23,13 @@ spec:
             - containerPort: 9091
               name: http
           env:
-            - name: AUTHELIA_JWT_SECRET_FILE
+            - name: AUTHELIA_IDENTITY_VALIDATION_RESET_PASSWORD_JWT_SECRET_FILE
               value: /secrets/jwt-secret
             - name: AUTHELIA_SESSION_SECRET_FILE
               value: /secrets/session-secret
             - name: AUTHELIA_STORAGE_ENCRYPTION_KEY_FILE
               value: /secrets/storage-encryption-key
-            - name: AUTHELIA_IDENTITY_PROVIDERS_OIDC_ISSUER_PRIVATE_KEY_FILE
+            - name: AUTHELIA_IDENTITY_PROVIDERS_OIDC_JWKS_0_KEY_FILE
               value: /secrets/oidc-issuer-private-key
             - name: AUTHELIA_IDENTITY_PROVIDERS_OIDC_HMAC_SECRET_FILE
               value: /secrets/oidc-hmac-secret
