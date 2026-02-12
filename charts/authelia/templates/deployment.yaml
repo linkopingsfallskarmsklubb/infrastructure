@@ -23,24 +23,48 @@ spec:
             - containerPort: 9091
               name: http
           env:
-            - name: AUTHELIA_IDENTITY_VALIDATION_RESET_PASSWORD_JWT_SECRET_FILE
-              value: /secrets/jwt-secret
-            - name: AUTHELIA_SESSION_SECRET_FILE
-              value: /secrets/session-secret
-            - name: AUTHELIA_STORAGE_ENCRYPTION_KEY_FILE
-              value: /secrets/storage-encryption-key
-            - name: AUTHELIA_IDENTITY_PROVIDERS_OIDC_JWKS_0_KEY_FILE
-              value: /secrets/oidc-issuer-private-key
-            - name: AUTHELIA_IDENTITY_PROVIDERS_OIDC_HMAC_SECRET_FILE
-              value: /secrets/oidc-hmac-secret
-            - name: AUTHELIA_STORAGE_POSTGRES_PASSWORD_FILE
-              value: /secrets/postgres-password
-            - name: AUTHELIA_AUTHENTICATION_BACKEND_LDAP_PASSWORD_FILE
-              value: /secrets/lldap-password
+            - name: AUTHELIA_IDENTITY_VALIDATION_RESET_PASSWORD_JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-secrets
+                  key: jwt-secret
+            - name: AUTHELIA_SESSION_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-secrets
+                  key: session-secret
+            - name: AUTHELIA_STORAGE_ENCRYPTION_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-secrets
+                  key: storage-encryption-key
+            - name: AUTHELIA_IDENTITY_PROVIDERS_OIDC_HMAC_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-secrets
+                  key: oidc-hmac-secret
+            - name: AUTHELIA_STORAGE_POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-secrets
+                  key: postgres-password
+            - name: AUTHELIA_AUTHENTICATION_BACKEND_LDAP_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-secrets
+                  key: lldap-password
+            - name: AUTHELIA_IDENTITY_PROVIDERS_OIDC_JWKS_0_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-secrets
+                  key: oidc-issuer-private-key
             # Client secrets mapping
             {{- range $index, $client := .Values.clients }}
-            - name: AUTHELIA_IDENTITY_PROVIDERS_OIDC_CLIENTS_{{ $index }}_CLIENT_SECRET_FILE
-              value: /secrets/client-{{ $client.id }}-secret
+            - name: AUTHELIA_IDENTITY_PROVIDERS_OIDC_CLIENTS_{{ $index }}_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $.Release.Name }}-secrets
+                  key: client-{{ $client.id }}-secret
             {{- end }}
           volumeMounts:
             - name: config
@@ -55,22 +79,3 @@ spec:
         - name: secrets
           secret:
             secretName: {{ .Release.Name }}-secrets
-            items:
-              - key: jwt-secret
-                path: jwt-secret
-              - key: session-secret
-                path: session-secret
-              - key: storage-encryption-key
-                path: storage-encryption-key
-              - key: oidc-issuer-private-key
-                path: oidc-issuer-private-key
-              - key: oidc-hmac-secret
-                path: oidc-hmac-secret
-              - key: postgres-password
-                path: postgres-password
-              - key: lldap-password
-                path: lldap-password
-              {{- range .Values.clients }}
-              - key: client-{{ .id }}-secret
-                path: client-{{ .id }}-secret
-              {{- end }}

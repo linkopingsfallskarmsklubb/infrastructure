@@ -10,10 +10,6 @@ data:
     log:
       level: debug
 
-    identity_validation:
-      reset_password:
-        # jwt_secret is provided via AUTHELIA_IDENTITY_VALIDATION_RESET_PASSWORD_JWT_SECRET_FILE
-
     authentication_backend:
       password_reset:
         disable: true
@@ -34,14 +30,12 @@ data:
           mail: mail
           group_name: cn
         user: {{ .Values.lldap.user }}
-        # password is provided via AUTHELIA_AUTHENTICATION_BACKEND_LDAP_PASSWORD_FILE
 
     storage:
       postgres:
         address: tcp://{{ .Values.postgres.host }}:{{ .Values.postgres.port }}
         database: {{ .Values.postgres.database }}
         username: {{ .Values.postgres.user }}
-        # password is provided via AUTHELIA_STORAGE_POSTGRES_PASSWORD_FILE
 
     session:
       name: authelia_session
@@ -58,7 +52,6 @@ data:
 
     identity_providers:
       oidc:
-        # jwks is provided via AUTHELIA_IDENTITY_PROVIDERS_OIDC_JWKS_0_KEY_FILE
         cors:
           endpoints:
             - authorization
@@ -71,7 +64,6 @@ data:
           {{- range .Values.clients }}
           - client_id: {{ .id }}
             client_name: {{ .name }}
-            # client_secret is provided via AUTHELIA_IDENTITY_PROVIDERS_OIDC_CLIENTS_{index}_CLIENT_SECRET_FILE
             public: false
             authorization_policy: one_factor
             redirect_uris:
