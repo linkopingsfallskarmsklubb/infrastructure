@@ -34,6 +34,7 @@ data:
           mail: mail
           group_name: cn
         user: {{ .Values.lldap.user }}
+        password: "OVERRIDDEN_BY_ENV_VAR"
 
     storage:
       postgres:
@@ -41,6 +42,7 @@ data:
         port: {{ .Values.postgres.port }}
         database: {{ .Values.postgres.database }}
         username: {{ .Values.postgres.user }}
+        password: "OVERRIDDEN_BY_ENV_VAR"
 
     session:
       name: authelia_session
