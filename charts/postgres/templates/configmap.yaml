@@ -11,4 +11,9 @@ data:
       CREATE DATABASE authelia;
       GRANT ALL PRIVILEGES ON DATABASE authelia TO authelia;
       ALTER DATABASE authelia OWNER TO authelia;
+
+      CREATE USER lldap WITH PASSWORD '$LLDAP_POSTGRES_PASSWORD';
+      CREATE DATABASE lldap;
+      GRANT ALL PRIVILEGES ON DATABASE lldap TO lldap;
+      ALTER DATABASE lldap OWNER TO lldap;
     EOSQL

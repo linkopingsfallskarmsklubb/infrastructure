@@ -17,8 +17,23 @@ data:
     authentication_backend:
       password_reset:
         disable: true
-      file:
-        path: /secrets/users_database.yml
+      ldap:
+        address: {{ .Values.lldap.address }}
+        implementation: custom
+        timeout: 5s
+        start_tls: false
+        base_dn: {{ .Values.lldap.base_dn }}
+        additional_users_dn: ou=people
+        users_filter: "(&(|(uid={input})(mail={input}))(objectClass=person))"
+        additional_groups_dn: ou=groups
+        groups_filter: "(member={dn})"
+        group_search_mode: filter
+        attributes:
+          display_name: displayName
+          username: uid
+          mail: mail
+          group_name: cn
+        user: {{ .Values.lldap.user }}
 
     storage:
       postgres:
@@ -65,10 +80,40 @@ data:
               - email
               - groups
             userinfo_signing_algorithm: none
+            pkce_challenge_method: S256
           {{- end }}
 
     access_control:
       default_policy: deny
       rules:
+        # Skywin One restricted to skywin_users
+        - domain: "insidan.linkopingsfallskarmsklubb.se"
+          resources: ["^/skywinone($|/.*)"]
+          subject: ["group:skywin_users"]
+          policy: one_factor
+
+        # ArgoCD restricted to admins
+        - domain: "insidan.linkopingsfallskarmsklubb.se"
+          resources: ["^/argocd($|/.*)"]
+          subject: ["group:admins"]
+          policy: one_factor
+
+        # Insidan (default) restricted to users group
+        # This covers the root and other paths on insidan domain
+        - domain: "insidan.linkopingsfallskarmsklubb.se"
+          subject: ["group:users"]
+          policy: one_factor
+
+        # Authelia dashboard/config itself - usually allows all authenticated
+        - domain: "auth.linkopingsfallskarmsklubb.se"
+          policy: one_factor
+
+        # Insidan Dev (localhost) restricted to admins
+        - domain: "localhost"
+          subject: ["group:admins"]
+          policy: one_factor
+
+        # Catch-all for other subdomains if any, requiring at least users group
         - domain: "*.linkopingsfallskarmsklubb.se"
+          subject: ["group:users"]
           policy: one_factor

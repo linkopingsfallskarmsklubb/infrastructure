@@ -1,0 +1,28 @@
+image:
+  repository: lldap/lldap
+  tag: v0.5.0
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  ldapPort: 3890
+  httpPort: 17170
+
+postgres:
+  host: pg.core.svc.cluster.local
+  port: 5432
+  database: lldap
+  user: lldap
+
+secretStore: secret-store
+secrets:
+  jwtSecret: lldap-jwt-secret
+  ldapUserPass: lldap-user-pass
+  postgresPassword: lldap-postgres-password
+
+persistence:
+  enabled: true
+  size: 1Gi
+  storageClass: local-path-persistent
+
+ldap_base_dn: "dc=linkopingsfallskarmsklubb,dc=se"

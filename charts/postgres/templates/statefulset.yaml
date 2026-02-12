@@ -34,6 +34,11 @@ spec:
                 secretKeyRef:
                   name: {{ .Release.Name }}-secrets
                   key: authelia-password
+            - name: LLDAP_POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-secrets
+                  key: lldap-password
           volumeMounts:
             - name: postgres-pv-storage
               mountPath: /var/lib/postgresql
