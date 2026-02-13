@@ -13,7 +13,7 @@ authelia:
             client_secret:
               path: "/secrets/authelia-secrets/client-insidan-secret"
             public: false
-            authorization_policy: "one_factor"
+            authorization_policy: "two_factor"
             redirect_uris:
               - "http://localhost:3000/api/auth/callback"
               - "http://localhost:8000/api/auth/callback"
@@ -23,7 +23,7 @@ authelia:
     access_control:
       rules:
         - domain: "127.0.0.1"
-          policy: "one_factor"
+          policy: "two_factor"
 
   ingress:
     enabled: false
