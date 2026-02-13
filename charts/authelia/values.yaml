@@ -2,163 +2,136 @@ authelia:
   image:
     tag: "4.39.13"
 
-  domain: auth.linkopingsfallskarmsklubb.se
+  secret:
+    existingSecret: "authelia-secrets"
 
-  config:
-    server:
-      address: "tcp://0.0.0.0:9091"
-    
+  configMap:
     authentication_backend:
-      password_reset:
-        disable: true
       ldap:
-        address: ldap://lldap:3890
-        implementation: custom
-        base_dn: dc=linkopingsfallskarmsklubb,dc=se
-        additional_users_dn: ou=people
-        users_filter: "(&(|({username_attribute}={input})(mail={input}))(objectClass=person))"
-        additional_groups_dn: ou=groups
-        groups_filter: "(member={dn})"
-        group_search_mode: filter
-        attributes:
-          display_name: displayName
-          username: uid
-          mail: mail
-          group_name: cn
-        user: uid=admin,ou=people,dc=linkopingsfallskarmsklubb,dc=se
-        password:
-          secret_name: authelia-secrets
-          path: ldap-password
-
-    storage:
-      encryption_key:
-        secret_name: authelia-secrets
-        path: storage-encryption-key
-      postgres:
         enabled: true
-        address: "tcp://pg.core.svc.cluster.local:5432"
-        database: authelia
-        username: authelia
+        address: "ldap://lldap:3890"
+        implementation: "custom"
+        timeout: "5 seconds"
+        start_tls: false
+        base_dn: "dc=linkopingsfallskarmsklubb,dc=se"
+        additional_users_dn: "ou=people"
+        users_filter: "(&(|({username_attribute}={input})(mail={input}))(objectClass=person))"
+        additional_groups_dn: "ou=groups"
+        groups_filter: "(member={dn})"
+        group_search_mode: "filter"
+        attributes:
+          display_name: "displayName"
+          username: "uid"
+          mail: "mail"
+          group_name: "cn"
+        user: "uid=admin,ou=people,dc=linkopingsfallskarmsklubb,dc=se"
         password:
-          secret_name: authelia-secrets
-          path: postgres-password
+          secret_name: "authelia-secrets"
+          path: "ldap-password"
 
     session:
-      name: authelia_session
+      name: "authelia_session"
       cookies:
-        - domain: linkopingsfallskarmsklubb.se
-          authelia_url: https://auth.linkopingsfallskarmsklubb.se
-      secret:
-        secret_name: authelia-secrets
-        path: session-secret
+        - domain: "linkopingsfallskarmsklubb.se"
+          authelia_url: "https://auth.linkopingsfallskarmsklubb.se"
+      encryption_key:
+        secret_name: "authelia-secrets"
+        path: "session-secret"
 
     identity_validation:
       reset_password:
-        jwt_secret:
-          secret_name: authelia-secrets
-          path: jwt-secret
+        secret:
+          secret_name: "authelia-secrets"
+          path: "jwt-secret"
 
     identity_providers:
       oidc:
         enabled: true
         hmac_secret:
-          secret_name: authelia-secrets
-          path: oidc-hmac-secret
+          secret_name: "authelia-secrets"
+          path: "oidc-hmac-secret"
         jwks:
           - key:
-              secret_name: authelia-secrets
-              path: oidc-issuer-private-key
+              path: "/secrets/oidc-issuer-private-key"
         clients:
-          - client_id: argocd
-            client_name: ArgoCD
+          - client_id: "argocd"
+            client_name: "ArgoCD"
             client_secret:
-              secret_name: authelia-secrets
-              path: client-argocd-secret
+              path: "/secrets/client-argocd-secret"
             public: false
-            authorization_policy: one_factor
+            authorization_policy: "one_factor"
             redirect_uris:
-              - https://insidan.linkopingsfallskarmsklubb.se/argocd/api/dex/callback
-            scopes:
-              - openid
-              - profile
-              - email
-              - groups
-          - client_id: skywinone
-            client_name: Skywin One
+              - "https://insidan.linkopingsfallskarmsklubb.se/argocd/api/dex/callback"
+            scopes: ["openid", "profile", "email", "groups"]
+          - client_id: "skywinone"
+            client_name: "Skywin One"
             client_secret:
-              secret_name: authelia-secrets
-              path: client-skywinone-secret
+              path: "/secrets/client-skywinone-secret"
             public: false
-            authorization_policy: one_factor
+            authorization_policy: "one_factor"
             redirect_uris:
-              - https://insidan.linkopingsfallskarmsklubb.se/skywinone/oidc/callback
-              - https://insidan.linkopingsfallskarmsklubb.se/skywinone/oidc/callback/
-            scopes:
-              - openid
-              - profile
-              - email
-              - groups
-          - client_id: insidan
-            client_name: Insidan
+              - "https://insidan.linkopingsfallskarmsklubb.se/skywinone/oidc/callback"
+              - "https://insidan.linkopingsfallskarmsklubb.se/skywinone/oidc/callback/"
+            scopes: ["openid", "profile", "email", "groups"]
+          - client_id: "insidan"
+            client_name: "Insidan"
             client_secret:
-              secret_name: authelia-secrets
-              path: client-insidan-secret
+              path: "/secrets/client-insidan-secret"
             public: false
-            authorization_policy: one_factor
+            authorization_policy: "one_factor"
             redirect_uris:
-              - https://insidan.linkopingsfallskarmsklubb.se/api/auth/callback
-              - https://insidan.linkopingsfallskarmsklubb.se/auth/callback
-            scopes:
-              - openid
-              - profile
-              - email
-              - groups
-          - client_id: insidandev
-            client_name: Insidan Dev
+              - "https://insidan.linkopingsfallskarmsklubb.se/api/auth/callback"
+              - "https://insidan.linkopingsfallskarmsklubb.se/auth/callback"
+            scopes: ["openid", "profile", "email", "groups"]
+          - client_id: "insidandev"
+            client_name: "Insidan Dev"
             client_secret:
-              secret_name: authelia-secrets
-              path: client-insidandev-secret
+              path: "/secrets/client-insidandev-secret"
             public: false
-            authorization_policy: one_factor
+            authorization_policy: "one_factor"
             redirect_uris:
-              - http://localhost/api/auth/callback
-            scopes:
-              - openid
-              - profile
-              - email
-              - groups
+              - "http://localhost/api/auth/callback"
+            scopes: ["openid", "profile", "email", "groups"]
 
     access_control:
-      default_policy: deny
+      default_policy: "deny"
       rules:
         - domain: "insidan.linkopingsfallskarmsklubb.se"
           resources: ["^/skywinone($|/.*)"]
           subject: ["group:skywin_users"]
-          policy: one_factor
+          policy: "one_factor"
         - domain: "insidan.linkopingsfallskarmsklubb.se"
           resources: ["^/argocd($|/.*)"]
           subject: ["group:admins"]
-          policy: one_factor
+          policy: "one_factor"
         - domain: "insidan.linkopingsfallskarmsklubb.se"
           subject: ["group:users"]
-          policy: one_factor
+          policy: "one_factor"
         - domain: "auth.linkopingsfallskarmsklubb.se"
-          policy: one_factor
+          policy: "one_factor"
         - domain: "localhost"
           subject: ["group:admins"]
-          policy: one_factor
+          policy: "one_factor"
         - domain: "*.linkopingsfallskarmsklubb.se"
           subject: ["group:users"]
-          policy: one_factor
+          policy: "one_factor"
+
+  storage:
+    encryption_key:
+      secret_name: "authelia-secrets"
+      path: "storage-encryption-key"
+    postgres:
+      enabled: true
+      address: "tcp://pg.core.svc.cluster.local:5432"
+      database: "authelia"
+      username: "authelia"
+      password:
+        secret_name: "authelia-secrets"
+        path: "postgres-password"
 
   ingress:
     enabled: true
-    name: authelia
+    className: "traefik"
     annotations:
       traefik.ingress.kubernetes.io/router.entrypoints: websecure
       traefik.ingress.kubernetes.io/router.tls.certresolver: default
-    hosts:
-      - host: auth.linkopingsfallskarmsklubb.se
-        paths:
-          - path: /
-            pathType: Prefix
