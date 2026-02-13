@@ -99,6 +99,7 @@ authelia:
               - "https://insidan.linkopingsfallskarmsklubb.se/api/auth/callback"
               - "https://insidan.linkopingsfallskarmsklubb.se/auth/callback"
             scopes: ["openid", "profile", "email", "groups", "offline_access"]
+            refresh_token: true
 
     notifier:
       filesystem:
