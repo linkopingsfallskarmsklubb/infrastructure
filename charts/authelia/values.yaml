@@ -9,6 +9,8 @@ authelia:
 
   configMap:
     authentication_backend:
+      password_reset:
+        disable: true
       ldap:
         enabled: true
         address: "ldap://lldap:3890"
@@ -66,12 +68,12 @@ authelia:
           path: "oidc-hmac-secret"
         jwks:
           - key:
-              path: "/secrets/oidc-issuer-private-key"
+              path: "/secrets/authelia-secrets/oidc-issuer-private-key"
         clients:
           - client_id: "argocd"
             client_name: "ArgoCD"
             client_secret:
-              path: "/secrets/client-argocd-secret"
+              path: "/secrets/authelia-secrets/client-argocd-secret"
             public: false
             authorization_policy: "one_factor"
             redirect_uris:
@@ -80,7 +82,7 @@ authelia:
           - client_id: "skywinone"
             client_name: "Skywin One"
             client_secret:
-              path: "/secrets/client-skywinone-secret"
+              path: "/secrets/authelia-secrets/client-skywinone-secret"
             public: false
             authorization_policy: "one_factor"
             redirect_uris:
@@ -90,7 +92,7 @@ authelia:
           - client_id: "insidan"
             client_name: "Insidan"
             client_secret:
-              path: "/secrets/client-insidan-secret"
+              path: "/secrets/authelia-secrets/client-insidan-secret"
             public: false
             authorization_policy: "one_factor"
             redirect_uris:
@@ -100,7 +102,7 @@ authelia:
           - client_id: "insidandev"
             client_name: "Insidan Dev"
             client_secret:
-              path: "/secrets/client-insidandev-secret"
+              path: "/secrets/authelia-secrets/client-insidandev-secret"
             public: false
             authorization_policy: "one_factor"
             redirect_uris:
