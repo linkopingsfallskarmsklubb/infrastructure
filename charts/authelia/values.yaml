@@ -4,6 +4,8 @@ authelia:
 
   secret:
     existingSecret: "authelia-secrets"
+    additionalSecrets:
+      authelia-secrets: {}
 
   configMap:
     authentication_backend:
@@ -18,7 +20,6 @@ authelia:
         users_filter: "(&(|({username_attribute}={input})(mail={input}))(objectClass=person))"
         additional_groups_dn: "ou=groups"
         groups_filter: "(member={dn})"
-        group_search_mode: "filter"
         attributes:
           display_name: "displayName"
           username: "uid"
@@ -28,6 +29,19 @@ authelia:
         password:
           secret_name: "authelia-secrets"
           path: "ldap-password"
+
+    storage:
+      encryption_key:
+        secret_name: "authelia-secrets"
+        path: "storage-encryption-key"
+      postgres:
+        enabled: true
+        address: "tcp://pg.core.svc.cluster.local:5432"
+        database: "authelia"
+        username: "authelia"
+        password:
+          secret_name: "authelia-secrets"
+          path: "postgres-password"
 
     session:
       name: "authelia_session"
@@ -116,22 +130,44 @@ authelia:
           subject: ["group:users"]
           policy: "one_factor"
 
-  storage:
-    encryption_key:
-      secret_name: "authelia-secrets"
-      path: "storage-encryption-key"
-    postgres:
-      enabled: true
-      address: "tcp://pg.core.svc.cluster.local:5432"
-      database: "authelia"
-      username: "authelia"
-      password:
-        secret_name: "authelia-secrets"
-        path: "postgres-password"
-
   ingress:
     enabled: true
     className: "traefik"
     annotations:
       traefik.ingress.kubernetes.io/router.entrypoints: websecure
       traefik.ingress.kubernetes.io/router.tls.certresolver: default
+
+secretStore: secret-store
+
+# Secrets references in GCP SM
+secrets:
+  jwtSecret: authelia-jwt-secret
+  sessionSecret: authelia-session-secret
+  storageEncryptionKey: authelia-storage-encryption-key
+  oidcIssuerPrivateKey: authelia-oidc-issuer-private-key
+  oidcHmacSecret: authelia-oidc-hmac-secret
+  postgresPassword: authelia-postgres-password
+  lldapAdminPassword: lldap-user-pass
+
+# OIDC Clients
+clients:
+  - id: argocd
+    name: ArgoCD
+    secretRef: authelia-client-argocd-secret
+    redirect_uris:
+      - https://insidan.linkopingsfallskarmsklubb.se/argocd/api/dex/callback
+  - id: skywinone
+    name: Skywin One
+    secretRef: authelia-client-skywinone-secret
+    redirect_uris:
+      - https://insidan.linkopingsfallskarmsklubb.se/skywinone/oidc/callback
+  - id: insidan
+    name: Insidan
+    secretRef: authelia-client-insidan-secret
+    redirect_uris:
+      - https://insidan.linkopingsfallskarmsklubb.se/api/auth/callback
+  - id: insidandev
+    name: Insidan Dev
+    secretRef: authelia-client-insidandev-secret
+    redirect_uris:
+      - http://localhost/api/auth/callback
