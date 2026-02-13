@@ -69,9 +69,6 @@ authelia:
         require_number: true
         require_special: true
 
-    webauthn:
-      display_name: "Linköpings Fallskärmsklubb"
-
     identity_providers:
       oidc:
         enabled: true
@@ -126,22 +123,22 @@ authelia:
         - domain: "insidan.linkopingsfallskarmsklubb.se"
           resources: ["^/skywinone($|/.*)"]
           subject: ["group:skywin_users"]
-          policy: "two_factor"
+          policy: "one_factor"
         - domain: "insidan.linkopingsfallskarmsklubb.se"
           resources: ["^/argocd($|/.*)"]
           subject: ["group:admins"]
-          policy: "two_factor"
+          policy: "one_factor"
         - domain: "insidan.linkopingsfallskarmsklubb.se"
           subject: ["group:users"]
-          policy: "two_factor"
+          policy: "one_factor"
         - domain: "auth.linkopingsfallskarmsklubb.se"
-          policy: "two_factor"
+          policy: "one_factor"
         - domain: "localhost"
           subject: ["group:admins"]
-          policy: "two_factor"
+          policy: "one_factor"
         - domain: "*.linkopingsfallskarmsklubb.se"
           subject: ["group:users"]
-          policy: "two_factor"
+          policy: "one_factor"
 
   ingress:
     enabled: true
