@@ -29,4 +29,5 @@ authelia:
     className: "traefik"
     annotations:
       traefik.ingress.kubernetes.io/router.entrypoints: web
-    tls: []
+    tls:
+      enabled: false
