@@ -24,6 +24,8 @@ spec:
               value: "0.0.0.0"
             - name: API_SERVER__PORT
               value: "8000"
+            - name: API_SERVER__COOKIE_DOMAIN
+              value: {{ .Values.server.cookieDomain | quote }}
             - name: API_OAUTH2__CLIENT_ID
               value: {{ .Values.oauth2.clientId }}
             - name: API_OAUTH2__CLIENT_SECRET
@@ -40,11 +42,13 @@ spec:
             - name: API_OAUTH2__DEFAULT_REDIRECT
               value: {{ .Values.oauth2.defaultRedirect }}
             - name: API_OAUTH2__SCOPES
-              value: "[openid,profile,email,groups]"
+              value: {{ .Values.oauth2.scopes | quote }}
             - name: API_AUTHELIA__URL
               value: {{ .Values.authelia.url }}
             - name: API_LLDAP__URL
               value: {{ .Values.lldap.url }}
+            - name: API_LLDAP__LDAP_URL
+              value: {{ .Values.lldap.ldapUrl }}
             - name: API_LLDAP__USERNAME
               value: {{ .Values.lldap.username }}
             - name: API_LLDAP__PASSWORD
