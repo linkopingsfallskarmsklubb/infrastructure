@@ -114,6 +114,7 @@ authelia:
             refresh_token: true
 
     notifier:
+      disable_startup_check: true
       smtp:
         enabled: true
         address: "submission://smtp-relay.gmail.com:587"
