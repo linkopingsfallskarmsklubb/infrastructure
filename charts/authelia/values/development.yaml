@@ -2,8 +2,8 @@ authelia:
   configMap:
     session:
       cookies:
-        - domain: "auth.localhost"
-          authelia_url: "http://auth.localhost"
+        - domain: "localhost"
+          authelia_url: "http://localhost:9091"
           insecure: true
     identity_providers:
       oidc:
@@ -21,14 +21,8 @@ authelia:
             scopes: ["openid", "profile", "email", "groups"]
     access_control:
       rules:
-        - domain: "auth.localhost"
+        - domain: "localhost"
           policy: "one_factor"
 
   ingress:
-    enabled: true
-    className: "traefik"
-    annotations:
-      traefik.ingress.kubernetes.io/router.entrypoints: web
-      traefik.ingress.kubernetes.io/router.tls.certresolver: ""
-    tls:
-      enabled: false
+    enabled: false
