@@ -116,8 +116,7 @@ authelia:
     notifier:
       smtp:
         enabled: true
-        host: "smtp-relay.gmail.com"
-        port: 587
+        address: "submission://smtp-relay.gmail.com:587"
         sender: "LFK Accounts <do-not-reply@linkopingsfallskarmsklubb.se>"
 
     access_control:
