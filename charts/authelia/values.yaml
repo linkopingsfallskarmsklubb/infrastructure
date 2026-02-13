@@ -84,6 +84,7 @@ authelia:
           - client_id: "argocd"
             client_name: "ArgoCD"
             consent_mode: "implicit"
+            pre_configured_consent_duration: "1y"
             client_secret:
               path: "/secrets/authelia-secrets/client-argocd-secret"
             public: false
@@ -96,6 +97,7 @@ authelia:
           - client_id: "skywinone"
             client_name: "Skywin One"
             consent_mode: "implicit"
+            pre_configured_consent_duration: "1y"
             client_secret:
               path: "/secrets/authelia-secrets/client-skywinone-secret"
             public: false
@@ -109,6 +111,7 @@ authelia:
           - client_id: "insidan"
             client_name: "Insidan"
             consent_mode: "implicit"
+            pre_configured_consent_duration: "1y"
             client_secret:
               path: "/secrets/authelia-secrets/client-insidan-secret"
             public: false

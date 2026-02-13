@@ -13,6 +13,7 @@ authelia:
           - client_id: "insidan"
             client_name: "Insidan"
             consent_mode: "implicit"
+            pre_configured_consent_duration: "1y"
             client_secret:
               path: "/secrets/authelia-secrets/client-insidan-secret"
             public: false
