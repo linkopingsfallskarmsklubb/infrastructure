@@ -158,11 +158,12 @@ authelia:
     annotations:
       traefik.ingress.kubernetes.io/router.entrypoints: websecure
       traefik.ingress.kubernetes.io/router.tls.certresolver: default
-    rules:
+    rulesOverride:
       - host: auth.linkopingsfallskarmsklubb.se
-        paths:
-          - path: /
-            pathType: Prefix
+        path: /
+    tls:
+      enabled: true
+      secret: authelia-tls
 
 secretStore: secret-store
 
