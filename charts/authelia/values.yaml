@@ -109,6 +109,11 @@ authelia:
               - "http://localhost/api/auth/callback"
             scopes: ["openid", "profile", "email", "groups"]
 
+    notifier:
+      filesystem:
+        enabled: true
+        filename: "/config/notification.txt"
+
     access_control:
       default_policy: "deny"
       rules:
