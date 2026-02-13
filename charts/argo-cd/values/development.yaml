@@ -13,7 +13,7 @@ argo-cd:
           id: lfk
           name: LFK Account
           config:
-            issuer: http://auth.local.localhost
+            issuer: http://authelia.authelia.svc.cluster.local:9091
             clientID: argocd
             clientSecret: $argo-cd-custom-secrets:dex.authelia.clientSecret
             redirectURI: http://localhost:8080/argocd/api/dex/callback
@@ -23,6 +23,7 @@ argo-cd:
               - email
               - groups
               - offline_access
+            insecureSkipVerify: true
     rbac:
       policy.default: role:readonly
       policy.csv: |
