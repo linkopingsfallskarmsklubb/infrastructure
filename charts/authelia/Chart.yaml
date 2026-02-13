@@ -1,6 +1,10 @@
 apiVersion: v2
 name: authelia
-description: Authelia - Open Source Identity and Access Management
+description: A Helm chart for Authelia
 type: application
 version: 0.1.0
-appVersion: "4.38"
+appVersion: "4.39.13"
+dependencies:
+  - name: authelia
+    version: 0.10.49
+    repository: https://charts.authelia.com

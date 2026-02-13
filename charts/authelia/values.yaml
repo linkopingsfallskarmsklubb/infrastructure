@@ -1,65 +1,164 @@
-domain: auth.linkopingsfallskarmsklubb.se
+authelia:
+  image:
+    tag: "4.39.13"
 
-replicas: 1
+  domain: auth.linkopingsfallskarmsklubb.se
 
-image:
-  repository: authelia/authelia
-  tag: "4.38"
-  pullPolicy: IfNotPresent
+  config:
+    server:
+      address: "tcp://0.0.0.0:9091"
+    
+    authentication_backend:
+      password_reset:
+        disable: true
+      ldap:
+        address: ldap://lldap:3890
+        implementation: custom
+        base_dn: dc=linkopingsfallskarmsklubb,dc=se
+        additional_users_dn: ou=people
+        users_filter: "(&(|({username_attribute}={input})(mail={input}))(objectClass=person))"
+        additional_groups_dn: ou=groups
+        groups_filter: "(member={dn})"
+        group_search_mode: filter
+        attributes:
+          display_name: displayName
+          username: uid
+          mail: mail
+          group_name: cn
+        user: uid=admin,ou=people,dc=linkopingsfallskarmsklubb,dc=se
+        password:
+          secret_name: authelia-secrets
+          path: ldap-password
 
-service:
-  type: ClusterIP
-  port: 9091
+    storage:
+      encryption_key:
+        secret_name: authelia-secrets
+        path: storage-encryption-key
+      postgres:
+        enabled: true
+        address: "tcp://pg.core.svc.cluster.local:5432"
+        database: authelia
+        username: authelia
+        password:
+          secret_name: authelia-secrets
+          path: postgres-password
 
-ingress:
-  enabled: true
-  className: traefik
-  annotations:
-    traefik.ingress.kubernetes.io/router.entrypoints: websecure
-    traefik.ingress.kubernetes.io/router.tls.certresolver: default
+    session:
+      name: authelia_session
+      cookies:
+        - domain: linkopingsfallskarmsklubb.se
+          authelia_url: https://auth.linkopingsfallskarmsklubb.se
+      secret:
+        secret_name: authelia-secrets
+        path: session-secret
 
-secretStore: secret-store
+    identity_validation:
+      reset_password:
+        jwt_secret:
+          secret_name: authelia-secrets
+          path: jwt-secret
 
-# Secrets references in GCP SM
-secrets:
-  jwtSecret: authelia-jwt-secret
-  sessionSecret: authelia-session-secret
-  storageEncryptionKey: authelia-storage-encryption-key
-  oidcIssuerPrivateKey: authelia-oidc-issuer-private-key
-  oidcHmacSecret: authelia-oidc-hmac-secret
-  postgresPassword: authelia-postgres-password
-  lldapAdminPassword: lldap-user-pass
+    identity_providers:
+      oidc:
+        enabled: true
+        hmac_secret:
+          secret_name: authelia-secrets
+          path: oidc-hmac-secret
+        jwks:
+          - key:
+              secret_name: authelia-secrets
+              path: oidc-issuer-private-key
+        clients:
+          - client_id: argocd
+            client_name: ArgoCD
+            client_secret:
+              secret_name: authelia-secrets
+              path: client-argocd-secret
+            public: false
+            authorization_policy: one_factor
+            redirect_uris:
+              - https://insidan.linkopingsfallskarmsklubb.se/argocd/api/dex/callback
+            scopes:
+              - openid
+              - profile
+              - email
+              - groups
+          - client_id: skywinone
+            client_name: Skywin One
+            client_secret:
+              secret_name: authelia-secrets
+              path: client-skywinone-secret
+            public: false
+            authorization_policy: one_factor
+            redirect_uris:
+              - https://insidan.linkopingsfallskarmsklubb.se/skywinone/oidc/callback
+              - https://insidan.linkopingsfallskarmsklubb.se/skywinone/oidc/callback/
+            scopes:
+              - openid
+              - profile
+              - email
+              - groups
+          - client_id: insidan
+            client_name: Insidan
+            client_secret:
+              secret_name: authelia-secrets
+              path: client-insidan-secret
+            public: false
+            authorization_policy: one_factor
+            redirect_uris:
+              - https://insidan.linkopingsfallskarmsklubb.se/api/auth/callback
+              - https://insidan.linkopingsfallskarmsklubb.se/auth/callback
+            scopes:
+              - openid
+              - profile
+              - email
+              - groups
+          - client_id: insidandev
+            client_name: Insidan Dev
+            client_secret:
+              secret_name: authelia-secrets
+              path: client-insidandev-secret
+            public: false
+            authorization_policy: one_factor
+            redirect_uris:
+              - http://localhost/api/auth/callback
+            scopes:
+              - openid
+              - profile
+              - email
+              - groups
 
-lldap:
-  address: ldap://lldap:3890
-  base_dn: dc=linkopingsfallskarmsklubb,dc=se
-  user: uid=admin,ou=people,dc=linkopingsfallskarmsklubb,dc=se
+    access_control:
+      default_policy: deny
+      rules:
+        - domain: "insidan.linkopingsfallskarmsklubb.se"
+          resources: ["^/skywinone($|/.*)"]
+          subject: ["group:skywin_users"]
+          policy: one_factor
+        - domain: "insidan.linkopingsfallskarmsklubb.se"
+          resources: ["^/argocd($|/.*)"]
+          subject: ["group:admins"]
+          policy: one_factor
+        - domain: "insidan.linkopingsfallskarmsklubb.se"
+          subject: ["group:users"]
+          policy: one_factor
+        - domain: "auth.linkopingsfallskarmsklubb.se"
+          policy: one_factor
+        - domain: "localhost"
+          subject: ["group:admins"]
+          policy: one_factor
+        - domain: "*.linkopingsfallskarmsklubb.se"
+          subject: ["group:users"]
+          policy: one_factor
 
-postgres:
-  host: pg.core.svc.cluster.local
-  port: 5432
-  database: authelia
-  user: authelia
-
-# OIDC Clients
-clients:
-  - id: argocd
-    name: ArgoCD
-    secretRef: authelia-client-argocd-secret
-    redirect_uris:
-      - https://insidan.linkopingsfallskarmsklubb.se/argocd/api/dex/callback
-  - id: skywinone
-    name: Skywin One
-    secretRef: authelia-client-skywinone-secret
-    redirect_uris:
-      - https://insidan.linkopingsfallskarmsklubb.se/skywinone/oidc/callback
-  - id: insidan
-    name: Insidan
-    secretRef: authelia-client-insidan-secret
-    redirect_uris:
-      - https://insidan.linkopingsfallskarmsklubb.se/api/auth/callback
-  - id: insidandev
-    name: Insidan Dev
-    secretRef: authelia-client-insidandev-secret
-    redirect_uris:
-      - http://localhost/api/auth/callback
+  ingress:
+    enabled: true
+    name: authelia
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      traefik.ingress.kubernetes.io/router.tls.certresolver: default
+    hosts:
+      - host: auth.linkopingsfallskarmsklubb.se
+        paths:
+          - path: /
+            pathType: Prefix
