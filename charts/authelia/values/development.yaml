@@ -25,9 +25,6 @@ authelia:
           policy: "one_factor"
 
   ingress:
+    enabled: true
+    className: "traefik"
     annotations: {}
-    hosts:
-      - host: auth.localhost
-        paths:
-          - path: /
-            pathType: Prefix
