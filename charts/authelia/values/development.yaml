@@ -18,7 +18,7 @@ authelia:
               - "http://localhost:3000/api/auth/callback"
               - "http://localhost:8000/api/auth/callback"
               - "https://insidan.linkopingsfallskarmsklubb.se/api/auth/callback"
-            scopes: ["openid", "profile", "email", "groups"]
+            scopes: ["openid", "profile", "email", "groups", "offline_access"]
     access_control:
       rules:
         - domain: "127.0.0.1"

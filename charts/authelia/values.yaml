@@ -98,7 +98,7 @@ authelia:
             redirect_uris:
               - "https://insidan.linkopingsfallskarmsklubb.se/api/auth/callback"
               - "https://insidan.linkopingsfallskarmsklubb.se/auth/callback"
-            scopes: ["openid", "profile", "email", "groups"]
+            scopes: ["openid", "profile", "email", "groups", "offline_access"]
 
     notifier:
       filesystem:
