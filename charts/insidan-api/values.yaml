@@ -18,7 +18,7 @@ oauth2:
   authUrl: https://auth.linkopingsfallskarmsklubb.se/api/oidc/authorization
   tokenUrl: https://auth.linkopingsfallskarmsklubb.se/api/oidc/token
   redirectUrl: https://insidan.linkopingsfallskarmsklubb.se/api/auth/callback
-  defaultRedirect: /
+  defaultRedirect: https://insidan.linkopingsfallskarmsklubb.se/
   scopes: "[openid,profile,email,groups,offline_access]"
 
 authelia:
