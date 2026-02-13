@@ -28,7 +28,7 @@ spec:
               
               echo "Running bootstrap script from /app/bootstrap.sh..."
               if [ -f "/app/bootstrap.sh" ]; then
-                sh "/app/bootstrap.sh"
+                bash "/app/bootstrap.sh"
               else
                 echo "ERROR: /app/bootstrap.sh not found!"
                 exit 1
