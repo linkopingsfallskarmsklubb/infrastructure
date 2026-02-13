@@ -12,9 +12,6 @@ spec:
     repoURL: https://github.com/linkopingsfallskarmsklubb/infrastructure
     path: charts/argo-cd
     targetRevision: HEAD
-    helm:
-      valueFiles:
-        - values/development.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
