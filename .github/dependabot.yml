@@ -31,6 +31,10 @@ updates:
     schedule:
       interval: "weekly"
   - package-ecosystem: "helm"
+    directory: "/charts/authelia"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "helm"
     directory: "/charts/db-tools"
     schedule:
       interval: "daily"
@@ -49,7 +53,7 @@ updates:
     registries:
       - google-artifact-registry
   - package-ecosystem: "helm"
-    directory: "/charts/kanidm"
+    directory: "/charts/lldap"
     schedule:
       interval: "weekly"
   - package-ecosystem: "helm"
