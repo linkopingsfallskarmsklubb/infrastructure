@@ -1,0 +1,14 @@
+{{- if .Values.bootstrap.enabled -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-bootstrap-config
+data:
+  groups.json: |
+    {
+      {{- range $index, $group := .Values.bootstrap.groups }}
+      {{ if $index }},{{ end }}
+      {{ $group | quote }}: {}
+      {{- end }}
+    }
+{{- end -}}
