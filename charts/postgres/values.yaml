@@ -3,5 +3,6 @@ secretStore: secret-store
 user: shared
 userPasswordRef: shared-postgres-password
 autheliaPasswordRef: authelia-postgres-password
+lldapPasswordRef: lldap-postgres-password
 size: 10Gi
 storageClass: local-path-persistent
