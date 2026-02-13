@@ -1,10 +1,10 @@
 oauth2:
   clientId: insidan
   clientSecretRef: authelia-client-insidan-secret
-  authUrl: https://auth.linkopingsfallskarmsklubb.se/api/oidc/authorization
-  tokenUrl: https://auth.linkopingsfallskarmsklubb.se/api/oidc/token
-  redirectUrl: http://localhost/api/auth/callback
-  defaultRedirect: http://localhost
+  authUrl: http://auth.local.localhost/api/oidc/authorization
+  tokenUrl: http://auth.local.localhost/api/oidc/token
+  redirectUrl: http://localhost:3000/api/auth/callback
+  defaultRedirect: http://localhost:3000/
 
 skywin:
   url: http://skywinone:8080/skywinone
