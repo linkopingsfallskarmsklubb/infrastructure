@@ -1,6 +1,6 @@
 oauth2:
-  clientId: insidandev
-  clientSecretRef: authelia-client-insidandev-secret
+  clientId: insidan
+  clientSecretRef: authelia-client-insidan-secret
   authUrl: https://auth.linkopingsfallskarmsklubb.se/api/oidc/authorization
   tokenUrl: https://auth.linkopingsfallskarmsklubb.se/api/oidc/token
   redirectUrl: http://localhost/api/auth/callback

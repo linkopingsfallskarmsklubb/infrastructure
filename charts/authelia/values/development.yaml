@@ -1,0 +1,25 @@
+authelia:
+  configMap:
+    session:
+      cookies:
+        - domain: "localhost"
+          authelia_url: "http://auth.localhost"
+          insecure: true
+    identity_providers:
+      oidc:
+        clients:
+          - client_id: "insidan"
+            client_name: "Insidan"
+            client_secret:
+              path: "/secrets/authelia-secrets/client-insidan-secret"
+            public: false
+            authorization_policy: "one_factor"
+            redirect_uris:
+              - "http://localhost:3000/api/auth/callback"
+              - "http://localhost:8000/api/auth/callback"
+              - "https://insidan.linkopingsfallskarmsklubb.se/api/auth/callback"
+            scopes: ["openid", "profile", "email", "groups"]
+    access_control:
+      rules:
+        - domain: "localhost"
+          policy: "one_factor"

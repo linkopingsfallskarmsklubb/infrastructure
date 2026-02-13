@@ -17,7 +17,11 @@ oauth2:
 
 authelia:
   url: https://auth.linkopingsfallskarmsklubb.se
-  tokenRef: insidan-authelia-token
+
+lldap:
+  url: http://lldap.authelia.svc.cluster.local:17170
+  username: admin
+  passwordRef: lldap-user-pass
 
 skywin:
   url: http://192.168.30.114/skywinone

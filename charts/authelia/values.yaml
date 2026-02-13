@@ -99,15 +99,6 @@ authelia:
               - "https://insidan.linkopingsfallskarmsklubb.se/api/auth/callback"
               - "https://insidan.linkopingsfallskarmsklubb.se/auth/callback"
             scopes: ["openid", "profile", "email", "groups"]
-          - client_id: "insidandev"
-            client_name: "Insidan Dev"
-            client_secret:
-              path: "/secrets/authelia-secrets/client-insidandev-secret"
-            public: false
-            authorization_policy: "one_factor"
-            redirect_uris:
-              - "http://localhost/api/auth/callback"
-            scopes: ["openid", "profile", "email", "groups"]
 
     notifier:
       filesystem:
@@ -173,8 +164,3 @@ clients:
     secretRef: authelia-client-insidan-secret
     redirect_uris:
       - https://insidan.linkopingsfallskarmsklubb.se/api/auth/callback
-  - id: insidandev
-    name: Insidan Dev
-    secretRef: authelia-client-insidandev-secret
-    redirect_uris:
-      - http://localhost/api/auth/callback
