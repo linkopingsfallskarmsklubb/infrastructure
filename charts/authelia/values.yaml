@@ -114,9 +114,11 @@ authelia:
             refresh_token: true
 
     notifier:
-      filesystem:
+      smtp:
         enabled: true
-        filename: "/config/notification.txt"
+        host: "smtp-relay.gmail.com"
+        port: 587
+        sender: "LFK Accounts <do-not-reply@linkopingsfallskarmsklubb.se>"
 
     access_control:
       default_policy: "deny"
