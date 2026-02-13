@@ -1,4 +1,3 @@
-host: insidan.linkopingsfallskarmsklubb.se
 argo-cd:
   dex:
     enabled: true
@@ -7,17 +6,17 @@ argo-cd:
       server.rootpath: "/argocd"
       server.insecure: true
     cm:
-      url: https://insidan.linkopingsfallskarmsklubb.se/argocd
+      url: http://localhost:8080/argocd
       dex.config: |
         connectors:
         - type: oidc
           id: lfk
           name: LFK Account
           config:
-            issuer: https://auth.linkopingsfallskarmsklubb.se
+            issuer: http://auth.local.localhost
             clientID: argocd
             clientSecret: $argo-cd-custom-secrets:dex.authelia.clientSecret
-            redirectURI: https://insidan.linkopingsfallskarmsklubb.se/argocd/api/dex/callback
+            redirectURI: http://localhost:8080/argocd/api/dex/callback
             scopes:
               - openid
               - profile
