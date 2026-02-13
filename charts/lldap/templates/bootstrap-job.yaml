@@ -13,10 +13,6 @@ spec:
         - name: bootstrap
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           command: ["/bin/sh", "-c"]
-          # The script might need jq, which might not be in the image. 
-          # However, bootstrap.sh in lldap repo uses it. 
-          # If it's not there, this might fail. 
-          # Let's try running it.
           args:
             - |
               export LLDAP_URL="http://{{ .Release.Name }}:17170"
@@ -24,14 +20,19 @@ spec:
               export LLDAP_ADMIN_PASSWORD="$LLDAP_LDAP_USER_PASS"
               export GROUPS_CONFIG_DIR="/bootstrap/groups"
               
-              # Find the script - it's usually in /app/scripts/bootstrap.sh or /bootstrap.sh
-              SCRIPT_PATH="/app/scripts/bootstrap.sh"
-              if [ ! -f "$SCRIPT_PATH" ]; then
-                SCRIPT_PATH="/bootstrap.sh"
-              fi
+              echo "Waiting for LLDAP to be ready at $LLDAP_URL..."
+              until wget -qO- "$LLDAP_URL/api/health" > /dev/null 2>&1; do
+                echo "LLDAP not ready, sleeping..."
+                sleep 2
+              done
               
-              echo "Running bootstrap script from $SCRIPT_PATH..."
-              sh "$SCRIPT_PATH"
+              echo "Running bootstrap script from /app/bootstrap.sh..."
+              if [ -f "/app/bootstrap.sh" ]; then
+                sh "/app/bootstrap.sh"
+              else
+                echo "ERROR: /app/bootstrap.sh not found!"
+                exit 1
+              fi
           env:
             - name: LLDAP_LDAP_USER_PASS
               valueFrom:

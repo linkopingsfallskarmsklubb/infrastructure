@@ -14,6 +14,7 @@ spec:
       labels:
         app: {{ .Release.Name }}
     spec:
+      enableServiceLinks: false
       containers:
         - name: lldap
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
