@@ -2,8 +2,8 @@ authelia:
   configMap:
     session:
       cookies:
-        - domain: "localhost"
-          authelia_url: "http://localhost:9091"
+        - domain: "127.0.0.1"
+          authelia_url: "http://127.0.0.1:9091"
           insecure: true
     identity_providers:
       oidc:
@@ -21,7 +21,7 @@ authelia:
             scopes: ["openid", "profile", "email", "groups"]
     access_control:
       rules:
-        - domain: "localhost"
+        - domain: "127.0.0.1"
           policy: "one_factor"
 
   ingress:
