@@ -7,6 +7,8 @@ authelia:
           insecure: true
     identity_providers:
       oidc:
+        lifespans:
+          refresh_token: "7 days"
         clients:
           - client_id: "insidan"
             client_name: "Insidan"
@@ -20,6 +22,7 @@ authelia:
               - "http://localhost:8000/api/auth/callback"
               - "https://insidan.linkopingsfallskarmsklubb.se/api/auth/callback"
             scopes: ["openid", "profile", "email", "groups", "offline_access"]
+            grant_types: ["authorization_code", "refresh_token"]
             refresh_token: true
     access_control:
       rules:
