@@ -17,6 +17,7 @@ postgres:
 secretStore: secret-store
 secrets:
   jwtSecret: lldap-jwt-secret
+  keySeed: lldap-key-seed
   ldapUserPass: lldap-user-pass
   postgresPassword: lldap-postgres-password
 

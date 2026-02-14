@@ -48,8 +48,13 @@ spec:
               value: "3890"
             - name: LLDAP_HTTP_URL
               value: "http://{{ .Release.Name }}:17170"
-            - name: LLDAP_KEY_FILE
-              value: "/data/private_key"
+            - name: LLDAP_KEY_SEED
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-secrets
+                  key: LLDAP_KEY_SEED
+            - name: LLDAP_FORCE_LDAP_USER_PASS_RESET
+              value: "true"
           volumeMounts:
             - name: data
               mountPath: /data
