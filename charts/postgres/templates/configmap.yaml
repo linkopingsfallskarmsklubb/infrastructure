@@ -13,12 +13,11 @@ data:
       DO $$
       BEGIN
         IF NOT EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = 'authelia') THEN
-          CREATE USER authelia WITH PASSWORD :'authelia_pass';
-        ELSE
-          ALTER USER authelia WITH PASSWORD :'authelia_pass';
+          CREATE ROLE authelia LOGIN;
         END IF;
       END
       $$;
+      ALTER ROLE authelia WITH PASSWORD :'authelia_pass';
       
       SELECT 'CREATE DATABASE authelia' WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = 'authelia')\gexec
       GRANT ALL PRIVILEGES ON DATABASE authelia TO authelia;
@@ -28,12 +27,11 @@ data:
       DO $$
       BEGIN
         IF NOT EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = 'lldap') THEN
-          CREATE USER lldap WITH PASSWORD :'lldap_pass';
-        ELSE
-          ALTER USER lldap WITH PASSWORD :'lldap_pass';
+          CREATE ROLE lldap LOGIN;
         END IF;
       END
       $$;
+      ALTER ROLE lldap WITH PASSWORD :'lldap_pass';
 
       SELECT 'CREATE DATABASE lldap' WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = 'lldap')\gexec
       GRANT ALL PRIVILEGES ON DATABASE lldap TO lldap;
