@@ -25,8 +25,8 @@ authelia:
   url: https://auth.linkopingsfallskarmsklubb.se
 
 lldap:
-  url: http://lldap.authelia.svc.cluster.local:17170
-  ldapUrl: ldap://lldap.authelia.svc.cluster.local:3890
+  url: http://lldap.auth.svc.cluster.local:17170
+  ldapUrl: ldap://lldap.auth.svc.cluster.local:3890
   username: admin
   passwordRef: lldap-user-pass
 
