@@ -17,7 +17,7 @@ spec:
             command: ["/bin/bash", "pg_backup.sh"]
             env:
               - name: PG_HOST
-                value: "postgres"
+                value: "pg"
               - name: PG_USER
                 value: "shared"
               - name: PG_PASSWORD
