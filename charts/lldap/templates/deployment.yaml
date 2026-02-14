@@ -53,10 +53,6 @@ spec:
                 secretKeyRef:
                   name: {{ .Release.Name }}-secrets
                   key: LLDAP_KEY_SEED
-            - name: LLDAP_FORCE_UPDATE_PRIVATE_KEY
-              value: "true"
-            - name: LLDAP_FORCE_LDAP_USER_PASS_RESET
-              value: "true"
           volumeMounts:
             - name: data
               mountPath: /data
