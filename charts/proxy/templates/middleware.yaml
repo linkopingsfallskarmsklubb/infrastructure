@@ -9,6 +9,7 @@ spec:
       CallbackUri: /skywinone/oidc/callback
       Provider:
         Url: {{ .Values.providerUrl }}
+        Issuer: {{ .Values.providerUrl }}
         ClientId: {{ .Values.clientId }}
         ClientSecret: "urn:k8s:secret:{{ .Release.Name }}-secret:providerClientSecret"
         UsePkce: true
