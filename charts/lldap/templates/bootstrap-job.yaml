@@ -18,7 +18,6 @@ spec:
               export LLDAP_URL="http://{{ .Release.Name }}:17170"
               export LLDAP_ADMIN_USERNAME="admin"
               export LLDAP_ADMIN_PASSWORD="$LLDAP_LDAP_USER_PASS"
-              export GROUPS_CONFIG_DIR="/bootstrap/groups"
               
               echo "Waiting for LLDAP to be ready at $LLDAP_URL..."
               until wget -qO- "$LLDAP_URL/api/health" > /dev/null 2>&1; do
@@ -26,13 +25,8 @@ spec:
                 sleep 2
               done
               
-              echo "Running bootstrap script from /app/bootstrap.sh..."
-              if [ -f "/app/bootstrap.sh" ]; then
-                bash "/app/bootstrap.sh"
-              else
-                echo "ERROR: /app/bootstrap.sh not found!"
-                exit 1
-              fi
+              echo "Running bootstrap script from /bootstrap/bootstrap.sh..."
+              bash "/bootstrap/bootstrap.sh"
           env:
             - name: LLDAP_LDAP_USER_PASS
               valueFrom:
@@ -41,7 +35,7 @@ spec:
                   key: LLDAP_LDAP_USER_PASS
           volumeMounts:
             - name: bootstrap-config
-              mountPath: /bootstrap/groups
+              mountPath: /bootstrap
               readOnly: true
       restartPolicy: OnFailure
       volumes:
