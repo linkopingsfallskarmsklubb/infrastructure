@@ -2,7 +2,7 @@ replicaCount: 1
 image:
   containerRegistry: europe-west1-docker.pkg.dev
   repository: bitnami-ch3rudc/docker/insidanapi
-  tag: "0.0.25"
+  tag: "0.0.26"
   pullPolicy: Always
 
 secretStore: secret-store
@@ -19,7 +19,7 @@ oauth2:
   tokenUrl: https://auth.linkopingsfallskarmsklubb.se/api/oidc/token
   redirectUrl: https://insidan.linkopingsfallskarmsklubb.se/api/auth/callback
   defaultRedirect: https://insidan.linkopingsfallskarmsklubb.se/
-  scopes: "[openid,profile,email,groups,offline_access]"
+  scopes: "[openid,profile,email,groups]"
 
 authelia:
   url: https://auth.linkopingsfallskarmsklubb.se

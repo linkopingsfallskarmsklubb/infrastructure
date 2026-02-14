@@ -8,7 +8,7 @@ authelia:
       authelia-secrets: {}
 
   configMap:
-    theme: grey
+    theme: auto
     authentication_backend:
       password_reset:
         disable: true
@@ -48,6 +48,7 @@ authelia:
 
     session:
       name: "authelia_session"
+      remember_me: "7 days"
       cookies:
         - domain: "linkopingsfallskarmsklubb.se"
           authelia_url: "https://auth.linkopingsfallskarmsklubb.se"
@@ -73,8 +74,6 @@ authelia:
     identity_providers:
       oidc:
         enabled: true
-        lifespans:
-          refresh_token: "7 days"
         hmac_secret:
           secret_name: "authelia-secrets"
           path: "oidc-hmac-secret"
@@ -92,9 +91,8 @@ authelia:
             authorization_policy: "one_factor"
             redirect_uris:
               - "https://insidan.linkopingsfallskarmsklubb.se/argocd/api/dex/callback"
-            scopes: ["openid", "profile", "email", "groups", "offline_access"]
-            grant_types: ["authorization_code", "refresh_token"]
-            refresh_token: true
+            scopes: ["openid", "profile", "email", "groups"]
+            grant_types: ["authorization_code"]
           - client_id: "skywinone"
             client_name: "Skywin One"
             consent_mode: "implicit"
@@ -106,9 +104,8 @@ authelia:
             redirect_uris:
               - "https://insidan.linkopingsfallskarmsklubb.se/skywinone/oidc/callback"
               - "https://insidan.linkopingsfallskarmsklubb.se/skywinone/oidc/callback/"
-            scopes: ["openid", "profile", "email", "groups", "offline_access"]
-            grant_types: ["authorization_code", "refresh_token"]
-            refresh_token: true
+            scopes: ["openid", "profile", "email", "groups"]
+            grant_types: ["authorization_code"]
           - client_id: "insidan"
             client_name: "Insidan"
             consent_mode: "implicit"
@@ -120,9 +117,8 @@ authelia:
             redirect_uris:
               - "https://insidan.linkopingsfallskarmsklubb.se/api/auth/callback"
               - "https://insidan.linkopingsfallskarmsklubb.se/auth/callback"
-            scopes: ["openid", "profile", "email", "groups", "offline_access"]
-            grant_types: ["authorization_code", "refresh_token"]
-            refresh_token: true
+            scopes: ["openid", "profile", "email", "groups"]
+            grant_types: ["authorization_code"]
 
     notifier:
       filesystem:

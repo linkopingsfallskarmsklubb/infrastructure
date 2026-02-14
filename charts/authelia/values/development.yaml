@@ -1,15 +1,14 @@
 authelia:
   configMap:
-    theme: grey
+    theme: auto
     session:
+      remember_me: "7 days"
       cookies:
         - domain: "127.0.0.1"
           authelia_url: "http://127.0.0.1:9091"
           insecure: true
     identity_providers:
       oidc:
-        lifespans:
-          refresh_token: "7 days"
         clients:
           - client_id: "insidan"
             client_name: "Insidan"
@@ -23,9 +22,8 @@ authelia:
               - "http://localhost:3000/api/auth/callback"
               - "http://localhost:8000/api/auth/callback"
               - "https://insidan.linkopingsfallskarmsklubb.se/api/auth/callback"
-            scopes: ["openid", "profile", "email", "groups", "offline_access"]
-            grant_types: ["authorization_code", "refresh_token"]
-            refresh_token: true
+            scopes: ["openid", "profile", "email", "groups"]
+            grant_types: ["authorization_code"]
     access_control:
       rules:
         - domain: "127.0.0.1"
