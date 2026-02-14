@@ -9,6 +9,7 @@ spec:
     spec:
       template:
         spec:
+          enableServiceLinks: false
           containers:
           - name: dbtools
             image: "{{ .Values.image.containerRegistry }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
