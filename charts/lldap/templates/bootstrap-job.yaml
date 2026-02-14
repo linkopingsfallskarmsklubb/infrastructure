@@ -1,0 +1,45 @@
+{{- if .Values.bootstrap.enabled -}}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Release.Name }}-bootstrap
+  annotations:
+    helm.sh/hook: post-install,post-upgrade
+    helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+spec:
+  template:
+    spec:
+      containers:
+        - name: bootstrap
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              export LLDAP_URL="http://{{ .Release.Name }}:17170"
+              export LLDAP_ADMIN_USERNAME="admin"
+              export LLDAP_ADMIN_PASSWORD="$LLDAP_LDAP_USER_PASS"
+              
+              echo "Waiting for LLDAP to be ready at $LLDAP_URL..."
+              until wget -qO- "$LLDAP_URL/api/health" > /dev/null 2>&1; do
+                echo "LLDAP not ready, sleeping..."
+                sleep 2
+              done
+              
+              echo "Running bootstrap script from /bootstrap/bootstrap.sh..."
+              bash "/bootstrap/bootstrap.sh"
+          env:
+            - name: LLDAP_LDAP_USER_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-secrets
+                  key: LLDAP_LDAP_USER_PASS
+          volumeMounts:
+            - name: bootstrap-config
+              mountPath: /bootstrap
+              readOnly: true
+      restartPolicy: OnFailure
+      volumes:
+        - name: bootstrap-config
+          configMap:
+            name: {{ .Release.Name }}-bootstrap-config
+{{- end -}}

@@ -17,7 +17,9 @@ spec:
         - values/development.yaml
   destination:
     server: https://kubernetes.default.svc
-    namespace: core
+    namespace: apps
   syncPolicy:
     automated:
       selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

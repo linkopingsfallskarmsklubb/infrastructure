@@ -2,10 +2,15 @@ replicaCount: 1
 image:
   containerRegistry: europe-west1-docker.pkg.dev
   repository: bitnami-ch3rudc/docker/insidanapi
-  tag: "0.0.24"
+  tag: "0.0.26"
   pullPolicy: Always
 
 secretStore: secret-store
+
+server:
+  host: "0.0.0.0"
+  port: 8000
+  cookieDomain: "linkopingsfallskarmsklubb.se"
 
 oauth2:
   clientId: insidan
@@ -13,13 +18,15 @@ oauth2:
   authUrl: https://auth.linkopingsfallskarmsklubb.se/api/oidc/authorization
   tokenUrl: https://auth.linkopingsfallskarmsklubb.se/api/oidc/token
   redirectUrl: https://insidan.linkopingsfallskarmsklubb.se/api/auth/callback
-  defaultRedirect: /
+  defaultRedirect: https://insidan.linkopingsfallskarmsklubb.se/
+  scopes: "[openid,profile,email,groups]"
 
 authelia:
   url: https://auth.linkopingsfallskarmsklubb.se
 
 lldap:
-  url: http://lldap.authelia.svc.cluster.local:17170
+  url: http://lldap.auth.svc.cluster.local:17170
+  ldapUrl: ldap://lldap.auth.svc.cluster.local:3890
   username: admin
   passwordRef: lldap-user-pass
 
@@ -38,4 +45,3 @@ commonDb:
 smtp:
   server: smtp-relay.gmail.com
   sender: Linköpings Fallskärmsklubb <do-not-reply@linkopingsfallskarmsklubb.se>
-

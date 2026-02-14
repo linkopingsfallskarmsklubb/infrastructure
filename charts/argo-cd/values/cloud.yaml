@@ -6,6 +6,7 @@ argo-cd:
     params:
       server.rootpath: "/argocd"
       server.insecure: true
+      dex.server.insecure: true
     cm:
       url: https://insidan.linkopingsfallskarmsklubb.se/argocd
       dex.config: |

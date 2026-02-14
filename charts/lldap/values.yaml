@@ -1,6 +1,6 @@
 image:
   repository: lldap/lldap
-  tag: v0.5.0
+  tag: v0.6.2
   pullPolicy: IfNotPresent
 
 service:
@@ -26,3 +26,10 @@ persistence:
   storageClass: local-path-persistent
 
 ldap_base_dn: "dc=linkopingsfallskarmsklubb,dc=se"
+
+bootstrap:
+  enabled: true
+  groups:
+    - users
+    - skywin_users
+    - admins

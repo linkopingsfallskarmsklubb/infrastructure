@@ -1,0 +1,51 @@
+{{- if .Values.bootstrap.enabled -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-bootstrap-config
+data:
+  groups.json: |
+    {
+      {{- range $index, $group := .Values.bootstrap.groups }}
+      {{ if $index }},{{ end }}
+      {{ $group | quote }}: {}
+      {{- end }}
+    }
+  bootstrap.sh: |
+    #!/bin/bash
+    set -e
+
+    # Login
+    echo "Logging in to LLDAP at $LLDAP_URL..."
+    TOKEN=$(curl -s -X POST "$LLDAP_URL/auth/simple/login" \
+      -H "Content-Type: application/json" \
+      -d "{\"username\": \"$LLDAP_ADMIN_USERNAME\", \"password\": \"$LLDAP_ADMIN_PASSWORD\"}" | jq -r .token)
+
+    if [ "$TOKEN" == "null" ] || [ -z "$TOKEN" ]; then
+      echo "Failed to login to LLDAP"
+      exit 1
+    fi
+
+    # Function to run GraphQL query
+    query() {
+      curl -s -X POST "$LLDAP_URL/api/graphql" \
+        -H "Authorization: Bearer $TOKEN" \
+        -H "Content-Type: application/json" \
+        -d "{\"query\": \"$1\", \"variables\": $2}"
+    }
+
+    # Get existing groups
+    echo "Getting existing groups..."
+    EXISTING_GROUPS=$(query "query { groups { displayName } }" "{}")
+    GROUP_NAMES=$(echo "$EXISTING_GROUPS" | jq -r '.data.groups[].displayName')
+
+    # Create missing groups
+    for group in $(jq -r 'keys[]' "/bootstrap/groups.json"); do
+      if echo "$GROUP_NAMES" | grep -q "^$group$"; then
+        echo "Group $group already exists"
+      else
+        echo "Creating group $group..."
+        query "mutation(\$name: String!) { createGroup(name: \$name) { displayName } }" "{\"name\": \"$group\"}"
+      fi
+    done
+{{- end -}}

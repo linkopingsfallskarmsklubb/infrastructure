@@ -8,6 +8,7 @@ authelia:
       authelia-secrets: {}
 
   configMap:
+    theme: auto
     authentication_backend:
       password_reset:
         disable: true
@@ -47,6 +48,7 @@ authelia:
 
     session:
       name: "authelia_session"
+      remember_me: "7 days"
       cookies:
         - domain: "linkopingsfallskarmsklubb.se"
           authelia_url: "https://auth.linkopingsfallskarmsklubb.se"
@@ -60,6 +62,15 @@ authelia:
           secret_name: "authelia-secrets"
           path: "jwt-secret"
 
+    password_policy:
+      standard:
+        enabled: true
+        min_length: 12
+        require_uppercase: true
+        require_lowercase: true
+        require_number: true
+        require_special: true
+
     identity_providers:
       oidc:
         enabled: true
@@ -72,6 +83,8 @@ authelia:
         clients:
           - client_id: "argocd"
             client_name: "ArgoCD"
+            consent_mode: "implicit"
+            pre_configured_consent_duration: "1y"
             client_secret:
               path: "/secrets/authelia-secrets/client-argocd-secret"
             public: false
@@ -79,8 +92,11 @@ authelia:
             redirect_uris:
               - "https://insidan.linkopingsfallskarmsklubb.se/argocd/api/dex/callback"
             scopes: ["openid", "profile", "email", "groups"]
+            grant_types: ["authorization_code"]
           - client_id: "skywinone"
             client_name: "Skywin One"
+            consent_mode: "implicit"
+            pre_configured_consent_duration: "1y"
             client_secret:
               path: "/secrets/authelia-secrets/client-skywinone-secret"
             public: false
@@ -89,8 +105,12 @@ authelia:
               - "https://insidan.linkopingsfallskarmsklubb.se/skywinone/oidc/callback"
               - "https://insidan.linkopingsfallskarmsklubb.se/skywinone/oidc/callback/"
             scopes: ["openid", "profile", "email", "groups"]
+            grant_types: ["authorization_code"]
+            token_endpoint_auth_method: "client_secret_post"
           - client_id: "insidan"
             client_name: "Insidan"
+            consent_mode: "implicit"
+            pre_configured_consent_duration: "1y"
             client_secret:
               path: "/secrets/authelia-secrets/client-insidan-secret"
             public: false
@@ -99,6 +119,7 @@ authelia:
               - "https://insidan.linkopingsfallskarmsklubb.se/api/auth/callback"
               - "https://insidan.linkopingsfallskarmsklubb.se/auth/callback"
             scopes: ["openid", "profile", "email", "groups"]
+            grant_types: ["authorization_code"]
 
     notifier:
       filesystem:
@@ -134,6 +155,12 @@ authelia:
     annotations:
       traefik.ingress.kubernetes.io/router.entrypoints: websecure
       traefik.ingress.kubernetes.io/router.tls.certresolver: default
+    rulesOverride:
+      - host: auth.linkopingsfallskarmsklubb.se
+        path: /
+    tls:
+      enabled: true
+      secret: authelia-tls
 
 secretStore: secret-store
 
