@@ -1,21 +1,28 @@
-FROM docker.io/mysql:8.4
+FROM mysql:8.0 as mysql_source
+
+FROM python:3.12-slim-bookworm
 
 WORKDIR /usr/src/scripts
 
-RUN microdnf install -y python3.12 tar gzip && \
-    ln -sf /usr/bin/python3.12 /usr/bin/python3 && \
-    microdnf install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-9-x86_64/pgdg-redhat-repo-latest.noarch.rpm && \
-    microdnf install -y postgresql17 && \
-    microdnf clean all
+# Copy mysql binaries from official image
+COPY --from=mysql_source /usr/bin/mysql /usr/bin/mysql
+COPY --from=mysql_source /usr/bin/mysqldump /usr/bin/mysqldump
 
-ENV PATH="/usr/pgsql-17/bin:${PATH}"
+# Install dependencies for gcloud, postgres, and the mysql binaries
+RUN apt-get update && apt-get install -y \
+  postgresql-client \
+  curl \
+  gnupg \
+  procps \
+  libncurses6 \
+  && rm -rf /var/lib/apt/lists/*
 
-RUN curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-linux-x86.tar.gz && \
-  tar -xf google-cloud-cli-linux-x86.tar.gz && \
-  ./google-cloud-sdk/install.sh --quiet && \
-  ./google-cloud-sdk/bin/gcloud components install gke-gcloud-auth-plugin --quiet
-ENV PATH="/usr/src/scripts/google-cloud-sdk/bin:${PATH}"
+# Install google-cloud-cli
+RUN echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] http://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list && \
+  curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | gpg --dearmor -o /usr/share/keyrings/cloud.google.gpg && \
+  apt-get update -y && apt-get install google-cloud-cli -y && \
+  rm -rf /var/lib/apt/lists/*
 
 COPY scripts/ /usr/src/scripts/
 
-ENTRYPOINT ["/bin/sh"]
+CMD ["/bin/bash"]
