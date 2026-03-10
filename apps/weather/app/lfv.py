@@ -26,14 +26,14 @@ async def get_altitude_winds(url: str) -> List[WindDataPoint]:
         soup = BeautifulSoup(resp.text, "html.parser")
         text = soup.get_text("\n", strip=True)
 
-        # Find the Delområde 2 section
-        area_start = text.find("Delområde 2")
+        # Find the Delområde 32 section
+        area_start = text.find("Delområde 32")
         if area_start == -1:
-            logger.error("Delområde 2 not found in LFV data")
-            raise ValueError("Delområde 2 not found")
+            logger.error("Delområde 32 not found in LFV data")
+            raise ValueError("Delområde 32 not found")
         area_text = text[area_start:]
-        # End at next Delområde or Delområde 3/4 or end of string
-        for delim in ["Delområde 3", "Delområde 4", "Prel prognos"]:
+        # End at next Delområde or Prel prognos or end of string
+        for delim in ["Delområde 33", "Delområde 34", "Prel prognos"]:
             delim_pos = area_text.find(delim)
             if delim_pos != -1:
                 area_text = area_text[:delim_pos]

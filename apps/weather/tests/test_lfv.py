@@ -5,9 +5,9 @@ import pytest
 import app.lfv
 from app.lfv import get_altitude_winds
 
-# Example snippet from Delområde 2 for testing
+# Example snippet from Delområde 32 for testing
 EXAMPLE_HTML = """
-Delområde 2
+Delområde 32
 PROGNOS FÖR OMRÅDE se32 UTFÄRDAD 091234
 GÄLLANDE DEN 9 JANUARI 2026 MELLAN 13 OCH 21 UTC
 
