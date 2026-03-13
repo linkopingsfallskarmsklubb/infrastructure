@@ -1,6 +1,6 @@
 FROM mysql:8.0 as mysql_source
 
-FROM python:3.13-slim-bookworm
+FROM python:3.14-slim-bookworm
 
 WORKDIR /usr/src/scripts
 
