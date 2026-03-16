@@ -4,7 +4,7 @@ metadata:
   name: {{ .Release.Name }}
 spec:
   rules:
-    - host: 
+    - host: insidan.linkopingsfallskarmsklubb.se
       http:
         paths:
           - path: "/"
@@ -14,3 +14,6 @@ spec:
                 name: {{ .Release.Name }}
                 port:
                   number: 3000
+  tls:
+    - hosts:
+      - insidan.linkopingsfallskarmsklubb.se
