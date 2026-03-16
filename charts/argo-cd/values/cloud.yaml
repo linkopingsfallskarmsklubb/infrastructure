@@ -2,11 +2,15 @@ host: insidan.linkopingsfallskarmsklubb.se
 argo-cd:
   dex:
     enabled: true
+  server:
+    env:
+      - name: ARGOCD_SERVER_DEX_SERVER_INSECURE
+        value: "true"
   configs:
     params:
       server.rootpath: "/argocd"
-      server.insecure: true
-      dex.server.insecure: true
+      server.insecure: "true"
+      dex.server.insecure: "true"
     cm:
       url: https://insidan.linkopingsfallskarmsklubb.se/argocd
       dex.config: |
