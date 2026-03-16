@@ -28,6 +28,9 @@ argo-cd:
               - profile
               - email
               - groups
+            getUserInfo: true
+            claimMapping:
+              name: preferred_username
     rbac:
       policy.default: role:readonly
       policy.csv: |
