@@ -141,21 +141,33 @@ authelia:
     access_control:
       default_policy: "deny"
       rules:
-        # Restrict OIDC authorization by client_id and group
+        # 1. Rules for the Authelia portal itself
         - domain: "auth.linkopingsfallskarmsklubb.se"
-          resources: ["^/api/oidc/authorization.*client_id=skywinone.*"]
-          subject: ["group:skywin_users"]
-          policy: "one_factor"
-        - domain: "auth.linkopingsfallskarmsklubb.se"
-          resources: ["^/api/oidc/authorization.*client_id=argocd.*"]
-          subject: ["group:admins"]
-          policy: "one_factor"
-        - domain: "auth.linkopingsfallskarmsklubb.se"
-          resources: ["^/api/oidc/authorization.*client_id=insidan.*"]
           subject: ["group:users"]
           policy: "one_factor"
 
-        # Application specific rules (for ForwardAuth if ever used, and for OIDC redirect domain matching)
+        # 2. Rules for OIDC authorization endpoints
+        # These rules match the initial OIDC 'authorize' call
+        - domain: "auth.linkopingsfallskarmsklubb.se"
+          resources: ["^/api/oidc/authorization.*"]
+          query:
+            client_id: "skywinone"
+          subject: ["group:skywin_users"]
+          policy: "one_factor"
+        - domain: "auth.linkopingsfallskarmsklubb.se"
+          resources: ["^/api/oidc/authorization.*"]
+          query:
+            client_id: "argocd"
+          subject: ["group:admins"]
+          policy: "one_factor"
+        - domain: "auth.linkopingsfallskarmsklubb.se"
+          resources: ["^/api/oidc/authorization.*"]
+          query:
+            client_id: "insidan"
+          subject: ["group:users"]
+          policy: "one_factor"
+
+        # 3. Application specific rules (used if ForwardAuth is active)
         - domain: "insidan.linkopingsfallskarmsklubb.se"
           resources: ["^/skywinone($|/.*)"]
           subject: ["group:skywin_users"]
@@ -168,20 +180,18 @@ authelia:
           subject: ["group:users"]
           policy: "one_factor"
 
-        # Authelia portal access
-        - domain: "auth.linkopingsfallskarmsklubb.se"
-          subject: ["group:users"]
-          policy: "one_factor"
-
-        # Catch-all for subdomains
+        # 4. Global fallback for subdomains
         - domain: "*.linkopingsfallskarmsklubb.se"
           subject: ["group:users"]
           policy: "one_factor"
 
-        # Localhost development
+        # 5. Localhost development
         - domain: "localhost"
           subject: ["group:admins"]
           policy: "one_factor"
+
+  traefikCRD:
+    enabled: true
 
   ingress:
     enabled: true
