@@ -3,6 +3,9 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: {{ .Release.Name }}-bootstrap-config
+  annotations:
+    # Triggering re-bootstrap
+    argocd.argoproj.io/sync-options: Force=true
 data:
   groups.json: |
     {
