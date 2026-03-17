@@ -2,14 +2,15 @@ authelia:
   image:
     tag: "4.39.13"
 
-  extraVolumes:
-    - name: custom-assets
-      configMap:
-        name: authelia-custom-assets
+  pod:
+    extraVolumes:
+      - name: custom-assets
+        configMap:
+          name: authelia-custom-assets
 
-  extraVolumeMounts:
-    - name: custom-assets
-      mountPath: /config/assets/
+    extraVolumeMounts:
+      - name: custom-assets
+        mountPath: /config/assets/
 
   secret:
     existingSecret: "authelia-secrets"
