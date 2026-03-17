@@ -8,7 +8,7 @@ authelia:
       authelia-secrets: {}
 
   configMap:
-    theme: auto
+    theme: oled
     authentication_backend:
       password_reset:
         disable: true
