@@ -141,6 +141,21 @@ authelia:
     access_control:
       default_policy: "deny"
       rules:
+        # Restrict OIDC authorization by client_id and group
+        - domain: "auth.linkopingsfallskarmsklubb.se"
+          resources: ["^/api/oidc/authorization.*client_id=skywinone.*"]
+          subject: ["group:skywin_users"]
+          policy: "one_factor"
+        - domain: "auth.linkopingsfallskarmsklubb.se"
+          resources: ["^/api/oidc/authorization.*client_id=argocd.*"]
+          subject: ["group:admins"]
+          policy: "one_factor"
+        - domain: "auth.linkopingsfallskarmsklubb.se"
+          resources: ["^/api/oidc/authorization.*client_id=insidan.*"]
+          subject: ["group:users"]
+          policy: "one_factor"
+
+        # Application specific rules (for ForwardAuth if ever used, and for OIDC redirect domain matching)
         - domain: "insidan.linkopingsfallskarmsklubb.se"
           resources: ["^/skywinone($|/.*)"]
           subject: ["group:skywin_users"]
@@ -152,13 +167,20 @@ authelia:
         - domain: "insidan.linkopingsfallskarmsklubb.se"
           subject: ["group:users"]
           policy: "one_factor"
+
+        # Authelia portal access
         - domain: "auth.linkopingsfallskarmsklubb.se"
+          subject: ["group:users"]
           policy: "one_factor"
-        - domain: "localhost"
-          subject: ["group:admins"]
-          policy: "one_factor"
+
+        # Catch-all for subdomains
         - domain: "*.linkopingsfallskarmsklubb.se"
           subject: ["group:users"]
+          policy: "one_factor"
+
+        # Localhost development
+        - domain: "localhost"
+          subject: ["group:admins"]
           policy: "one_factor"
 
   ingress:

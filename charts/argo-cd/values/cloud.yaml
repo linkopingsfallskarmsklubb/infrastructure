@@ -32,7 +32,7 @@ argo-cd:
             claimMapping:
               name: preferred_username
     rbac:
-      policy.default: role:readonly
+      policy.default: ""
       policy.csv: |
         p, role:admin, applications, *, *, allow
         g, argocd-admins, role:admin
