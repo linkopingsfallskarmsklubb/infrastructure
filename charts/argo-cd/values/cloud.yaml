@@ -13,6 +13,12 @@ argo-cd:
       dex.server.insecure: "true"
     cm:
       url: https://insidan.linkopingsfallskarmsklubb.se/argocd
+      oidc.config: |
+        name: LFK
+        issuer: https://insidan.linkopingsfallskarmsklubb.se/argocd/api/dex
+        clientID: argocd
+        clientSecret: $argo-cd-custom-secrets:dex.authelia.clientSecret
+        requestedScopes: ["openid", "profile", "email", "groups"]
       dex.config: |
         connectors:
         - type: oidc
