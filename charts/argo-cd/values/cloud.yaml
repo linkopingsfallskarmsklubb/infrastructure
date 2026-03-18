@@ -35,4 +35,4 @@ argo-cd:
       policy.default: ""
       policy.csv: |
         p, role:admin, applications, *, *, allow
-        g, argocd-admins, role:admin
+        g, admins, role:admin
