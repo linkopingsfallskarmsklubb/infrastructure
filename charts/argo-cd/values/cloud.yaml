@@ -29,8 +29,11 @@ argo-cd:
               - email
               - groups
             getUserInfo: true
+            claimMapping:
+              groups: groups
     rbac:
       policy.default: ""
+      scopes: "[groups]"
       policy.csv: |
         p, role:admin, applications, *, *, allow
         g, admins, role:admin

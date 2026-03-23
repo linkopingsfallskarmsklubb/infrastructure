@@ -78,10 +78,10 @@ authelia:
       standard:
         enabled: true
         min_length: 12
-        require_uppercase: true
-        require_lowercase: true
-        require_number: true
-        require_special: true
+        require_uppercase: false
+        require_lowercase: false
+        require_number: false
+        require_special: false
 
     identity_providers:
       oidc:
@@ -92,6 +92,25 @@ authelia:
         jwks:
           - key:
               path: "/secrets/authelia-secrets/oidc-issuer-private-key"
+        authorization_policies:
+          argocd_policy:
+            default_policy: 'deny'
+            rules:
+              - policy: 'one_factor'
+                subject:
+                  - 'group:admins'
+          skywinone_policy:
+            default_policy: 'deny'
+            rules:
+              - policy: 'one_factor'
+                subject:
+                  - 'group:skywin_users'
+          insidan_policy:
+            default_policy: 'deny'
+            rules:
+              - policy: 'one_factor'
+                subject:
+                  - 'group:users'
         clients:
           - client_id: "argocd"
             client_name: "ArgoCD"
@@ -100,11 +119,12 @@ authelia:
             client_secret:
               path: "/secrets/authelia-secrets/client-argocd-secret"
             public: false
-            authorization_policy: "one_factor"
+            authorization_policy: "argocd_policy"
             redirect_uris:
               - "https://insidan.linkopingsfallskarmsklubb.se/argocd/api/dex/callback"
             scopes: ["openid", "profile", "email", "groups"]
             grant_types: ["authorization_code"]
+            userinfo_signed_response_alg: "none"
           - client_id: "skywinone"
             client_name: "Skywin One"
             consent_mode: "implicit"
@@ -112,13 +132,14 @@ authelia:
             client_secret:
               path: "/secrets/authelia-secrets/client-skywinone-secret"
             public: false
-            authorization_policy: "one_factor"
+            authorization_policy: "skywinone_policy"
             redirect_uris:
               - "https://insidan.linkopingsfallskarmsklubb.se/skywinone/oidc/callback"
               - "https://insidan.linkopingsfallskarmsklubb.se/skywinone/oidc/callback/"
             scopes: ["openid", "profile", "email", "groups"]
             grant_types: ["authorization_code"]
             token_endpoint_auth_method: "client_secret_post"
+            userinfo_signed_response_alg: "none"
           - client_id: "insidan"
             client_name: "Insidan"
             consent_mode: "implicit"
@@ -126,12 +147,13 @@ authelia:
             client_secret:
               path: "/secrets/authelia-secrets/client-insidan-secret"
             public: false
-            authorization_policy: "one_factor"
+            authorization_policy: "insidan_policy"
             redirect_uris:
               - "https://insidan.linkopingsfallskarmsklubb.se/api/auth/callback"
               - "https://insidan.linkopingsfallskarmsklubb.se/auth/callback"
             scopes: ["openid", "profile", "email", "groups"]
             grant_types: ["authorization_code"]
+            userinfo_signed_response_alg: "none"
 
     notifier:
       filesystem:
@@ -146,28 +168,7 @@ authelia:
           subject: ["group:users"]
           policy: "one_factor"
 
-        # 2. Rules for OIDC authorization endpoints
-        # These rules match the initial OIDC 'authorize' call
-        - domain: "auth.linkopingsfallskarmsklubb.se"
-          resources: ["^/api/oidc/authorization.*"]
-          query:
-            client_id: "skywinone"
-          subject: ["group:skywin_users"]
-          policy: "one_factor"
-        - domain: "auth.linkopingsfallskarmsklubb.se"
-          resources: ["^/api/oidc/authorization.*"]
-          query:
-            client_id: "argocd"
-          subject: ["group:admins"]
-          policy: "one_factor"
-        - domain: "auth.linkopingsfallskarmsklubb.se"
-          resources: ["^/api/oidc/authorization.*"]
-          query:
-            client_id: "insidan"
-          subject: ["group:users"]
-          policy: "one_factor"
-
-        # 3. Application specific rules (used if ForwardAuth is active)
+        # 2. Application specific rules (used if ForwardAuth is active)
         - domain: "insidan.linkopingsfallskarmsklubb.se"
           resources: ["^/skywinone($|/.*)"]
           subject: ["group:skywin_users"]
@@ -180,7 +181,7 @@ authelia:
           subject: ["group:users"]
           policy: "one_factor"
 
-        # 4. Global fallback for subdomains
+        # 3. Global fallback for subdomains
         - domain: "*.linkopingsfallskarmsklubb.se"
           subject: ["group:users"]
           policy: "one_factor"
