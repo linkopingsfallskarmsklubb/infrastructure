@@ -133,6 +133,7 @@ authelia:
               path: "/secrets/authelia-secrets/client-skywinone-secret"
             public: false
             authorization_policy: "skywinone_policy"
+            claims_policy: "groups_policy"
             redirect_uris:
               - "https://insidan.linkopingsfallskarmsklubb.se/skywinone/oidc/callback"
               - "https://insidan.linkopingsfallskarmsklubb.se/skywinone/oidc/callback/"
@@ -148,6 +149,7 @@ authelia:
               path: "/secrets/authelia-secrets/client-insidan-secret"
             public: false
             authorization_policy: "insidan_policy"
+            claims_policy: "groups_policy"
             redirect_uris:
               - "https://insidan.linkopingsfallskarmsklubb.se/api/auth/callback"
               - "https://insidan.linkopingsfallskarmsklubb.se/auth/callback"
