@@ -191,11 +191,10 @@ authelia:
           subject: ["group:admins"]
           policy: "one_factor"
 
-  traefikCRD:
-    enabled: true
-
   ingress:
     enabled: true
+    traefikCRD:
+      enabled: true
     className: "traefik"
     annotations:
       traefik.ingress.kubernetes.io/router.entrypoints: websecure
