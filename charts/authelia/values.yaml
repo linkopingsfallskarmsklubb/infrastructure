@@ -167,9 +167,6 @@ authelia:
       rules:
         # 1. Rules for the Authelia portal itself
         - domain: "auth.linkopingsfallskarmsklubb.se"
-          resources: ["^/api/oidc/authorization.*"]
-          policy: "bypass"
-        - domain: "auth.linkopingsfallskarmsklubb.se"
           subject: ["group:users"]
           policy: "one_factor"
 
