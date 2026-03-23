@@ -19,6 +19,8 @@ authelia:
 
   configMap:
     theme: oled
+    log:
+      level: debug
     server:
       asset_path: /config/assets/
     authentication_backend:
@@ -165,28 +167,31 @@ authelia:
       rules:
         # 1. Rules for the Authelia portal itself
         - domain: "auth.linkopingsfallskarmsklubb.se"
+          resources: ["^/api/oidc/authorization.*"]
+          policy: "bypass"
+        - domain: "auth.linkopingsfallskarmsklubb.se"
           subject: ["group:users"]
           policy: "one_factor"
 
-        # 2. Application specific rules (used if ForwardAuth is active)
-        - domain: "insidan.linkopingsfallskarmsklubb.se"
-          resources: ["^/skywinone($|/.*)"]
-          subject: ["group:skywin_users"]
-          policy: "one_factor"
+        # 2. Tightened rules for insidan
         - domain: "insidan.linkopingsfallskarmsklubb.se"
           resources: ["^/argocd($|/.*)"]
           subject: ["group:admins"]
           policy: "one_factor"
         - domain: "insidan.linkopingsfallskarmsklubb.se"
+          resources: ["^/skywinone($|/.*)"]
+          subject: ["group:skywin_users"]
+          policy: "one_factor"
+        - domain: "insidan.linkopingsfallskarmsklubb.se"
+          resources: ["^/($|api/.*|auth/callback.*)"]
           subject: ["group:users"]
           policy: "one_factor"
 
-        # 3. Global fallback for subdomains
-        - domain: "*.linkopingsfallskarmsklubb.se"
-          subject: ["group:users"]
-          policy: "one_factor"
+        # 3. Deny everything else on insidan explicitly
+        - domain: "insidan.linkopingsfallskarmsklubb.se"
+          policy: "deny"
 
-        # 5. Localhost development
+        # 4. Localhost development
         - domain: "localhost"
           subject: ["group:admins"]
           policy: "one_factor"
@@ -195,6 +200,7 @@ authelia:
     enabled: true
     traefikCRD:
       enabled: true
+      disableIngressRoute: true
     className: "traefik"
     annotations:
       traefik.ingress.kubernetes.io/router.entrypoints: websecure
