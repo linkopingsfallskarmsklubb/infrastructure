@@ -15,4 +15,5 @@ spec:
         ClientSecret: "urn:k8s:secret:{{ .Release.Name }}-secret:providerClientSecret"
         UsePkce: true
       Scopes: ["openid", "profile", "email", "groups"]
-      Roles: ["skywin_users"]
+      # Roles: ["skywin_users"]  # use users until insidan can handle it queuing
+      Roles: ["users"]
