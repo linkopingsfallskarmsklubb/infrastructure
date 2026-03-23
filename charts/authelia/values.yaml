@@ -29,19 +29,12 @@ authelia:
       ldap:
         enabled: true
         address: "ldap://lldap:3890"
-        implementation: "custom"
+        implementation: "lldap"
         timeout: "5 seconds"
         start_tls: false
         base_dn: "dc=linkopingsfallskarmsklubb,dc=se"
         additional_users_dn: "ou=people"
-        users_filter: "(&(|({username_attribute}={input})(mail={input}))(objectClass=person))"
         additional_groups_dn: "ou=groups"
-        groups_filter: "(member={dn})"
-        attributes:
-          display_name: "displayName"
-          username: "uid"
-          mail: "mail"
-          group_name: "cn"
         user: "uid=admin,ou=people,dc=linkopingsfallskarmsklubb,dc=se"
         password:
           secret_name: "authelia-secrets"
@@ -113,6 +106,10 @@ authelia:
               - policy: 'one_factor'
                 subject:
                   - 'group:users'
+        claims_policies:
+          groups_policy:
+            id_token:
+              - groups
         clients:
           - client_id: "argocd"
             client_name: "ArgoCD"
@@ -122,6 +119,7 @@ authelia:
               path: "/secrets/authelia-secrets/client-argocd-secret"
             public: false
             authorization_policy: "argocd_policy"
+            claims_policy: "groups_policy"
             redirect_uris:
               - "https://insidan.linkopingsfallskarmsklubb.se/argocd/api/dex/callback"
             scopes: ["openid", "profile", "email", "groups"]

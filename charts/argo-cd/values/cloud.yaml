@@ -29,6 +29,7 @@ argo-cd:
               - email
               - groups
             getUserInfo: true
+            insecureEnableGroups: true
             claimMapping:
               groups: groups
     rbac:
