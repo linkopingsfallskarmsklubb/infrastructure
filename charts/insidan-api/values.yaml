@@ -1,3 +1,4 @@
+host: insidan.linkopingsfallskarmsklubb.se
 replicaCount: 1
 image:
   containerRegistry: europe-west1-docker.pkg.dev
