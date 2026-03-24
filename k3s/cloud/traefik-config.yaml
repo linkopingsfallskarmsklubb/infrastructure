@@ -9,6 +9,8 @@ spec:
       - "--certificatesresolvers.default.acme.email=ordforande@linkopingsfallskarmsklubb.se"
       - "--certificatesresolvers.default.acme.storage=/data/acme.json"
       - "--certificatesresolvers.default.acme.httpchallenge.entrypoint=web"
+      - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entryPoint.scheme=https"
       - "--providers.kubernetesingress.allowemptyservices=true"
       - "--providers.kubernetesingress.allowexternalnameservices=true"
       - "--providers.kubernetescrd.allowemptyservices=true"
