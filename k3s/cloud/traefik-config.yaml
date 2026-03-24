@@ -16,10 +16,11 @@ spec:
     ports:
       web:
         exposedPort: 80
-        redirections:
-          entryPoint:
-            to: websecure
-            scheme: https
+        http:
+          redirections:
+            entryPoint:
+              to: websecure
+              scheme: https
       websecure:
         exposedPort: 443
     persistence:
