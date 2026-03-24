@@ -171,6 +171,9 @@ authelia:
           policy: "one_factor"
 
         # 2. Tightened rules for insidan
+        - domain: "lldap.linkopingsfallskarmsklubb.se"
+          subject: ["group:admins"]
+          policy: "one_factor"
         - domain: "insidan.linkopingsfallskarmsklubb.se"
           resources: ["^/argocd($|/.*)"]
           subject: ["group:admins"]

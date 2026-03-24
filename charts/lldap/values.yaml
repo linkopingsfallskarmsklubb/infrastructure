@@ -28,6 +28,10 @@ persistence:
 
 ldap_base_dn: "dc=linkopingsfallskarmsklubb,dc=se"
 
+ingress:
+  enabled: true
+  host: lldap.linkopingsfallskarmsklubb.se
+
 bootstrap:
   enabled: true
   groups:
