@@ -7,7 +7,6 @@ spec:
   forwardAuth:
     address: http://authelia.{{ .Release.Namespace }}.svc.cluster.local/api/verify?rd=https://auth.linkopingsfallskarmsklubb.se/
     trustForwardHeader: true
-    maxResponseBodySize: 1048576
     authResponseHeaders:
       - Remote-User
       - Remote-Groups
