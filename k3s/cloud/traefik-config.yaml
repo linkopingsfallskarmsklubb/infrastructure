@@ -16,9 +16,10 @@ spec:
     ports:
       web:
         exposedPort: 80
-        redirectTo:
-          port: 443
-          priority: 10
+        redirections:
+          entryPoint:
+            to: websecure
+            scheme: https
       websecure:
         exposedPort: 443
     persistence:
