@@ -211,7 +211,6 @@ authelia:
         path: /
     tls:
       enabled: true
-      secret: authelia-tls
 
 secretStore: secret-store
 
