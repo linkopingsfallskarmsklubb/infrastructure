@@ -210,8 +210,7 @@ authelia:
       - host: auth.linkopingsfallskarmsklubb.se
         path: /
     tls:
-      enabled: true
-      secret: null
+      enabled: false
 
 secretStore: secret-store
 
