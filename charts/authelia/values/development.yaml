@@ -1,6 +1,6 @@
 authelia:
   configMap:
-    theme: auto
+    theme: oled
     session:
       remember_me: "7 days"
       cookies:
