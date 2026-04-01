@@ -14,7 +14,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: {{ .Release.Name }}
+                name: {{ .Release.Name }}-test
                 port:
                   number: 8081
   tls:
