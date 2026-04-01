@@ -5,6 +5,7 @@ metadata:
   annotations:
       traefik.ingress.kubernetes.io/router.entrypoints: websecure
       traefik.ingress.kubernetes.io/router.tls.certresolver: default
+      traefik.ingress.kubernetes.io/router.middlewares: {{ .Release.Namespace }}-{{ .Release.Name }}-strip-test@kubernetescrd
 spec:
   rules:
     - host: {{ .Values.host }}
@@ -20,3 +21,24 @@ spec:
   tls:
     - hosts:
       - {{ .Values.host }}
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: {{ .Release.Name }}-strip-test
+  namespace: {{ .Release.Namespace }}
+spec:
+  stripPrefix:
+    prefixes:
+      - /test
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-test
+spec:
+  type: ExternalName
+  externalName: 10.240.0.16
+  ports:
+    - port: 8081
+      name: test
