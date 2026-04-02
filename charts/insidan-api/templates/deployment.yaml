@@ -9,7 +9,7 @@ spec:
     matchLabels:
       app: {{ .Release.Name }}
   strategy:
-    type: Recreate
+    type: RollingUpdate
   template:
     metadata:
       labels:
