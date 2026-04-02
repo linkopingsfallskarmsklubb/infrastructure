@@ -15,3 +15,15 @@ skywin:
 
 skywinDb:
   uriRef: insidandev-mysql-uri
+
+swish:
+  base_url: "https://mss.cpc.getswish.net/swish-cpcapi/api/v2"
+  payeealias: swish-number
+  callbackUrlBase: "https://insidan.linkopingsfallskarmsklubb.se/test"
+  adminEmail: "ordforande@linkopingsfallskarmsklubb.se"
+  paymentFee: 3.0
+  clientCertRef: dev-swish-client-cert
+  clientKeyRef: dev-swish-client-key
+  caCertRef: dev-swish-ca-cert
+  clientKeyPassword: dev-swish-client-key
+  callbackSecret: dev-swish-callback-secret
