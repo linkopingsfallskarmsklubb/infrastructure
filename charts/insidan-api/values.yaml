@@ -50,7 +50,7 @@ smtp:
 swish:
   baseUrl: "https://cpc.getswish.net/swish-cpcapi/api/v2"
   payeealias: swish-number
-  callbackUrlBase: "https://insidan.linkopingsfallskarmsklubb.se/"
+  callbackUrlBase: "https://insidan.linkopingsfallskarmsklubb.se/api"
   adminEmail: "ordforande@linkopingsfallskarmsklubb.se"
   paymentFee: 3.0
   clientCertRef: swish-client-cert
