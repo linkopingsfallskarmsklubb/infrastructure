@@ -56,5 +56,5 @@ swish:
   clientCertRef: swish-client-cert
   clientKeyRef: swish-client-key
   caCertRef: swish-ca-cert
-  clientKeyPassword: swish-client-key
-  callbackSecret: abc123
+  clientKeyPasswordRef: swish-client-key-password
+  callbackSecretRef: swish-callback-secret
