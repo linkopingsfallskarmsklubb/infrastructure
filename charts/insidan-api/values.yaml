@@ -48,7 +48,7 @@ smtp:
   sender: Linköpings Fallskärmsklubb <do-not-reply@linkopingsfallskarmsklubb.se>
 
 swish:
-  baseUrl: "https://mss.cpc.getswish.net/swish-cpcapi/api/v2"
+  baseUrl: "https://cpc.getswish.net/swish-cpcapi/api/v2"
   payeealias: swish-number
   callbackUrlBase: "https://insidan.linkopingsfallskarmsklubb.se/"
   adminEmail: "ordforande@linkopingsfallskarmsklubb.se"
