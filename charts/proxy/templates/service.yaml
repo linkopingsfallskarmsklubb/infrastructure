@@ -10,3 +10,5 @@ spec:
       name: http
     - port: 3306
       name: mysql
+    - port: 8081
+      name: test
