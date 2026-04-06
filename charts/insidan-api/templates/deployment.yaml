@@ -9,7 +9,7 @@ spec:
     matchLabels:
       app: {{ .Release.Name }}
   strategy:
-    type: Recreate
+    type: RollingUpdate
   template:
     metadata:
       labels:
@@ -81,8 +81,52 @@ spec:
               value: {{ .Values.smtp.server }}
             - name: API_SMTP__SENDER
               value: {{ .Values.smtp.sender }}
+            - name: API_SWISH__BASE_URL
+              value: {{ .Values.swish.baseUrl | quote }}
+            - name: API_SWISH__PAYEE_ALIAS
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}
+                  key: swish-payee-alias
+            - name: API_SWISH__CALLBACK_URL_BASE
+              value: {{ .Values.swish.callbackUrlBase | quote }}
+            - name: API_SWISH__ADMIN_EMAIL
+              value: {{ .Values.swish.adminEmail | quote }}
+            - name: API_SWISH__PAYMENT_FEE
+              value: "{{ .Values.swish.paymentFee }}"
+            - name: API_SWISH__CLIENT_CERT_PATH
+              value: "/etc/swish/client-cert.pem"
+            - name: API_SWISH__CLIENT_KEY_PATH
+              value: "/etc/swish/client-key.pem"
+            - name: API_SWISH__CA_CERT_PATH
+              value: "/etc/swish/ca-cert.pem"
+            - name: API_SWISH__CLIENT_KEY_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}
+                  key: swish-client-key-password
+            - name: API_SWISH__CALLBACK_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}
+                  key: swish-callback-secret
+          volumeMounts:
+            - name: swish-certs
+              mountPath: /etc/swish
+              readOnly: true
           ports:
             - name: http
               containerPort: 8000
               protocol: TCP
+      volumes:
+        - name: swish-certs
+          secret:
+            secretName: {{ .Release.Name }}
+            items:
+              - key: swish-client-cert
+                path: client-cert.pem
+              - key: swish-client-key
+                path: client-key.pem
+              - key: swish-ca-cert
+                path: ca-cert.pem
 {{- end }}
