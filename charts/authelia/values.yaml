@@ -100,12 +100,14 @@ authelia:
               - policy: "one_factor"
                 subject:
                   - "group:skywin_users"
+                  - "group:readers"
           insidan_policy:
             default_policy: "deny"
             rules:
               - policy: "one_factor"
                 subject:
                   - "group:users"
+                  - "group:readers"
         claims_policies:
           groups_policy:
             id_token:
@@ -167,7 +169,7 @@ authelia:
       rules:
         # 1. Rules for the Authelia portal itself
         - domain: "auth.linkopingsfallskarmsklubb.se"
-          subject: ["group:users"]
+          subject: ["group:users", "group:readers"]
           policy: "one_factor"
 
         # 2. Tightened rules for insidan
@@ -181,11 +183,11 @@ authelia:
         - domain: "insidan.linkopingsfallskarmsklubb.se"
           resources: ["^/skywinone($|/.*)"]
           # subject: ["group:skywin_users"]  # Use  users until insidan can handle it
-          subject: ["group:users"]
+          subject: ["group:users", "group:readers"]
           policy: "one_factor"
         - domain: "insidan.linkopingsfallskarmsklubb.se"
           resources: ["^/($|api/.*|auth/callback.*)"]
-          subject: ["group:users"]
+          subject: ["group:users", "group:readers"]
           policy: "one_factor"
 
         # 3. Deny everything else on insidan explicitly

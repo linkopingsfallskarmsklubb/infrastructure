@@ -38,3 +38,4 @@ bootstrap:
     - users
     - skywin_users
     - admins
+    - readers
