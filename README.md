@@ -7,6 +7,18 @@
 * [google-cloud-cli](https://cloud.google.com/sdk/docs/install)
 * [k3s](https://docs.k3s.io/quick-start) `curl -sfL https://get.k3s.io | sh -`
 * [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl)
+* [helm](https://helm.sh/docs/intro/install/)
+* [mkcert](https://github.com/FiloSottile/mkcert)
+
+#### mkcert setup (Mandatory for Dev)
+
+For local development with TLS, you must install the mkcert CA on your machine and initialize it:
+
+```bash
+mkcert -install
+```
+
+The setup script will fail if `mkcert` is not found when setting up the `development` environment.
 
 ## Setup
 
@@ -69,6 +81,7 @@ This workflow uses [GitVersion](https://gitversion.net/) to calculate the next s
 To update an environment (e.g., `cloud`) to a specific state (e.g., a release tag like `infra/1.0.0` or a specific commit hash), update the `revision` value in the environment's `values.yaml` file:
 
 **File:** `clusters/cloud/manifests/values.yaml`
+
 ```yaml
 revision: infra/1.0.0
 ```

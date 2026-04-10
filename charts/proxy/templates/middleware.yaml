@@ -6,6 +6,9 @@ metadata:
 spec:
   plugin:
     traefik-oidc-auth:
+      {{- if eq .Values.tls false }}
+      Secure: false
+      {{- end }}
       Secret: "urn:k8s:secret:{{ .Release.Name }}-secret:pluginSecret"
       CallbackUri: /skywinone/oidc/callback
       Provider:

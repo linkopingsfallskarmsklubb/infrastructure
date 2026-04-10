@@ -3,8 +3,14 @@ kind: Ingress
 metadata:
   name: {{ .Release.Name }}
   annotations:
+    {{- if ne .Values.tls false }}
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
-    traefik.ingress.kubernetes.io/router.tls.certresolver: default
+    {{- if .Values.certResolver }}
+    traefik.ingress.kubernetes.io/router.tls.certresolver: {{ .Values.certResolver }}
+    {{- end }}
+    {{- else }}
+    traefik.ingress.kubernetes.io/router.entrypoints: web
+    {{- end }}
     traefik.ingress.kubernetes.io/router.middlewares: {{ .Release.Namespace }}-{{ .Release.Name }}@kubernetescrd
 spec:
   rules:
@@ -18,6 +24,8 @@ spec:
                 name: {{ .Release.Name }}
                 port:
                   number: 8000
+  {{- if ne .Values.tls false }}
   tls:
     - hosts:
         - {{ .Values.host }}
+  {{- end }}

@@ -1,0 +1,10 @@
+host: insidan.linkopingsfallskarmsklubb.localhost
+certResolver: ""
+
+hostAliases:
+  - ip: "0.0.0.0" # Overridden by global.traefikIp in development
+    hostnames:
+      - "auth.linkopingsfallskarmsklubb.localhost"
+      - "insidan.linkopingsfallskarmsklubb.localhost"
+
+caSecret: mkcert-ca-cert

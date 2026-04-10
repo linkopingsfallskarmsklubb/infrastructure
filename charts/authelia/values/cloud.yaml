@@ -1,0 +1,4 @@
+authelia:
+  ingress:
+    annotations:
+      traefik.ingress.kubernetes.io/router.tls.certresolver: default

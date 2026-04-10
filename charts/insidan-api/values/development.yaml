@@ -1,14 +1,27 @@
+host: insidan.linkopingsfallskarmsklubb.localhost
+
 server:
-  cookieDomain: "localhost"
+  cookieDomain: "linkopingsfallskarmsklubb.localhost"
 
 oauth2:
   clientId: insidan
   clientSecretRef: authelia-client-insidan-secret
-  authUrl: http://auth.local.localhost/api/oidc/authorization
-  tokenUrl: http://auth.local.localhost/api/oidc/token
-  redirectUrl: http://localhost:3000/api/auth/callback
-  defaultRedirect: http://localhost:3000/
+  authUrl: https://auth.linkopingsfallskarmsklubb.localhost/api/oidc/authorization
+  tokenUrl: https://auth.linkopingsfallskarmsklubb.localhost/api/oidc/token
+  redirectUrl: https://insidan.linkopingsfallskarmsklubb.localhost/api/auth/callback
+  defaultRedirect: https://insidan.linkopingsfallskarmsklubb.localhost/
   scopes: "[openid,profile,email,groups]"
+
+authelia:
+  url: https://auth.linkopingsfallskarmsklubb.localhost
+
+hostAliases:
+  - ip: "0.0.0.0" # Overridden by global.traefikIp in development
+    hostnames:
+      - "auth.linkopingsfallskarmsklubb.localhost"
+      - "insidan.linkopingsfallskarmsklubb.localhost"
+
+caSecret: mkcert-ca-cert
 
 lldap:
   default_groups: "[users, skywin_users]"
@@ -22,7 +35,7 @@ skywinDb:
 swish:
   base_url: "https://mss.cpc.getswish.net/swish-cpcapi/api/v2"
   payeealias: swish-number
-  callbackUrlBase: "https://insidan.linkopingsfallskarmsklubb.se/test"
+  callbackUrlBase: "https://insidan.linkopingsfallskarmsklubb.localhost/test"
   adminEmail: "ordforande@linkopingsfallskarmsklubb.se"
   paymentFee: 3.0
   clientCertRef: dev-swish-client-cert
@@ -30,3 +43,4 @@ swish:
   caCertRef: dev-swish-ca-cert
   clientKeyPasswordRef: dev-swish-client-key-password
   callbackSecretRef: dev-swish-callback-secret
+certResolver: ""

@@ -1,0 +1,22 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChartConfig
+metadata:
+  name: traefik
+  namespace: kube-system
+spec:
+  valuesContent: |-
+    additionalArguments:
+      - "--providers.kubernetesingress.allowemptyservices=true"
+      - "--providers.kubernetesingress.allowexternalnameservices=true"
+      - "--providers.kubernetescrd.allowemptyservices=true"
+      - "--providers.kubernetescrd.allowexternalnameservices=true"
+    ports:
+      web:
+        exposedPort: 80
+      websecure:
+        exposedPort: 443
+    experimental:
+      plugins:
+        traefik-oidc-auth:
+          moduleName: "github.com/sevensolutions/traefik-oidc-auth"
+          version: "v0.18.0"

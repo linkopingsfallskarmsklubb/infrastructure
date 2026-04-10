@@ -15,6 +15,11 @@ spec:
     helm:
       valueFiles:
         - values/development.yaml
+      {{- if and .Values.global .Values.global.traefikIp }}
+      values: |
+        global:
+          traefikIp: {{ .Values.global.traefikIp | quote }}
+      {{- end }}
   destination:
     server: https://kubernetes.default.svc
     namespace: apps

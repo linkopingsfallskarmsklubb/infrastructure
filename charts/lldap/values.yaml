@@ -39,3 +39,4 @@ bootstrap:
     - skywin_users
     - admins
     - readers
+certResolver: default

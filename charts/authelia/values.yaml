@@ -58,6 +58,7 @@ authelia:
       remember_me: "7 days"
       cookies:
         - domain: "linkopingsfallskarmsklubb.se"
+          subdomain: "auth"
       encryption_key:
         secret_name: "authelia-secrets"
         path: "session-secret"
@@ -221,12 +222,11 @@ authelia:
     className: "traefik"
     annotations:
       traefik.ingress.kubernetes.io/router.entrypoints: websecure
-      traefik.ingress.kubernetes.io/router.tls.certresolver: default
     rulesOverride:
       - host: auth.linkopingsfallskarmsklubb.se
         path: /
     tls:
-      enabled: false
+      enabled: true
 
 secretStore: secret-store
 

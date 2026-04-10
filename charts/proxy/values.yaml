@@ -5,3 +5,4 @@ providerUrl: https://auth.linkopingsfallskarmsklubb.se
 clientId: skywinone
 pluginSecretRef: skywinone-plugin-secret
 providerClientSecretRef: authelia-client-skywinone-secret
+certResolver: default

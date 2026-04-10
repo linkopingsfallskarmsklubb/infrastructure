@@ -12,3 +12,4 @@ ingress:
 
 secretStore: secret-store
 clientSecretRef: authelia-client-argocd-secret
+certResolver: default
