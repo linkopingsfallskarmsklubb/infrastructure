@@ -1,13 +1,16 @@
+host: insidan.linkopingsfallskarmsklubb.localhost
+tls: false
+
 server:
-  cookieDomain: "localhost"
+  cookieDomain: "linkopingsfallskarmsklubb.localhost"
 
 oauth2:
   clientId: insidan
   clientSecretRef: authelia-client-insidan-secret
-  authUrl: http://auth.local.localhost/api/oidc/authorization
-  tokenUrl: http://auth.local.localhost/api/oidc/token
-  redirectUrl: http://localhost:3000/api/auth/callback
-  defaultRedirect: http://localhost:3000/
+  authUrl: http://auth.linkopingsfallskarmsklubb.localhost/api/oidc/authorization
+  tokenUrl: http://auth.linkopingsfallskarmsklubb.localhost/api/oidc/token
+  redirectUrl: http://insidan.linkopingsfallskarmsklubb.localhost/api/auth/callback
+  defaultRedirect: http://insidan.linkopingsfallskarmsklubb.localhost/
   scopes: "[openid,profile,email,groups]"
 
 lldap:

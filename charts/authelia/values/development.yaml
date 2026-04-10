@@ -1,10 +1,12 @@
 authelia:
+  tls: false
   configMap:
     theme: oled
     session:
       remember_me: "7 days"
       cookies:
         - domain: "127.0.0.1"
+        - domain: "linkopingsfallskarmsklubb.localhost"
     identity_providers:
       oidc:
         clients:
@@ -19,7 +21,7 @@ authelia:
             redirect_uris:
               - "http://localhost:3000/api/auth/callback"
               - "http://localhost:8000/api/auth/callback"
-              - "https://insidan.linkopingsfallskarmsklubb.se/api/auth/callback"
+              - "http://insidan.linkopingsfallskarmsklubb.localhost/api/auth/callback"
             scopes: ["openid", "profile", "email", "groups"]
             grant_types: ["authorization_code"]
           - client_id: "adsb-state-events"
@@ -33,8 +35,19 @@ authelia:
             grant_types: ["client_credentials"]
     access_control:
       rules:
-        - domain: "127.0.0.1"
+        - domain: "*.linkopingsfallskarmsklubb.localhost"
           policy: "one_factor"
 
   ingress:
-    enabled: false
+    enabled: true
+    traefikCRD:
+      enabled: true
+      disableIngressRoute: true
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+      traefik.ingress.kubernetes.io/router.tls.certresolver: !!null
+    rulesOverride:
+      - host: auth.linkopingsfallskarmsklubb.localhost
+        path: /
+    tls:
+      enabled: false
