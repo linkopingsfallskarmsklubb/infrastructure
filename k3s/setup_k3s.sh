@@ -181,5 +181,14 @@ info "Cleaning up temporary files..."
 rm -f key.json
 
 info "Setup complete for environment: $ENV"
+
+if [ "$ENV" == "development" ]; then
+  info "Please add the following entries to your /etc/hosts file:"
+  echo "127.0.0.1  auth.linkopingsfallskarmsklubb.local"
+  echo "127.0.0.1  insidan.linkopingsfallskarmsklubb.local"
+  echo "127.0.0.1  lldap.linkopingsfallskarmsklubb.local"
+  echo "127.0.0.1  argocd.linkopingsfallskarmsklubb.local"
+fi
+
 info "You can now get the Argo CD admin password with:"
 echo "kubectl get secret argocd-initial-admin-secret -o jsonpath='{.data.password}' --namespace argocd | base64 -d"

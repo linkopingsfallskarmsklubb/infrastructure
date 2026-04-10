@@ -5,7 +5,11 @@ metadata:
   namespace: {{ .Release.Namespace }}
 spec:
   forwardAuth:
+    {{- if ne .Values.tls false }}
     address: http://authelia.{{ .Release.Namespace }}.svc.cluster.local/api/authz/forward-auth?authelia_url=https://auth.linkopingsfallskarmsklubb.se/
+    {{- else }}
+    address: http://authelia.{{ .Release.Namespace }}.svc.cluster.local/api/authz/forward-auth?authelia_url=http://auth.linkopingsfallskarmsklubb.local/
+    {{- end }}
     trustForwardHeader: true
     authResponseHeaders:
       - Remote-User

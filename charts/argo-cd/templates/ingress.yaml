@@ -5,8 +5,12 @@ metadata:
   name: {{ .Release.Name }}
   {{- if .Values.host }}
   annotations:
+    {{- if ne .Values.tls false }}
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
     traefik.ingress.kubernetes.io/router.tls.certresolver: default
+    {{- else }}
+    traefik.ingress.kubernetes.io/router.entrypoints: web
+    {{- end }}
   {{- end }}
 spec:
   rules:
@@ -24,7 +28,7 @@ spec:
                 name: {{ .Release.Name }}-argocd-server
                 port:
                   number: 80
-  {{- if .Values.host }}
+  {{- if and .Values.host (ne .Values.tls false) }}
   tls:
     - hosts:
       - {{ .Values.host }}

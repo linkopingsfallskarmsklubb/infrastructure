@@ -1,3 +1,3 @@
 host: insidan.linkopingsfallskarmsklubb.local
-skywinonePropertiesRef: skywinone-properties-development
+providerUrl: http://auth.linkopingsfallskarmsklubb.local
 tls: false
