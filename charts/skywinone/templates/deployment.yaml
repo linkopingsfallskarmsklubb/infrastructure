@@ -24,6 +24,8 @@ spec:
               value: /opt/skywin/config
             - name: SKYWIN_LOG_DIR
               value: /var/log/skywin
+            - name: TZ
+              value: "Europe/Stockholm"
           ports:
             - name: http
               containerPort: 8080
