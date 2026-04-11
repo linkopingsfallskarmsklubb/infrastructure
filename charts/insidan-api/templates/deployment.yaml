@@ -56,6 +56,8 @@ spec:
                 secretKeyRef:
                   name: {{ .Release.Name }}
                   key: lldap-password
+            - name: API_LLDAP__DEFAULT_GROUPS
+              value: {{ .Values.lldap.defaultGroups | quote }}
             - name: API_SKYWIN__URL
               value: {{ .Values.skywin.url }}
             - name: API_SKYWIN__USER

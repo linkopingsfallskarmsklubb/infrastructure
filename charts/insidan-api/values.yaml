@@ -3,7 +3,7 @@ replicaCount: 1
 image:
   containerRegistry: europe-west1-docker.pkg.dev
   repository: bitnami-ch3rudc/docker/insidanapi
-  tag: "1.3.0"
+  tag: "1.4.0"
   pullPolicy: Always
 
 secretStore: secret-store
@@ -30,6 +30,7 @@ lldap:
   ldapUrl: ldap://lldap.auth.svc.cluster.local:3890
   username: admin
   passwordRef: lldap-user-pass
+  defaultGroups: "[users, skywin_users]"
 
 skywin:
   url: http://192.168.30.114/skywinone
@@ -58,4 +59,3 @@ swish:
   caCertRef: swish-ca-cert
   clientKeyPasswordRef: swish-client-key-password
   callbackSecretRef: swish-callback-secret
-

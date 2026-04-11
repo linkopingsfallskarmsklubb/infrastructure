@@ -182,8 +182,7 @@ authelia:
           policy: "one_factor"
         - domain: "insidan.linkopingsfallskarmsklubb.se"
           resources: ["^/skywinone($|/.*)"]
-          # subject: ["group:skywin_users"]  # Use  users until insidan can handle it
-          subject: ["group:users", "group:readers"]
+          subject: ["group:users", "group:readers", "group:skywin_users"]
           policy: "one_factor"
         - domain: "insidan.linkopingsfallskarmsklubb.se"
           resources: ["^/($|api/.*|auth/callback.*)"]

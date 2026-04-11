@@ -10,6 +10,9 @@ oauth2:
   defaultRedirect: http://localhost:3000/
   scopes: "[openid,profile,email,groups]"
 
+lldap:
+  default_groups: "[users, skywin_users]"
+
 skywin:
   url: http://skywinone:8080/skywinone
 
