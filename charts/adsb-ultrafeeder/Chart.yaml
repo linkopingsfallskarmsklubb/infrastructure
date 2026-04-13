@@ -1,0 +1,6 @@
+apiVersion: v2
+name: adsb-ultrafeeder
+description: ADSB Tracking with Ultrafeeder and Airplanes.live feeding.
+type: application
+version: 0.1.0
+appVersion: "latest"

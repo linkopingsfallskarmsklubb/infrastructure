@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: adsb-ultrafeeder
+  labels:
+    app: adsb-ultrafeeder
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: adsb-ultrafeeder
+  template:
+    metadata:
+      labels:
+        app: adsb-ultrafeeder
+    spec:
+      containers:
+      - name: ultrafeeder
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        securityContext:
+          privileged: true
+        env:
+        - name: FEEDER_LAT
+          value: {{ .Values.feeder.lat | quote }}
+        - name: FEEDER_LON
+          value: {{ .Values.feeder.lon | quote }}
+        - name: FEEDER_ALT_M
+          value: {{ .Values.feeder.altM | quote }}
+        - name: FEEDER_TZ
+          value: {{ .Values.feeder.tz | quote }}
+        - name: ULTRAFEEDER_UUID
+          value: {{ .Values.feeder.uuid | quote }}
+        - name: ULTRAFEEDER_CONFIG
+          value: "{{ .Values.ultrafeeder.config }},{{ .Values.feeder.lat }},{{ .Values.feeder.lon }},{{ .Values.feeder.altM }},{{ .Values.feeder.uuid }}"
+        - name: READSB_DEVICE_TYPE
+          value: {{ .Values.readsb.deviceType | quote }}
+        - name: READSB_RTLSDR_DEVICE
+          value: {{ .Values.readsb.rtlsdrDevice | quote }}
+        - name: READSB_EXTRA_ARGS
+          value: {{ .Values.readsb.extraArgs | quote }}
+        ports:
+        - containerPort: 80
+          name: web
+        - containerPort: 30047
+          name: json-stream
+        volumeMounts:
+        - mountPath: /dev/bus/usb
+          name: usb
+      volumes:
+      - name: usb
+        hostPath:
+          path: /dev/bus/usb

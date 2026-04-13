@@ -1,0 +1,21 @@
+image:
+  repository: ghcr.io/sdr-enthusiasts/docker-adsb-ultrafeeder
+  tag: latest
+  pullPolicy: Always
+
+# Location and station info
+feeder:
+  lat: "58.4951944"
+  lon: "15.101138888888888"
+  altM: "110"
+  tz: "Europe/Stockholm"
+  uuid: "ecc557b0-3716-11f1-b792-63ebd2a5e15c"
+
+# Ultrafeeder configuration
+ultrafeeder:
+  config: "adsb,feed.airplanes.live,30004,beast_reduce_out;mlat,feed.airplanes.live,31090,default"
+
+readsb:
+  deviceType: "rtlsdr"
+  rtlsdrDevice: "0"
+  extraArgs: "--net-json-port-include-noposition"
