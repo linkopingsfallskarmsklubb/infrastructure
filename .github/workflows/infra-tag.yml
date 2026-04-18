@@ -1,0 +1,44 @@
+name: infra-tag
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "charts/**"
+      - "clusters/**"
+      - "!**/root-app.yaml"
+  workflow_dispatch:
+
+jobs:
+  tag:
+    name: Tag Infrastructure
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install GitVersion
+        uses: gittools/actions/gitversion/setup@v4
+        with:
+          versionSpec: "6.x"
+
+      - name: Determine Version
+        id: gitversion
+        uses: gittools/actions/gitversion/execute@v4
+        with:
+          useConfigFile: true
+          configFilePath: GitVersion.yml
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: infra/${{ steps.gitversion.outputs.majorMinorPatch }}
+          name: infra ${{ steps.gitversion.outputs.majorMinorPatch }}
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

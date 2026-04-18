@@ -1,0 +1,6 @@
+apiVersion: v2
+name: root-cloud-manifests
+description: A Helm chart for Linköpings Fallskärmsklubb cloud infrastructure manifests
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
