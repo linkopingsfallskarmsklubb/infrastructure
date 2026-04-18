@@ -26,8 +26,15 @@ spec:
                   secretKeyRef:
                     name: pg-secrets
                     key: password
-              - name: PG_DATABASE
-                value: "shared"
+              - name: PG_DATABASES_CONFIG
+                value: "{{ range $i, $db := .Values.postgres.databases }}{{ if $i }},{{ end }}{{ $db.name }}:{{ $db.user }}{{ end }}"
+              {{- range .Values.postgres.databases }}
+              - name: DB_PASSWORD_{{ .name | upper | replace "-" "_" }}
+                valueFrom:
+                  secretKeyRef:
+                    name: pg-secrets
+                    key: {{ .passwordKey }}
+              {{- end }}
               - name: PG_BACKUP_LOCATION
                 value: "{{ .Values.pgBackup.location }}"
             volumeMounts:
