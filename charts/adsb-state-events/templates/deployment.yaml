@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+  labels:
+    app: {{ .Release.Name }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: adsb-state-events
+          image: "{{ .Values.image.containerRegistry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: ADSB_INSIDAN__API_URL
+              value: {{ .Values.insidan.apiUrl | quote }}
+            - name: ADSB_INSIDAN__TOKEN_URL
+              value: {{ .Values.insidan.tokenUrl | quote }}
+            - name: ADSB_INSIDAN__CLIENT_ID
+              value: {{ .Values.insidan.clientId | quote }}
+            - name: ADSB_INSIDAN__CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}
+                  key: client-secret
+            - name: ADSB_FEEDER__ADDRESS
+              value: {{ .Values.feeder.address | quote }}
+            - name: ADSB_FEEDER__TARGET_HEX
+              value: {{ .Values.feeder.targetHex | quote }}
+            - name: ADSB_TRACK__LIFT_ALTITUDE_MIN
+              value: {{ .Values.track.liftAltitudeMin | quote }}
+            - name: ADSB_TRACK__LIFT_DURATION
+              value: {{ .Values.track.liftDuration | quote }}
+            - name: ADSB_TRACK__DROP_MIN_PEAK_ALTITUDE
+              value: {{ .Values.track.dropMinPeakAltitude | quote }}
+            - name: ADSB_TRACK__DROP_RATE_MIN
+              value: {{ .Values.track.dropRateMin | quote }}
+            - name: ADSB_TRACK__DROP_DURATION
+              value: {{ .Values.track.dropDuration | quote }}
+            - name: ADSB_TRACK__LAND_ALTITUDE_MAX
+              value: {{ .Values.track.landAltitudeMax | quote }}
+            - name: ADSB_TRACK__LAND_TIMEOUT
+              value: {{ .Values.track.landTimeout | quote }}
+            - name: ADSB_TRACK__LOST_TO_LANDED_TIMEOUT
+              value: {{ .Values.track.lostToLandedTimeout | quote }}
+            - name: ADSB_TRACK__UPDATE_INTERVAL
+              value: {{ .Values.track.updateInterval | quote }}
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP

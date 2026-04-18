@@ -1,0 +1,30 @@
+image:
+  containerRegistry: europe-west1-docker.pkg.dev
+  repository: bitnami-ch3rudc/docker/adsb-state-events
+  tag: latest
+  pullPolicy: Always
+
+replicaCount: 1
+
+secretStore: secret-store
+
+insidan:
+  apiUrl: "https://insidan.linkopingsfallskarmsklubb.se/api/events"
+  tokenUrl: "https://auth.linkopingsfallskarmsklubb.se/api/oidc/token"
+  clientId: "adsb-parser"
+  clientSecretRef: "authelia-client-adsb-parser-secret"
+
+feeder:
+  address: "adsb-ultrafeeder.core.svc.cluster.local:30047"
+  targetHex: "4b1a1c"
+
+track:
+  liftAltitudeMin: 500.0
+  liftDuration: 3s
+  dropMinPeakAltitude: 2300.0
+  dropRateMin: -300.0
+  dropDuration: 5s
+  landAltitudeMax: 1000.0
+  landTimeout: 10s
+  lostToLandedTimeout: 5m
+  updateInterval: 1s

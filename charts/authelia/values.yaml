@@ -108,10 +108,16 @@ authelia:
                 subject:
                   - "group:users"
                   - "group:readers"
+                  - "group:producers"
         claims_policies:
           groups_policy:
             id_token:
               - groups
+          adsb_parser_claims:
+            custom_claims:
+              groups:
+                value:
+                  - "producers"
         clients:
           - client_id: "argocd"
             client_name: "ArgoCD"
@@ -157,6 +163,15 @@ authelia:
               - "https://insidan.linkopingsfallskarmsklubb.se/auth/callback"
             scopes: ["openid", "profile", "email", "groups"]
             grant_types: ["authorization_code"]
+            userinfo_signed_response_alg: "none"
+          - client_id: "adsb-state-events"
+            client_name: "ADSB Staten Events"
+            client_secret:
+              path: "/secrets/authelia-secrets/client-adsb-state-events-secret"
+            public: false
+            authorization_policy: "adsb_parser_policy"
+            scopes: ["openid", "profile", "email", "groups"]
+            grant_types: ["client_credentials"]
             userinfo_signed_response_alg: "none"
 
     notifier:
@@ -242,3 +257,6 @@ clients:
     secretRef: authelia-client-insidan-secret
     redirect_uris:
       - https://insidan.linkopingsfallskarmsklubb.se/api/auth/callback
+  - id: adsb-state-events
+    name: ADSB State Events
+    secretRef: authelia-client-adsb-state-events-secret
