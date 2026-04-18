@@ -14,3 +14,5 @@ branches:
     is-release-branch: false
 ignore:
   sha: []
+  paths:
+    - '^(?!apps/db-tools/).*'

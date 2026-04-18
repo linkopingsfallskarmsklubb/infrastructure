@@ -1,8 +1,8 @@
 mode: ContinuousDeployment
 tag-prefix: skywinone/
-major-version-bump-message: "(?i)^breaking(:|\\(\\|)BREAKING CHANGE"
-minor-version-bump-message: "(?i)^feat(:|\\(\\|)"
-patch-version-bump-message: "(?i)^fix(:|\\(\\|)"
+major-version-bump-message: "(?i)^breaking(:|\\()|BREAKING CHANGE"
+minor-version-bump-message: "(?i)^feat(:|\\()"
+patch-version-bump-message: "(?i)^fix(:|\\()"
 branches:
   main:
     regex: ^main$
@@ -14,4 +14,6 @@ branches:
     is-release-branch: false
 ignore:
   sha: []
+  paths:
+    - '^(?!apps/skywinone/).*'
 
