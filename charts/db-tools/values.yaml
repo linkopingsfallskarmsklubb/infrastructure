@@ -6,6 +6,16 @@ image:
 
 postgres:
   enabled: true
+  databases:
+    - name: shared
+      user: shared
+      passwordKey: password
+    - name: authelia
+      user: authelia
+      passwordKey: authelia-password
+    - name: lldap
+      user: lldap
+      passwordKey: lldap-password
 
 mysql:
   enabled: true

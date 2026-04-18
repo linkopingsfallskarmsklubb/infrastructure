@@ -57,10 +57,7 @@ create_user() {
     run_query "ALTER USER \"$user\" WITH PASSWORD '$password';" "postgres"
   fi
   run_query "GRANT ALL PRIVILEGES ON DATABASE \"$database\" TO \"$user\";" "postgres"
-  # Note: In PG, you also need to grant schema usage/privileges often, but DB level grant is a start.
-  # For public schema:
-  # run_query "\c $database; GRANT ALL ON SCHEMA public TO \"$user\";" # This is hard with -c to different DB.
-  # We assume standard setup.
+  run_query "ALTER DATABASE \"$database\" OWNER TO \"$user\";" "postgres"
 }
 
 recreate_database() {
@@ -109,10 +106,5 @@ fi
 
 if [ -z "$PG_PASSWORD" ]; then
   echo "Missing required environment variable: PG_PASSWORD"
-  exit 1
-fi
-
-if [ -z "$PG_DATABASE" ]; then
-  echo "Missing required environment variable: PG_DATABASE"
   exit 1
 fi
