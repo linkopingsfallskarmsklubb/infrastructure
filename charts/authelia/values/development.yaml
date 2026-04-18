@@ -24,6 +24,15 @@ authelia:
               - "https://insidan.linkopingsfallskarmsklubb.se/api/auth/callback"
             scopes: ["openid", "profile", "email", "groups"]
             grant_types: ["authorization_code"]
+          - client_id: "adsb-parser"
+            client_name: "ADSB Parser"
+            client_secret:
+              path: "/secrets/authelia-secrets/client-adsb-parser-secret"
+            public: false
+            authorization_policy: "bypass"
+            claims_policy: "adsb_parser_claims"
+            scopes: ["openid", "profile", "email", "groups"]
+            grant_types: ["client_credentials"]
     access_control:
       rules:
         - domain: "127.0.0.1"
