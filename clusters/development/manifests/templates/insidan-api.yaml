@@ -1,27 +1,25 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: root-dz
+  name: insidan-api
   annotations:
-    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-wave: "4"
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
     repoURL: https://github.com/linkopingsfallskarmsklubb/infrastructure
-    path: clusters/dz/manifests
-    targetRevision: HEAD
+    path: charts/insidan-api
+    targetRevision: {{ .Values.revision }}
     helm:
-      parameters:
-        - name: "revision"
-          value: "HEAD"
+      valueFiles:
+        - values/development.yaml
   destination:
     server: https://kubernetes.default.svc
-    namespace: argocd
+    namespace: apps
   syncPolicy:
     automated:
-      prune: true
       selfHeal: true
     syncOptions:
-      - ApplyOutOfSyncOnly=true
+      - CreateNamespace=true
