@@ -16,4 +16,4 @@ ignore:
   sha: []
   paths:
     - '^(?!charts/|clusters/).*'
-    - '**/root-app.yaml'
+    - '.*/root-app\.yaml$'
