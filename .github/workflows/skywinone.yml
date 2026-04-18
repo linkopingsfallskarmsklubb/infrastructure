@@ -37,6 +37,13 @@ jobs:
           useConfigFile: true
           configFilePath: apps/skywinone/GitVersion.yml
 
+      - name: Extract SkywinOne Version
+        id: extract_version
+        run: |
+          VERSION=$(grep 'ARG SKYWINONE_VERSION=' apps/skywinone/Dockerfile | cut -d'=' -f2)
+          echo "SKYWINONE_VERSION=$VERSION" >> $GITHUB_OUTPUT
+          echo "COMBINED_VERSION=$VERSION-${{ steps.gitversion.outputs.majorMinorPatch }}" >> $GITHUB_OUTPUT
+
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v3
         with:
@@ -57,13 +64,13 @@ jobs:
           context: apps/skywinone
           push: true
           tags: |
-            europe-west1-docker.pkg.dev/bitnami-ch3rudc/docker/skywinone:${{ steps.gitversion.outputs.majorMinorPatch }}
+            europe-west1-docker.pkg.dev/bitnami-ch3rudc/docker/skywinone:${{ steps.extract_version.outputs.COMBINED_VERSION }}
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: skywinone/${{ steps.gitversion.outputs.majorMinorPatch }}
-          name: skywinone ${{ steps.gitversion.outputs.majorMinorPatch }}
+          tag_name: skywinone/${{ steps.extract_version.outputs.COMBINED_VERSION }}
+          name: skywinone ${{ steps.extract_version.outputs.COMBINED_VERSION }}
           generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
