@@ -1,6 +1,6 @@
 authelia:
   image:
-    tag: "4.39.13"
+    tag: "4.39.19"
 
   pod:
     extraVolumes:
@@ -58,7 +58,6 @@ authelia:
       remember_me: "7 days"
       cookies:
         - domain: "linkopingsfallskarmsklubb.se"
-          authelia_url: "https://auth.linkopingsfallskarmsklubb.se"
       encryption_key:
         secret_name: "authelia-secrets"
         path: "session-secret"
@@ -108,10 +107,16 @@ authelia:
                 subject:
                   - "group:users"
                   - "group:readers"
+                  - "group:producers"
         claims_policies:
           groups_policy:
             id_token:
               - groups
+          adsb_state_events_claims:
+            custom_claims:
+              groups:
+                value:
+                  - "producers"
         clients:
           - client_id: "argocd"
             client_name: "ArgoCD"
@@ -158,6 +163,16 @@ authelia:
             scopes: ["openid", "profile", "email", "groups"]
             grant_types: ["authorization_code"]
             userinfo_signed_response_alg: "none"
+          - client_id: "adsb-state-events"
+            client_name: "ADSB State Events"
+            client_secret:
+              path: "/secrets/authelia-secrets/client-adsb-state-events-secret"
+            public: false
+            authorization_policy: "one_factor"
+            claims_policy: "adsb_state_events_claims"
+            scopes: ["profile", "email", "groups"]
+            grant_types: ["client_credentials"]
+            userinfo_signed_response_alg: "none"
 
     notifier:
       filesystem:
@@ -186,7 +201,7 @@ authelia:
           policy: "one_factor"
         - domain: "insidan.linkopingsfallskarmsklubb.se"
           resources: ["^/($|api/.*|auth/callback.*)"]
-          subject: ["group:users", "group:readers"]
+          subject: ["group:users", "group:readers", "group:producers"]
           policy: "one_factor"
 
         # 3. Deny everything else on insidan explicitly
@@ -242,3 +257,6 @@ clients:
     secretRef: authelia-client-insidan-secret
     redirect_uris:
       - https://insidan.linkopingsfallskarmsklubb.se/api/auth/callback
+  - id: adsb-state-events
+    name: ADSB State Events
+    secretRef: authelia-client-adsb-state-events-secret
