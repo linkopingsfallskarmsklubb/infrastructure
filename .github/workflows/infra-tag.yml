@@ -1,12 +1,12 @@
 name: infra-tag
 
 on:
-  push:
-    branches: ["main"]
-    paths:
-      - "charts/**"
-      - "clusters/**"
-      - "!**/root-app.yaml"
+  # push:
+  #   branches: ["main"]
+  #   paths:
+  #     - "charts/**"
+  #     - "clusters/**"
+  #     - "!**/root-app.yaml"
   workflow_dispatch:
 
 jobs:
