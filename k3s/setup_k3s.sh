@@ -146,7 +146,7 @@ if [ "$ENV" == "development" ]; then
   
   info "Exporting mkcert root CA and creating secrets..."
   MKCERT_CAROOT=$(mkcert -CAROOT)
-  for ns in apps auth; do
+  for ns in apps auth argocd; do
     kubectl create ns $ns --dry-run=client -o yaml | kubectl apply -f -
     kubectl create secret tls mkcert-wildcard-cert --cert=certs/local-cert.pem --key=certs/local-key.pem -n $ns --dry-run=client -o yaml | kubectl apply -f -
     kubectl create secret generic mkcert-ca-cert --from-file=ca.crt="$MKCERT_CAROOT/rootCA.pem" -n $ns --dry-run=client -o yaml | kubectl apply -f -
@@ -154,7 +154,6 @@ if [ "$ENV" == "development" ]; then
       kubectl create secret tls authelia-tls --cert=certs/local-cert.pem --key=certs/local-key.pem -n $ns --dry-run=client -o yaml | kubectl apply -f -
     fi
   done
-
   info "Detecting Traefik ClusterIP for internal routing..."
   TRAEFIK_IP=$(kubectl get svc traefik -n kube-system -o jsonpath='{.spec.clusterIP}')
   info "Traefik ClusterIP detected: $TRAEFIK_IP"
@@ -177,13 +176,6 @@ if ! kubectl get secret gcp-sa-key --namespace core >/dev/null 2>&1; then
   rm secret-manager-account.yaml
 else
   info "'gcp-sa-key' secret in 'core' namespace already exists."
-fi
-
-if ! kubectl get ns argocd >/dev/null 2>&1; then
-  info "Creating 'argocd' namespace..."
-  kubectl create ns argocd
-else
-  info "'argocd' namespace already exists."
 fi
 
 if ! kubectl get secret gcp-sa-key --namespace argocd >/dev/null 2>&1; then
@@ -216,12 +208,13 @@ else
   info "External Secrets CRDs already applied."
 fi
 
-if ! helm status argo-cd -n argocd >/dev/null 2>&1; then
-  info "Installing Argo CD with Helm..."
-  helm install argo-cd charts/argo-cd/ --namespace argocd --create-namespace
-else
-  info "Argo CD already installed."
+info "Installing/Updating Argo CD with Helm..."
+ARGOCD_VALUES_ARGS="-f charts/argo-cd/values.yaml"
+if [ -f "charts/argo-cd/values/$ENV.yaml" ]; then
+  ARGOCD_VALUES_ARGS="$ARGOCD_VALUES_ARGS -f charts/argo-cd/values/$ENV.yaml"
 fi
+
+helm upgrade --install argo-cd charts/argo-cd/ --namespace argocd --create-namespace $ARGOCD_VALUES_ARGS
 
 ROOT_APP_FILE="clusters/$ENV/root-app.yaml"
 if [ -f "$ROOT_APP_FILE" ]; then

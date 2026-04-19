@@ -15,6 +15,20 @@ spec:
     helm:
       valueFiles:
         - values/development.yaml
+      {{- if and .Values.global .Values.global.traefikIp }}
+      values: |
+        global:
+          traefikIp: {{ .Values.global.traefikIp | quote }}
+        argo-cd:
+          global:
+            hostAliases:
+              - ip: {{ .Values.global.traefikIp | quote }}
+                hostnames:
+                  - "auth.linkopingsfallskarmsklubb.localhost"
+                  - "argocd.linkopingsfallskarmsklubb.localhost"
+          dex:
+            enabled: true
+      {{- end }}
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd

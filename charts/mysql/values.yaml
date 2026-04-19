@@ -5,3 +5,6 @@ user: skywin
 userPasswordRef: mysql-skywin-password
 size: 10Gi
 storageClass: local-path-persistent
+
+ingress:
+  enabled: false

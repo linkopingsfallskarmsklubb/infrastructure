@@ -30,7 +30,7 @@ authelia:
             client_secret:
               path: "/secrets/authelia-secrets/client-argocd-secret"
             public: false
-            authorization_policy: "one_factor"
+            authorization_policy: "argocd_policy"
             redirect_uris:
               - "https://argocd.linkopingsfallskarmsklubb.localhost/api/dex/callback"
             scopes: ["openid", "profile", "email", "groups"]

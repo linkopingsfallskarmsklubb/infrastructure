@@ -129,7 +129,7 @@ authelia:
             authorization_policy: "argocd_policy"
             claims_policy: "groups_policy"
             redirect_uris:
-              - "https://insidan.linkopingsfallskarmsklubb.se/argocd/api/dex/callback"
+              - "https://argocd.linkopingsfallskarmsklubb.se/api/dex/callback"
             scopes: ["openid", "profile", "email", "groups"]
             grant_types: ["authorization_code"]
             userinfo_signed_response_alg: "none"
@@ -246,7 +246,7 @@ clients:
     name: ArgoCD
     secretRef: authelia-client-argocd-secret
     redirect_uris:
-      - https://insidan.linkopingsfallskarmsklubb.se/argocd/api/dex/callback
+      - https://argocd.linkopingsfallskarmsklubb.se/api/dex/callback
   - id: skywinone
     name: Skywin One
     secretRef: authelia-client-skywinone-secret

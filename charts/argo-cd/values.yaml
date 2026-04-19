@@ -8,7 +8,8 @@ argo-cd:
     enabled: false
 
 ingress:
-  enabled: false
+  enabled: true
+  tlsSecret: ""
 
 secretStore: secret-store
 clientSecretRef: authelia-client-argocd-secret

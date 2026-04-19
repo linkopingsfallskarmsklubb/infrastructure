@@ -1,3 +1,4 @@
+{{- if .Values.ingress.enabled }}
 apiVersion: traefik.io/v1alpha1
 kind: IngressRouteTCP
 metadata:
@@ -10,3 +11,4 @@ spec:
     services:
     - name: {{ .Release.Name }}
       port: 3306
+{{- end }}

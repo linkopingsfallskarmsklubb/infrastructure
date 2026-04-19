@@ -1,2 +1,49 @@
 host: argocd.linkopingsfallskarmsklubb.localhost
+path: /
 certResolver: ""
+
+argo-cd:
+  dex:
+    enabled: false
+  server:
+    env:
+      - name: ARGOCD_SERVER_DEX_SERVER_INSECURE
+        value: "true"
+  configs:
+    params:
+      server.insecure: "true"
+      dex.server.insecure: "true"
+    cm:
+      url: https://argocd.linkopingsfallskarmsklubb.localhost
+      dex.config: |
+        connectors:
+        - type: oidc
+          id: authelia
+          name: Authelia
+          config:
+            issuer: https://auth.linkopingsfallskarmsklubb.localhost
+            clientID: argocd
+            clientSecret: $argo-cd-custom-secrets:dex.authelia.clientSecret
+            redirectURI: https://argocd.linkopingsfallskarmsklubb.localhost/api/dex/callback
+            scopes:
+              - openid
+              - profile
+              - email
+              - groups
+            getUserInfo: true
+            insecureEnableGroups: true
+            insecureSkipVerify: true
+            claimMapping:
+              groups: groups
+    rbac:
+      policy.default: ""
+      scopes: "[groups]"
+      policy.csv: |
+        p, role:admin, applications, *, *, allow
+        g, admins, role:admin
+
+hostAliases:
+  - ip: "0.0.0.0" # Overridden by global.traefikIp in development
+    hostnames:
+      - "auth.linkopingsfallskarmsklubb.localhost"
+      - "argocd.linkopingsfallskarmsklubb.localhost"
