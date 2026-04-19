@@ -15,5 +15,5 @@ branches:
 ignore:
   sha: []
   paths:
-    - '^(?!charts/|clusters/).*'
+    - '^(?!charts/|clusters/|GitVersion\.yml).*'
     - '.*/root-app\.yaml$'
