@@ -81,7 +81,8 @@ export_database() {
     --routines \
     --triggers \
     --single-transaction \
-    --databases "$MYSQL_DATABASE" >"$file"
+    --set-gtid-purged=OFF \
+    --databases "$MYSQL_DATABASE" | sed -e 's/DEFINER=[^*]*\*/\*/g' -e 's/DEFINER=[^ ]* / /g' >"$file"
 }
 
 MYSQL_HOST="${MYSQL_HOST:-mysql.core.svc}"
