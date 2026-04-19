@@ -82,6 +82,7 @@ export_database() {
     --triggers \
     --single-transaction \
     --set-gtid-purged=OFF \
+    --no-tablespaces \
     --databases "$MYSQL_DATABASE" | sed -e 's/DEFINER=[^*]*\*/\*/g' -e 's/DEFINER=[^ ]* / /g' >"$file"
 }
 
