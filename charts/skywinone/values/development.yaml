@@ -1,3 +1,4 @@
 host: insidan.linkopingsfallskarmsklubb.localhost
 skywinonePropertiesRef: skywinone-properties-development
 certResolver: ""
+tls: true

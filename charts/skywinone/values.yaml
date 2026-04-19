@@ -1,4 +1,3 @@
-host: insidan.linkopingsfallskarmsklubb.se
 replicaCount: 1
 
 image:
@@ -9,4 +8,6 @@ image:
 
 secretStore: secret-store
 skywinonePropertiesRef: skywinone-properties
-certResolver: default
+
+host: ""
+tls: false
