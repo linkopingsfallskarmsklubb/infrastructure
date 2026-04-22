@@ -1,5 +1,5 @@
 mode: ContinuousDeployment
-tag-prefix: skywinone/
+next-version: 0.2.0
 major-version-bump-message: "(?i)^breaking(:|\\()|BREAKING CHANGE"
 minor-version-bump-message: "(?i)^feat(:|\\()"
 patch-version-bump-message: "(?i)^fix(:|\\()"
@@ -16,4 +16,3 @@ ignore:
   sha: []
   paths:
     - '^(?!apps/skywinone/).*'
-

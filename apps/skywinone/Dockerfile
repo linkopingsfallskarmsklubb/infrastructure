@@ -1,8 +1,12 @@
-FROM docker.io/tomcat:11.0-jre21
+FROM docker.io/tomcat:10.1-jre21
 
 ARG SKYWINONE_VERSION=26.0.0
 
-RUN curl -LJO --output-dir /usr/local/tomcat/webapps https://www.skywinner.se/skywin/_files/skywinone/${SKYWINONE_VERSION}/skywinone.war
+RUN curl --fail --location --show-error --output /usr/local/tomcat/webapps/skywinone.war \
+  https://www.skywinner.se/skywin/_files/skywinone/${SKYWINONE_VERSION}/skywinone.war && \
+  [ -s /usr/local/tomcat/webapps/skywinone.war ] && \
+  head -c 2 /usr/local/tomcat/webapps/skywinone.war | grep -q 'PK' || \
+  { echo "ERROR: Download failed, file is empty, or not a valid WAR/ZIP file"; exit 1; }
 
 EXPOSE 8080
 

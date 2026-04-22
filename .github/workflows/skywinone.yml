@@ -30,19 +30,42 @@ jobs:
         with:
           versionSpec: "6.x"
 
+      - name: Determine Tag Prefix
+        id: prefix
+        run: |
+          # Get all tags starting with skywinone/ and filter for those that look like our 0.x.y internal versions
+          # This skips "poisoned" tags like 26.0.0-26.0.0
+          LAST_TAG=$(git tag -l "skywinone/*" --sort=-v:refname | grep -E "skywinone/.*-0\.[0-9]+\.[0-9]+" | head -n 1)
+
+          if [ -z "$LAST_TAG" ]; then
+            # If no good tag found, fall back to the absolute latest tag if any
+            LAST_TAG=$(git tag -l "skywinone/*" --sort=-v:refname | head -n 1)
+          fi
+
+          if [ -z "$LAST_TAG" ]; then
+            echo "prefix=skywinone/0.0.0-" >> $GITHUB_OUTPUT
+          else
+            # Extract the supplier version
+            LAST_SUPPLIER=$(echo "$LAST_TAG" | cut -d'/' -f2 | cut -d'-' -f1)
+            echo "prefix=skywinone/${LAST_SUPPLIER}-" >> $GITHUB_OUTPUT
+          fi
+
       - name: Determine Version
         id: gitversion
         uses: gittools/actions/gitversion/execute@v4
         with:
           useConfigFile: true
           configFilePath: apps/skywinone/GitVersion.yml
+          additionalArguments: "/overrideconfig tag-prefix=${{ steps.prefix.outputs.prefix }}"
 
       - name: Extract SkywinOne Version
         id: extract_version
         run: |
           VERSION=$(grep 'ARG SKYWINONE_VERSION=' apps/skywinone/Dockerfile | cut -d'=' -f2)
+          INTERNAL_VERSION=${{ steps.gitversion.outputs.majorMinorPatch }}
           echo "SKYWINONE_VERSION=$VERSION" >> $GITHUB_OUTPUT
-          echo "COMBINED_VERSION=$VERSION-${{ steps.gitversion.outputs.majorMinorPatch }}" >> $GITHUB_OUTPUT
+          echo "INTERNAL_VERSION=$INTERNAL_VERSION" >> $GITHUB_OUTPUT
+          echo "COMBINED_VERSION=$VERSION-$INTERNAL_VERSION" >> $GITHUB_OUTPUT
 
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v3
