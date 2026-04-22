@@ -25,6 +25,19 @@ run_query() {
     -e "$query"
 }
 
+run_query_silent() {
+  local query="$1"
+  mysql --protocol=tcp \
+    --host="$MYSQL_HOST" \
+    --user="$MYSQL_USER" \
+    --password="$MYSQL_PASSWORD" \
+    --port="$MYSQL_PORT" \
+    --default-character-set=utf8 \
+    --comments \
+    -N -s \
+    -e "$query"
+}
+
 run_root_query() {
   local query="$1"
   mysql --protocol=tcp \

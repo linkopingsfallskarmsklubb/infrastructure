@@ -1,0 +1,38 @@
+{{- if .Values.mysql.enabled }}
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: skywin-db-update
+spec:
+  schedule: "0 0 31 2 *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          enableServiceLinks: false
+          containers:
+          - name: dbtools
+            image: "{{ .Values.image.containerRegistry }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+            imagePullPolicy: {{ .Values.image.pullPolicy }}
+            command: ["/bin/bash", "-c", "bash skywin_backup.sh && bash skywin_db_update.sh"]
+            env:
+              - name: MYSQL_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: mysql-secrets
+                    key: user
+              - name: SKYWIN_BACKUP_LOCATION
+                value: "{{ .Values.skywinBackup.location }}"
+            volumeMounts:
+              - mountPath: "/usr/src/credentials"
+                name: application-credentials
+                readOnly: true
+          restartPolicy: Never
+          volumes:
+            - name: application-credentials
+              secret:
+                secretName: gcp-sa-secret
+                items:
+                  - key: secret-access-credentials
+                    path: application-credentials.json
+{{- end }}
