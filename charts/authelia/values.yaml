@@ -12,6 +12,10 @@ authelia:
       - name: custom-assets
         mountPath: /config/assets/
 
+    env:
+      - name: AUTHELIA_SERVER_TRUSTED_PROXIES
+        value: "10.42.0.0/16,10.43.0.0/16"
+
   secret:
     existingSecret: "authelia-secrets"
     additionalSecrets:
