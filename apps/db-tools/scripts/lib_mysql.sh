@@ -22,6 +22,7 @@ run_query() {
     --port="$MYSQL_PORT" \
     --default-character-set=utf8 \
     --comments \
+    --database="$MYSQL_DATABASE" \
     -e "$query"
 }
 
@@ -34,6 +35,7 @@ run_query_silent() {
     --port="$MYSQL_PORT" \
     --default-character-set=utf8 \
     --comments \
+    --database="$MYSQL_DATABASE" \
     -N -s \
     -e "$query"
 }
