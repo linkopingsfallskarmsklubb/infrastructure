@@ -1,4 +1,4 @@
-FROM mysql:8.0 as mysql_source
+FROM mysql:9.7 as mysql_source
 
 FROM python:3.13-slim-bookworm
 
