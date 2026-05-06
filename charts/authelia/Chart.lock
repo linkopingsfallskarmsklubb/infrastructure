@@ -1,6 +1,6 @@
 dependencies:
 - name: authelia
   repository: https://charts.authelia.com
-  version: 0.10.58
-digest: sha256:8ecae2b333514c6f142e7ec2e7bc9e83134ca7b97d2effa77c71c0aca939753b
-generated: "2026-04-18T19:37:47.270912344Z"
+  version: 0.11.5
+digest: sha256:f47b6a0c436267c28adde2e4a1e16ee06c7c40702e55366e05a931d2799e7cfa
+generated: "2026-05-06T04:43:01.169705337Z"
