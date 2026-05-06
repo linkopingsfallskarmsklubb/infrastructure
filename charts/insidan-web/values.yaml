@@ -3,6 +3,6 @@ replicaCount: 1
 image:
   containerRegistry: europe-west1-docker.pkg.dev
   repository: bitnami-ch3rudc/docker/insidanweb
-  tag: "1.2.0"
+  tag: "2.0.1"
   pullPolicy: Always
 certResolver: default
