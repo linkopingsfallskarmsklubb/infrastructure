@@ -11,7 +11,7 @@ spec:
     spec:
       containers:
         - name: bootstrap
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          image: "{{ .Values.image.repository }}:v{{ .Values.image.tag }}"
           command: ["/bin/sh", "-c"]
           args:
             - |

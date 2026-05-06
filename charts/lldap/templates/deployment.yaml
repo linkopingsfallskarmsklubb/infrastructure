@@ -17,7 +17,7 @@ spec:
       enableServiceLinks: false
       containers:
         - name: lldap
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          image: "{{ .Values.image.repository }}:v{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - containerPort: 17170
