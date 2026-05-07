@@ -1,7 +1,7 @@
 image:
   containerRegistry: europe-west1-docker.pkg.dev
   repository: bitnami-ch3rudc/docker/adsbstateevents
-  tag: 0.1.1
+  tag: 0.3.0
   pullPolicy: Always
 
 replicaCount: 1
@@ -22,7 +22,7 @@ track:
   liftAltitudeMin: 500.0
   liftDuration: 5s
   dropMinPeakAltitude: 2300.0
-  dropRateMin: -300.0
+  dropAltitudeDelta: 500.0
   dropDuration: 5s
   landAltitudeMax: 1000.0
   landTimeout: 10s

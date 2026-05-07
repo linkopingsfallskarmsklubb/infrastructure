@@ -3,7 +3,7 @@ replicaCount: 1
 image:
   containerRegistry: europe-west1-docker.pkg.dev
   repository: bitnami-ch3rudc/docker/insidanapi
-  tag: "1.6.4"
+  tag: "2.0.2"
   pullPolicy: Always
 
 secretStore: secret-store
@@ -36,7 +36,8 @@ skywin:
   url: http://192.168.30.114/skywinone
   user: insidanapi
   passwordRef: insidan-skywin-password
-  register: 113
+  activeSelection: 113
+  wishlistSelection: 19
 
 skywinDb:
   uriRef: insidan-mysql-uri
@@ -59,4 +60,11 @@ swish:
   caCertRef: swish-ca-cert
   clientKeyPasswordRef: swish-client-key-password
   callbackSecretRef: swish-callback-secret
+
+wix:
+  baseUrl: https://www.wixapis.com/_api/
+  apiKey: wix-api-key
+  siteId: wix-site-id
+  accountId: wix-account-id
+
 certResolver: default
