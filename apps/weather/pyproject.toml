@@ -10,7 +10,7 @@ dependencies = [
   "niquests>=3.18.7",
   "pydantic-settings>=2.13.1",
   "pydantic>=2.13.3",
-  "pytz>=2026.1.post1",
+  "pytz>=2026.2",
 ]
 
 [dependency-groups]
