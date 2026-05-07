@@ -9,7 +9,7 @@ dependencies = [
   "beautifulsoup4>=4.14.3",
   "niquests>=3.18.7",
   "pydantic-settings>=2.13.1",
-  "pydantic>=2.13.2",
+  "pydantic>=2.13.3",
   "pytz>=2026.1.post1",
 ]
 

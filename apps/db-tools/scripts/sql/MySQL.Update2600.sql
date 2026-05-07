@@ -22,9 +22,14 @@ ALTER TABLE `Memberinstruct` RENAME COLUMN `Year` TO `LicenseYear`;
 ALTER TABLE `Memberlicense` RENAME COLUMN `Year` TO `LicenseYear`;
 
 UPDATE `intSelectionrow` 
-SET selectionRow = REPLACE(selectionRow, 'Year', 'LicenseYear')
-WHERE  (SelectionRow LIKE '%Year>%' OR SelectionRow LIKE '%Year=%')
-AND SelectionRow NOT LIKE '%LicenseYear%';
+SET selectionRow = REPLACE(LOWER(selectionRow), 'year>', 'LicenseYear>')
+WHERE  SelectionRow LIKE '%Year>%'
+AND SelectionRow NOT LIKE '%LicenseYear>%';
+
+UPDATE `intSelectionrow` 
+SET selectionRow = REPLACE(LOWER(selectionRow), 'year=', 'LicenseYear=')
+WHERE  SelectionRow LIKE '%Year=%'
+AND SelectionRow NOT LIKE '%LicenseYear=%';
 
 /*  Store version update */
 UPDATE intDbinfo SET Dbversion='26.0.0';
