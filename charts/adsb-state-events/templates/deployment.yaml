@@ -40,8 +40,8 @@ spec:
               value: {{ .Values.track.liftDuration | quote }}
             - name: ADSB_TRACK__DROP_MIN_PEAK_ALTITUDE
               value: {{ .Values.track.dropMinPeakAltitude | quote }}
-            - name: ADSB_TRACK__DROP_RATE_MIN
-              value: {{ .Values.track.dropRateMin | quote }}
+            - name: ADSB_TRACK__DROP_ALTITUDE_DELTA
+              value: {{ .Values.track.dropAltitudeDelta | quote }}
             - name: ADSB_TRACK__DROP_DURATION
               value: {{ .Values.track.dropDuration | quote }}
             - name: ADSB_TRACK__LAND_ALTITUDE_MAX
