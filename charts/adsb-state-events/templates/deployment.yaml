@@ -52,6 +52,8 @@ spec:
               value: {{ .Values.track.lostToLandedTimeout | quote }}
             - name: ADSB_TRACK__UPDATE_INTERVAL
               value: {{ .Values.track.updateInterval | quote }}
+            - name: ADSB_DEBUG
+              value: {{ .Values.debug | quote }}
           ports:
             - containerPort: 8080
               name: http

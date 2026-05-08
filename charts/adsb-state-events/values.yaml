@@ -1,7 +1,7 @@
 image:
   containerRegistry: europe-west1-docker.pkg.dev
   repository: bitnami-ch3rudc/docker/adsbstateevents
-  tag: 0.3.0
+  tag: 0.4.0
   pullPolicy: Always
 
 replicaCount: 1
@@ -28,3 +28,5 @@ track:
   landTimeout: 10s
   lostToLandedTimeout: 5m
   updateInterval: 1s
+
+debug: true
