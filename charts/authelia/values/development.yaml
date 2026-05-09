@@ -55,7 +55,8 @@ authelia:
             public: false
             authorization_policy: "one_factor"
             claims_policy: "adsb_state_events_claims"
-            scopes: ["profile", "email", "groups"]
+            audience: ["insidan"]
+            scopes: ["groups"]
             grant_types: ["client_credentials"]
     access_control:
       rules:
