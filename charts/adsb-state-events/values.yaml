@@ -9,7 +9,7 @@ replicaCount: 1
 secretStore: secret-store
 
 insidan:
-  apiUrl: "https://insidan.linkopingsfallskarmsklubb.se/api/events"
+  apiUrl: "https://insidan.linkopingsfallskarmsklubb.se/api/adsb/events"
   tokenUrl: "https://auth.linkopingsfallskarmsklubb.se/api/oidc/token"
   clientId: "adsb-state-events"
   clientSecretRef: "authelia-client-adsb-state-events-secret"
