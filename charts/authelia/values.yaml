@@ -193,6 +193,11 @@ authelia:
           subject: ["group:users", "group:readers"]
           policy: "one_factor"
 
+        # 1.5 Bypass ForwardAuth for specific API endpoints (API validates its own tokens)
+        - domain: "insidan.linkopingsfallskarmsklubb.se"
+          resources: ["^/api/adsb/event$"]
+          policy: "bypass"
+
         # 2. Tightened rules for insidan
         - domain: "lldap.linkopingsfallskarmsklubb.se"
           subject: ["group:admins"]

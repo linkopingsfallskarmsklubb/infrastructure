@@ -60,6 +60,9 @@ authelia:
             grant_types: ["client_credentials"]
     access_control:
       rules:
+        - domain: "insidan.linkopingsfallskarmsklubb.localhost"
+          resources: ["^/api/adsb/event$"]
+          policy: "bypass"
         - domain: "*.linkopingsfallskarmsklubb.localhost"
           policy: "one_factor"
 
