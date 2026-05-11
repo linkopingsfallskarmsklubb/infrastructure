@@ -1,0 +1,127 @@
+{{- if .Values.simulator.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: adsb-simulator-script
+  namespace: {{ .Release.Namespace }}
+data:
+  simulate.py: |
+    import socket
+    import time
+    import json
+    import logging
+    import os
+
+    logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s')
+
+    TARGET_HEX = os.getenv("TARGET_HEX", "4ab4af")
+
+    # Simulation: [alt_geom, ground_speed, vertical_rate]
+    events = [
+        [100, 0, 0],   # Ground
+        [100, 20, 0],  # Taxi
+        [200, 70, 500],# Takeoff
+        [1000, 80, 800],
+        [2000, 85, 800],
+        [3000, 90, 800],
+        [4000, 85, 0],  # Jump altitude
+        [4000, 85, 0],  # Holding
+        [3800, 100, -1000], # Descent start
+        [2000, 120, -1500],
+        [500, 100, -500],
+        [100, 60, -200], # Landing
+        [100, 0, 0],    # Back on ground
+    ]
+
+    def run():
+        host = '0.0.0.0'
+        port = 30047
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            s.bind((host, port))
+            s.listen(1)
+            logging.info(f"Simulator listening on {port} (Target Hex: {TARGET_HEX})...")
+            
+            s.settimeout(30)
+            try:
+                conn, addr = s.accept()
+            except socket.timeout:
+                logging.info("Timed out waiting for connection. Exiting.")
+                return
+
+            with conn:
+                logging.info(f"Connected by {addr}")
+                for alt, gs, vr in events:
+                    msg = {
+                        "now": time.time(),
+                        "hex": TARGET_HEX,
+                        "alt_baro": alt,
+                        "alt_geom": alt,
+                        "gs": gs,
+                        "baro_rate": vr,
+                        "lat": 58.39,
+                        "lon": 15.52,
+                        "seen": 0.1
+                    }
+                    data = json.dumps(msg) + "\n"
+                    try:
+                        conn.sendall(data.encode('utf-8'))
+                        logging.info(f"Sent: {data.strip()}")
+                    except Exception as ex:
+                        logging.error(f"Send failed: {ex}")
+                        break
+                    time.sleep(5)
+                logging.info("Flight simulation complete.")
+                time.sleep(1)
+
+    if __name__ == '__main__':
+        run()
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: adsb-simulator
+  namespace: {{ .Release.Namespace }}
+spec:
+  selector:
+    app: adsb-simulator
+  ports:
+    - protocol: TCP
+      port: 30047
+      targetPort: 30047
+
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: adsb-simulator
+  namespace: {{ .Release.Namespace }}
+spec:
+  schedule: {{ .Values.simulator.schedule | quote }}
+  concurrencyPolicy: Replace
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: adsb-simulator
+        spec:
+          containers:
+          - name: simulator
+            image: {{ .Values.simulator.image | quote }}
+            command: ["python", "-u", "/script/simulate.py"]
+            env:
+            - name: TARGET_HEX
+              value: {{ .Values.feeder.targetHex | quote }}
+            ports:
+            - containerPort: 30047
+            volumeMounts:
+            - name: script
+              mountPath: /script
+          volumes:
+          - name: script
+            configMap:
+              name: adsb-simulator-script
+          restartPolicy: OnFailure
+{{- end }}

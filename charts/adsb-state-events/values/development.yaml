@@ -1,0 +1,17 @@
+simulator:
+  enabled: true
+
+feeder:
+  address: "adsb-simulator:30047"
+
+insidan:
+  apiUrl: "https://insidan.linkopingsfallskarmsklubb.localhost/api/adsb/event"
+  tokenUrl: "https://auth.linkopingsfallskarmsklubb.localhost/api/oidc/token"
+
+caSecret: mkcert-ca-cert
+
+hostAliases:
+  - ip: "0.0.0.0" # Overridden by global.traefikIp in development
+    hostnames:
+      - "auth.linkopingsfallskarmsklubb.localhost"
+      - "insidan.linkopingsfallskarmsklubb.localhost"

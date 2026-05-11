@@ -30,3 +30,12 @@ track:
   updateInterval: 1s
 
 debug: true
+
+simulator:
+  enabled: false
+  schedule: "0 0 31 2 *"
+  image: python:3.14-alpine
+
+hostAliases: []
+
+caSecret: ""
