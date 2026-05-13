@@ -1,11 +1,10 @@
 image:
   containerRegistry: europe-west1-docker.pkg.dev
   repository: bitnami-ch3rudc/docker/weather
-  tag: "0.5.4"
+  tag: "0.5.8"
   pullPolicy: IfNotPresent
 
 secretStore: secret-store
 holfuyApiKeyRef: holfuy-api-key
 lfvUrl: https://aro.lfv.se/Links/Link/ViewLink?TorLinkId=308&type=MET
 pgUrlRef: postgres-url
-
