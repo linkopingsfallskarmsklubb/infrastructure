@@ -24,10 +24,13 @@ hostAliases:
 caSecret: mkcert-ca-cert
 
 lldap:
-  default_groups: "[users, skywin_users]"
+  defaultGroups: "[users, skywin_users]"
 
 skywin:
   url: http://skywinone:8080/skywinone
+  groupEnablers:
+    - 1026198
+    - 1026199
 
 skywinDb:
   uriRef: insidandev-mysql-uri

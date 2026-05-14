@@ -83,6 +83,8 @@ spec:
               value: "{{ .Values.skywin.activeSelection }}"
             - name: API_SKYWIN__WISHLIST_SELECTION
               value: "{{ .Values.skywin.wishlistSelection }}"
+            - name: API_SKYWIN__GROUP_ENABLERS
+              value: {{ .Values.skywin.groupEnablers | toJson | quote }}
             - name: API_SKYWIN_DB__URI
               valueFrom:
                 secretKeyRef:
