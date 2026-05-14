@@ -2,6 +2,7 @@ host: insidan.linkopingsfallskarmsklubb.localhost
 
 server:
   cookieDomain: "linkopingsfallskarmsklubb.localhost"
+  logLevel: debug
 
 oauth2:
   clientId: insidan

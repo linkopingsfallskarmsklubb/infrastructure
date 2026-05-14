@@ -38,6 +38,8 @@ spec:
               value: "8000"
             - name: API_SERVER__COOKIE_DOMAIN
               value: {{ .Values.server.cookieDomain | quote }}
+            - name: API_SERVER__LOG_LEVEL
+              value: {{ .Values.server.logLevel | default "info" | quote }}
             - name: API_OAUTH2__CLIENT_ID
               value: {{ .Values.oauth2.clientId }}
             - name: API_OAUTH2__CLIENT_SECRET

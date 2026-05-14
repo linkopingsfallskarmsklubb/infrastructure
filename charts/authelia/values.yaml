@@ -166,7 +166,9 @@ authelia:
               - "https://insidan.linkopingsfallskarmsklubb.se/api/auth/callback"
               - "https://insidan.linkopingsfallskarmsklubb.se/auth/callback"
             scopes: ["openid", "profile", "email", "groups"]
-            grant_types: ["authorization_code"]
+            grant_types: ["authorization_code", "client_credentials"]
+            token_endpoint_auth_method: "client_secret_post"
+            introspection_endpoint_auth_method: "client_secret_post"
             userinfo_signed_response_alg: "none"
           - client_id: "adsb-state-events"
             client_name: "ADSB State Events"
