@@ -23,6 +23,7 @@ authelia:
               - "https://insidan.linkopingsfallskarmsklubb.localhost/api/auth/callback"
             scopes: ["openid", "profile", "email", "groups"]
             grant_types: ["authorization_code"]
+            introspection_endpoint_auth_method: "client_secret_post"
           - client_id: "argocd"
             client_name: "ArgoCD"
             consent_mode: "implicit"
