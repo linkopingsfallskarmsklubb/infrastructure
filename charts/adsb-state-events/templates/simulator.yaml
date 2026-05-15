@@ -52,16 +52,24 @@ data:
             with conn:
                 logging.info(f"Connected by {addr}")
                 for alt, gs, vr in events:
+                    alt_val = alt
+                    if alt <= 100 and gs < 30:
+                        alt_val = "ground"
+
                     msg = {
                         "now": time.time(),
                         "hex": TARGET_HEX,
-                        "alt_baro": alt,
+                        "type": "mode_s",
+                        "flight": "SEMEO   ",
+                        "alt_baro": alt_val,
                         "alt_geom": alt,
                         "gs": gs,
                         "baro_rate": vr,
                         "lat": 58.39,
                         "lon": 15.52,
-                        "seen": 0.1
+                        "seen": 0.1,
+                        "rssi": -1.4,
+                        "messages": 10
                     }
                     data = json.dumps(msg) + "\n"
                     try:
