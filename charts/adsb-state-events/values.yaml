@@ -29,7 +29,7 @@ track:
   lostToLandedTimeout: 5m
   updateInterval: 1s
 
-debug: true
+debug: false
 
 simulator:
   enabled: false
