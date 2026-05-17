@@ -3,7 +3,7 @@ replicaCount: 1
 image:
   containerRegistry: europe-west1-docker.pkg.dev
   repository: bitnami-ch3rudc/docker/insidanapi
-  tag: "2.2.0"
+  tag: "2.2.1"
   pullPolicy: Always
 
 secretStore: secret-store
@@ -72,4 +72,3 @@ wix:
   accountId: wix-account-id
 
 certResolver: default
-
