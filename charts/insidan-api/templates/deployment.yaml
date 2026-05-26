@@ -148,7 +148,7 @@ spec:
                   name: {{ .Release.Name }}
                   key: wix-account-id
             {{- if .Values.caSecret }}
-            - name: SSL_CERT_FILE
+            - name: API_EXTRA_CA_CERT
               value: "/etc/ssl/certs/ca.crt"
             {{- end }}
           volumeMounts:
