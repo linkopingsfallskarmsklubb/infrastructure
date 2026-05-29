@@ -23,12 +23,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Identify Latest Infra Commit
-        id: infra_commit
-        run: |
-          COMMIT=$(git log -1 --format=%H -- "charts/" "clusters/" "GitVersion.yml" ":(exclude)**/root-app.yaml")
-          echo "sha=$COMMIT" >> $GITHUB_OUTPUT
-
       - name: Install GitVersion
         uses: gittools/actions/gitversion/setup@v4
         with:
@@ -45,7 +39,6 @@ jobs:
         with:
           tag_name: infra/${{ steps.gitversion.outputs.majorMinorPatch }}
           name: infra ${{ steps.gitversion.outputs.majorMinorPatch }}
-          target_commitish: ${{ steps.infra_commit.outputs.sha }}
           generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
