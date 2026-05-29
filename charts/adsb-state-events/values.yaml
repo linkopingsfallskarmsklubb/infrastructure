@@ -1,7 +1,7 @@
 image:
   containerRegistry: europe-west1-docker.pkg.dev
   repository: bitnami-ch3rudc/docker/adsbstateevents
-  tag: 0.4.4
+  tag: 0.4.5
   pullPolicy: Always
 
 replicaCount: 1
