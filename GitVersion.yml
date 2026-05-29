@@ -2,7 +2,7 @@ mode: ContinuousDeployment
 tag-prefix: infra/
 major-version-bump-message: "(?i)^breaking(:|\\()|BREAKING CHANGE"
 minor-version-bump-message: "(?i)^feat(:|\\()"
-patch-version-bump-message: "(?i)^fix(:|\\()"
+patch-version-bump-message: "(?i)^(fix|chore)"
 branches:
   main:
     regex: ^main$
