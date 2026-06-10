@@ -6,8 +6,8 @@ readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
   "asyncpg>=0.31.0",
-  "beautifulsoup4>=4.14.3",
-  "niquests>=3.19.0",
+  "beautifulsoup4>=4.15.0",
+  "niquests>=3.19.1",
   "pydantic-settings>=2.14.1",
   "pydantic>=2.13.4",
   "pytz>=2026.2",
