@@ -59,6 +59,16 @@ authelia:
             audience: ["insidan"]
             scopes: ["groups"]
             grant_types: ["client_credentials"]
+          - client_id: "ellen"
+            client_name: "Ellen"
+            client_secret:
+              path: "/secrets/authelia-secrets/client-ellen-secret"
+            public: false
+            authorization_policy: "one_factor"
+            claims_policy: "ellen_claims"
+            audience: ["insidan"]
+            scopes: ["groups"]
+            grant_types: ["client_credentials"]
     access_control:
       rules:
         - domain: "insidan.linkopingsfallskarmsklubb.localhost"

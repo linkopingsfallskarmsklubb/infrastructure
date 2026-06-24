@@ -1,0 +1,16 @@
+[project]
+name = "ellen"
+version = "0.1.0"
+description = "Reads skyview data from insidan-api and exports it to a Google Sheet."
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+  "google-api-python-client>=2.176.0",
+  "google-auth>=2.40.3",
+  "niquests>=3.19.1",
+  "pydantic>=2.13.4",
+  "pydantic-settings>=2.14.2",
+]
+
+[dependency-groups]
+dev = ["pytest>=9.1.0", "pytest-asyncio>=1.4.0"]

@@ -1,0 +1,6 @@
+apiVersion: v2
+name: ellen
+description: Exports skyview data from insidan-api to a Google Sheet.
+type: application
+version: 0.1.0
+appVersion: "0.1.0"

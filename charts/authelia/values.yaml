@@ -124,6 +124,13 @@ authelia:
               groups:
                 value:
                   - "producers"
+          ellen_claims:
+            access_token:
+              - groups
+            custom_claims:
+              groups:
+                value:
+                  - "readers"
         clients:
           - client_id: "argocd"
             client_name: "ArgoCD"
@@ -178,6 +185,17 @@ authelia:
             public: false
             authorization_policy: "one_factor"
             claims_policy: "adsb_state_events_claims"
+            audience: ["insidan"]
+            scopes: ["groups"]
+            grant_types: ["client_credentials"]
+            userinfo_signed_response_alg: "none"
+          - client_id: "ellen"
+            client_name: "Ellen"
+            client_secret:
+              path: "/secrets/authelia-secrets/client-ellen-secret"
+            public: false
+            authorization_policy: "one_factor"
+            claims_policy: "ellen_claims"
             audience: ["insidan"]
             scopes: ["groups"]
             grant_types: ["client_credentials"]
@@ -273,3 +291,6 @@ clients:
   - id: adsb-state-events
     name: ADSB State Events
     secretRef: authelia-client-adsb-state-events-secret
+  - id: ellen
+    name: Ellen
+    secretRef: authelia-client-ellen-secret

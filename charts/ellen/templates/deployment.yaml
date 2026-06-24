@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ellen
+  labels:
+    app: ellen
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ellen
+  template:
+    metadata:
+      labels:
+        app: ellen
+    spec:
+      containers:
+        - name: ellen
+          image: "{{ .Values.image.containerRegistry }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: INSIDAN_API_URL
+              value: "{{ .Values.insidanApiUrl }}"
+            - name: INSIDAN_TOKEN_URL
+              value: "{{ .Values.insidanTokenUrl }}"
+            - name: INSIDAN_CLIENT_ID
+              value: "{{ .Values.insidanClientId }}"
+            - name: INSIDAN_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}
+                  key: client-secret
+            - name: GOOGLE_SPREADSHEET_ID
+              value: "{{ .Values.googleSpreadsheetId }}"
+            - name: GOOGLE_SHEET_TAB
+              value: "{{ .Values.googleSheetTab }}"
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /etc/credentials/service-account.json
+            - name: POLL_INTERVAL
+              value: "{{ .Values.pollInterval }}"
+          volumeMounts:
+            - mountPath: /etc/credentials
+              name: google-service-account
+              readOnly: true
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+      volumes:
+        - name: google-service-account
+          secret:
+            secretName: {{ .Release.Name }}
+            items:
+              - key: google-service-account
+                path: service-account.json

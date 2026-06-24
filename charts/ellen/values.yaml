@@ -1,0 +1,17 @@
+image:
+  containerRegistry: europe-west1-docker.pkg.dev
+  repository: bitnami-ch3rudc/docker/ellen
+  tag: "0.1.0"
+  pullPolicy: IfNotPresent
+
+secretStore: secret-store
+pollInterval: 30
+
+insidanApiUrl: https://insidan.linkopingsfallskarmsklubb.se/api
+insidanTokenUrl: https://auth.linkopingsfallskarmsklubb.se/api/oidc/token
+insidanClientId: ellen
+insidanClientSecretRef: authelia-client-ellen-secret
+
+googleSpreadsheetId: "1PpGupmBQzXjDVjLq6egY8UB-vGTy5uJDSbkKzFztB4g" # Ellen - Test
+googleSheetTab: Skywin
+googleServiceAccountRef: gsheets-service-account

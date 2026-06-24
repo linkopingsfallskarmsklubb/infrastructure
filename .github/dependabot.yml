@@ -25,6 +25,14 @@ updates:
         patterns:
           - "*"
   - package-ecosystem: "docker"
+    directory: "/apps/ellen"
+    schedule:
+      interval: "weekly"
+    groups:
+      dependencies:
+        patterns:
+          - "*"
+  - package-ecosystem: "docker"
     directory: "/apps/weather"
     schedule:
       interval: "weekly"
@@ -131,6 +139,16 @@ updates:
         patterns:
           - "*"
   - package-ecosystem: "helm"
+    directory: "/charts/ellen"
+    schedule:
+      interval: "daily"
+    registries:
+      - google-artifact-registry
+    groups:
+      dependencies:
+        patterns:
+          - "*"
+  - package-ecosystem: "helm"
     directory: "/charts/weather"
     schedule:
       interval: "weekly"
@@ -141,9 +159,17 @@ updates:
         patterns:
           - "*"
 
-  # Python (weather app)
+  # Python
   - package-ecosystem: "pip"
     directory: "/apps/weather"
+    schedule:
+      interval: "weekly"
+    groups:
+      dependencies:
+        patterns:
+          - "*"
+  - package-ecosystem: "pip"
+    directory: "/apps/ellen"
     schedule:
       interval: "weekly"
     groups:
