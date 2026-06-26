@@ -3,7 +3,7 @@ replicaCount: 1
 image:
   containerRegistry: europe-west1-docker.pkg.dev
   repository: bitnami-ch3rudc/docker/insidanapi
-  tag: "3.7.0"
+  tag: "3.7.1"
   pullPolicy: Always
 
 secretStore: secret-store
@@ -74,9 +74,9 @@ wix:
 certResolver: default
 
 m2mClients:
-  adsb-state-events:
+  - clientId: adsb-state-events
     groups:
       - producers
-  ellen:
+  - clientId: ellen
     groups:
       - readers

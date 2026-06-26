@@ -147,8 +147,12 @@ spec:
                 secretKeyRef:
                   name: {{ .Release.Name }}
                   key: wix-account-id
-            - name: API_M2M_CLIENTS
-              value: {{ .Values.m2mClients | toJson | quote }}
+            {{- range $i, $client := .Values.m2mClients }}
+            - name: API_M2M_CLIENTS__{{ $i }}__CLIENT_ID
+              value: {{ $client.clientId | quote }}
+            - name: API_M2M_CLIENTS__{{ $i }}__GROUPS
+              value: {{ $client.groups | toJson | quote }}
+            {{- end }}
             {{- if .Values.caSecret }}
             - name: API_EXTRA_CA_CERT
               value: "/etc/ssl/certs/ca.crt"
