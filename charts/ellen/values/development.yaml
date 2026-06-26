@@ -1,0 +1,10 @@
+insidanApiUrl: https://insidan.linkopingsfallskarmsklubb.localhost/api
+insidanTokenUrl: https://auth.linkopingsfallskarmsklubb.localhost/api/oidc/token
+
+hostAliases:
+  - ip: "0.0.0.0"
+    hostnames:
+      - "auth.linkopingsfallskarmsklubb.localhost"
+      - "insidan.linkopingsfallskarmsklubb.localhost"
+
+caSecret: mkcert-ca-cert
