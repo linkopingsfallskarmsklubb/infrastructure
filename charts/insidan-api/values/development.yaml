@@ -11,7 +11,11 @@ oauth2:
   tokenUrl: https://auth.linkopingsfallskarmsklubb.localhost/api/oidc/token
   redirectUrl: https://insidan.linkopingsfallskarmsklubb.localhost/api/auth/callback
   defaultRedirect: https://insidan.linkopingsfallskarmsklubb.localhost/
-  scopes: "[openid,profile,email,groups]"
+  scopes:
+    - openid
+    - profile
+    - email
+    - groups
 
 authelia:
   url: https://auth.linkopingsfallskarmsklubb.localhost
@@ -25,7 +29,9 @@ hostAliases:
 caSecret: mkcert-ca-cert
 
 lldap:
-  defaultGroups: "[users, skywin_users]"
+  defaultGroups:
+    - users
+    - skywin_users
 
 skywin:
   url: http://skywinone:8080/skywinone

@@ -14,6 +14,8 @@ spec:
     metadata:
       labels:
         app: {{ .Release.Name }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
     spec:
       {{- if or .Values.hostAliases .Values.global }}
       hostAliases:
@@ -32,61 +34,21 @@ spec:
           image: "{{ .Values.image.containerRegistry }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
-            - name: API_SERVER__HOST
-              value: "0.0.0.0"
-            - name: API_SERVER__PORT
-              value: "8000"
-            - name: API_SERVER__COOKIE_DOMAIN
-              value: {{ .Values.server.cookieDomain | quote }}
-            - name: API_SERVER__LOG_LEVEL
-              value: {{ .Values.server.logLevel | default "info" | quote }}
-            - name: API_OAUTH2__CLIENT_ID
-              value: {{ .Values.oauth2.clientId }}
             - name: API_OAUTH2__CLIENT_SECRET
               valueFrom:
                 secretKeyRef:
                   name: {{ .Release.Name }}
                   key: insidan-client-secret
-            - name: API_OAUTH2__AUTH_URL
-              value: {{ .Values.oauth2.authUrl }}
-            - name: API_OAUTH2__TOKEN_URL
-              value: {{ .Values.oauth2.tokenUrl }}
-            - name: API_OAUTH2__REDIRECT_URL
-              value: {{ .Values.oauth2.redirectUrl }}
-            - name: API_OAUTH2__DEFAULT_REDIRECT
-              value: {{ .Values.oauth2.defaultRedirect }}
-            - name: API_OAUTH2__SCOPES
-              value: {{ .Values.oauth2.scopes | quote }}
-            - name: API_AUTHELIA__URL
-              value: {{ .Values.authelia.url }}
-            - name: API_LLDAP__URL
-              value: {{ .Values.lldap.url }}
-            - name: API_LLDAP__LDAP_URL
-              value: {{ .Values.lldap.ldapUrl }}
-            - name: API_LLDAP__USERNAME
-              value: {{ .Values.lldap.username }}
             - name: API_LLDAP__PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: {{ .Release.Name }}
                   key: lldap-password
-            - name: API_LLDAP__DEFAULT_GROUPS
-              value: {{ .Values.lldap.defaultGroups | quote }}
-            - name: API_SKYWIN__URL
-              value: {{ .Values.skywin.url }}
-            - name: API_SKYWIN__USER
-              value: {{ .Values.skywin.user }}
             - name: API_SKYWIN__PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: {{ .Release.Name }}
                   key: skywin-password
-            - name: API_SKYWIN__ACTIVE_SELECTION
-              value: "{{ .Values.skywin.activeSelection }}"
-            - name: API_SKYWIN__WISHLIST_SELECTION
-              value: "{{ .Values.skywin.wishlistSelection }}"
-            - name: API_SKYWIN__GROUP_ENABLERS
-              value: {{ .Values.skywin.groupEnablers | toJson | quote }}
             - name: API_SKYWIN_DB__URI
               valueFrom:
                 secretKeyRef:
@@ -97,29 +59,11 @@ spec:
                 secretKeyRef:
                   name: {{ .Release.Name }}
                   key: common-db-uri
-            - name: API_SMTP__SERVER
-              value: {{ .Values.smtp.server }}
-            - name: API_SMTP__SENDER
-              value: {{ .Values.smtp.sender }}
-            - name: API_SWISH__BASE_URL
-              value: {{ .Values.swish.baseUrl | quote }}
             - name: API_SWISH__PAYEE_ALIAS
               valueFrom:
                 secretKeyRef:
                   name: {{ .Release.Name }}
                   key: swish-payee-alias
-            - name: API_SWISH__CALLBACK_URL_BASE
-              value: {{ .Values.swish.callbackUrlBase | quote }}
-            - name: API_SWISH__ADMIN_EMAIL
-              value: {{ .Values.swish.adminEmail | quote }}
-            - name: API_SWISH__PAYMENT_FEE
-              value: "{{ .Values.swish.paymentFee }}"
-            - name: API_SWISH__CLIENT_CERT_PATH
-              value: "/etc/swish/client-cert.pem"
-            - name: API_SWISH__CLIENT_KEY_PATH
-              value: "/etc/swish/client-key.pem"
-            - name: API_SWISH__CA_CERT_PATH
-              value: "/etc/swish/ca-cert.pem"
             - name: API_SWISH__CLIENT_KEY_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -130,8 +74,6 @@ spec:
                 secretKeyRef:
                   name: {{ .Release.Name }}
                   key: swish-callback-secret
-            - name: API_WIX__BASE_URL
-              value: {{ .Values.wix.baseUrl | quote }}
             - name: API_WIX__API_KEY
               valueFrom:
                 secretKeyRef:
@@ -147,17 +89,15 @@ spec:
                 secretKeyRef:
                   name: {{ .Release.Name }}
                   key: wix-account-id
-            {{- range $i, $client := .Values.m2mClients }}
-            - name: API_M2M_CLIENTS__{{ $i }}__CLIENT_ID
-              value: {{ $client.clientId | quote }}
-            - name: API_M2M_CLIENTS__{{ $i }}__GROUPS
-              value: {{ $client.groups | toJson | quote }}
-            {{- end }}
             {{- if .Values.caSecret }}
             - name: API_EXTRA_CA_CERT
               value: "/etc/ssl/certs/ca.crt"
             {{- end }}
           volumeMounts:
+            - name: config
+              mountPath: /app/config.yaml
+              subPath: config.yaml
+              readOnly: true
             - name: swish-certs
               mountPath: /etc/swish
               readOnly: true
@@ -172,6 +112,9 @@ spec:
               containerPort: 8000
               protocol: TCP
       volumes:
+        - name: config
+          configMap:
+            name: {{ .Release.Name }}-config
         - name: swish-certs
           secret:
             secretName: {{ .Release.Name }}

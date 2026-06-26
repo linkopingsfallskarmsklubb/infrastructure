@@ -21,7 +21,11 @@ oauth2:
   tokenUrl: https://auth.linkopingsfallskarmsklubb.se/api/oidc/token
   redirectUrl: https://insidan.linkopingsfallskarmsklubb.se/api/auth/callback
   defaultRedirect: https://insidan.linkopingsfallskarmsklubb.se/
-  scopes: "[openid,profile,email,groups]"
+  scopes:
+    - openid
+    - profile
+    - email
+    - groups
 
 authelia:
   url: https://auth.linkopingsfallskarmsklubb.se
@@ -31,7 +35,9 @@ lldap:
   ldapUrl: ldap://lldap.auth.svc.cluster.local:3890
   username: admin
   passwordRef: lldap-user-pass
-  defaultGroups: "[users, skywin_users]"
+  defaultGroups:
+    - users
+    - skywin_users
 
 skywin:
   url: http://192.168.30.114/skywinone

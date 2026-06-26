@@ -1,0 +1,75 @@
+{{- if not .Values.proxy }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-config
+  labels:
+    app: {{ .Release.Name }}
+data:
+  config.yaml: |
+    server:
+      host: "0.0.0.0"
+      port: 8000
+      cookie_domain: {{ .Values.server.cookieDomain | quote }}
+      log_level: {{ .Values.server.logLevel | default "info" | quote }}
+
+    oauth2:
+      client_id: {{ .Values.oauth2.clientId | quote }}
+      auth_url: {{ .Values.oauth2.authUrl | quote }}
+      token_url: {{ .Values.oauth2.tokenUrl | quote }}
+      redirect_url: {{ .Values.oauth2.redirectUrl | quote }}
+      default_redirect: {{ .Values.oauth2.defaultRedirect | quote }}
+      scopes:
+        {{- range .Values.oauth2.scopes }}
+        - {{ . | quote }}
+        {{- end }}
+
+    authelia:
+      url: {{ .Values.authelia.url | quote }}
+
+    lldap:
+      url: {{ .Values.lldap.url | quote }}
+      ldap_url: {{ .Values.lldap.ldapUrl | quote }}
+      username: {{ .Values.lldap.username | quote }}
+      default_groups:
+        {{- range .Values.lldap.defaultGroups }}
+        - {{ . | quote }}
+        {{- end }}
+
+    skywin:
+      url: {{ .Values.skywin.url | quote }}
+      user: {{ .Values.skywin.user | quote }}
+      active_selection: {{ .Values.skywin.activeSelection }}
+      wishlist_selection: {{ .Values.skywin.wishlistSelection }}
+      group_enablers:
+        {{- range .Values.skywin.groupEnablers }}
+        - {{ int . }}
+        {{- end }}
+
+    smtp:
+      server: {{ .Values.smtp.server | quote }}
+      sender: {{ .Values.smtp.sender | quote }}
+
+    swish:
+      base_url: {{ .Values.swish.baseUrl | quote }}
+      callback_url_base: {{ .Values.swish.callbackUrlBase | quote }}
+      admin_email: {{ .Values.swish.adminEmail | quote }}
+      payment_fee: {{ .Values.swish.paymentFee }}
+      client_cert_path: "/etc/swish/client-cert.pem"
+      client_key_path: "/etc/swish/client-key.pem"
+      ca_cert_path: "/etc/swish/ca-cert.pem"
+
+    wix:
+      base_url: {{ .Values.wix.baseUrl | quote }}
+
+    timezone: "Europe/Stockholm"
+
+    m2m_clients:
+      {{- range .Values.m2mClients }}
+      - client_id: {{ .clientId | quote }}
+        groups:
+          {{- range .groups }}
+          - {{ . | quote }}
+          {{- end }}
+      {{- end }}
+{{- end }}
