@@ -1,6 +1,6 @@
 FROM docker.io/tomcat:10.1.55-jre21
 
-ARG SKYWINONE_VERSION=26.0.1
+ARG SKYWINONE_VERSION=26.0.4
 
 RUN curl --fail --location --show-error --output /usr/local/tomcat/webapps/skywinone.war \
   https://www.skywinner.se/skywin/_files/skywinone/${SKYWINONE_VERSION}/skywinone.war && \
