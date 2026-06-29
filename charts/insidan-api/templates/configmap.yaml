@@ -41,10 +41,6 @@ data:
       user: {{ .Values.skywin.user | quote }}
       active_selection: {{ .Values.skywin.activeSelection }}
       wishlist_selection: {{ .Values.skywin.wishlistSelection }}
-      group_enablers:
-        {{- range .Values.skywin.groupEnablers }}
-        - {{ int . }}
-        {{- end }}
 
     smtp:
       server: {{ .Values.smtp.server | quote }}
