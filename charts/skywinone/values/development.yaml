@@ -1,3 +1,6 @@
+image:
+  tag: "26.0.4-0.2.0"
+
 host: insidan.linkopingsfallskarmsklubb.localhost
 skywinonePropertiesRef: skywinone-properties-development
 certResolver: ""
