@@ -1,6 +1,8 @@
 insidanApiUrl: https://insidan.linkopingsfallskarmsklubb.localhost/api
 insidanTokenUrl: https://auth.linkopingsfallskarmsklubb.localhost/api/oidc/token
 
+googleSpreadsheetId: "1PpGupmBQzXjDVjLq6egY8UB-vGTy5uJDSbkKzFztB4g" # Ellen - Test
+
 hostAliases:
   - ip: "0.0.0.0"
     hostnames:
