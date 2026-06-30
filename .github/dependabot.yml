@@ -134,6 +134,8 @@ updates:
       interval: "daily"
     registries:
       - google-artifact-registry
+    ignore:
+      - dependency-name: "bitnami-ch3rudc/docker/skywinone"
     groups:
       dependencies:
         patterns:
