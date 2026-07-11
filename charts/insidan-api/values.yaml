@@ -40,7 +40,7 @@ lldap:
     - skywin_users
 
 skywin:
-  url: http://192.168.30.114/skywinone
+  url: http://192.168.37.1/skywinone
   user: insidanapi
   passwordRef: insidan-skywin-password
   activeSelection: 113
@@ -83,3 +83,4 @@ m2mClients:
   - clientId: ellen
     groups:
       - readers
+
