@@ -1,5 +1,5 @@
 host: insidan.linkopingsfallskarmsklubb.se
-localHost: 192.168.37.1
+localHost: 192.168.137.1
 secretStore: secret-store
 providerUrl: https://auth.linkopingsfallskarmsklubb.se
 clientId: skywinone
