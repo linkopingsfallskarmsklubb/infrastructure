@@ -3,7 +3,7 @@ replicaCount: 1
 image:
   containerRegistry: europe-west1-docker.pkg.dev
   repository: bitnami-ch3rudc/docker/insidanapi
-  tag: "4.0.3"
+  tag: "4.2.0"
   pullPolicy: Always
 
 secretStore: secret-store
@@ -45,6 +45,7 @@ skywin:
   passwordRef: insidan-skywin-password
   activeSelection: 113
   wishlistSelection: 19
+  scheduleSelection: 116
 
 skywinDb:
   uriRef: insidan-mysql-uri
