@@ -1,4 +1,4 @@
-FROM docker.io/tomcat:10.1.57-jre21
+FROM docker.io/tomcat:10.1.62-jre21
 
 ARG SKYWINONE_VERSION=26.3.0
 
