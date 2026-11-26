@@ -3,4 +3,4 @@ name: lldap
 description: A Helm chart for LLDAP
 type: application
 version: 0.2.0
-appVersion: "0.6.2"
+appVersion: "0.6.3"

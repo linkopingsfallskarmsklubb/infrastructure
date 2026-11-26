@@ -1,3 +1,8 @@
+image:
+  repository: postgres
+  tag: "17.6-alpine3.22"
+  pullPolicy: IfNotPresent
+
 database: shared
 secretStore: secret-store
 user: shared
