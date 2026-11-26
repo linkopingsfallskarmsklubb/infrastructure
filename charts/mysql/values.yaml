@@ -1,6 +1,6 @@
 image:
   repository: mysql
-  tag: "8.0.42"
+  tag: "8.0.46"
   pullPolicy: IfNotPresent
 
 database: skywin
