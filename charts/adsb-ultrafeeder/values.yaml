@@ -1,6 +1,6 @@
 image:
   repository: ghcr.io/sdr-enthusiasts/docker-adsb-ultrafeeder
-  tag: latest
+  tag: latest-build-996
   pullPolicy: Always
 
 # Location and station info

@@ -14,7 +14,8 @@ spec:
         app: {{ .Release.Name }}
     spec:
       containers:
-        - image: "postgres:{{ .Chart.AppVersion }}"
+        - image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
           name: postgres
           ports:
             - containerPort: 5432

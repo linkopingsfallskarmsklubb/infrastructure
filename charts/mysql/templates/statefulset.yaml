@@ -14,7 +14,8 @@ spec:
         app: {{ .Release.Name }}
     spec:
       containers:
-        - image: "mysql:{{ .Chart.AppVersion }}"
+        - image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
           name: mysql
           ports:
             - containerPort: 3306

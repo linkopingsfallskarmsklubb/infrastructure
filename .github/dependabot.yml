@@ -43,7 +43,17 @@ updates:
 
   # Helm
   - package-ecosystem: "helm"
-    directory: "/charts/acme-sync"
+    directory: "/charts/adsb-state-events"
+    schedule:
+      interval: "weekly"
+    registries:
+      - google-artifact-registry
+    groups:
+      dependencies:
+        patterns:
+          - "*"
+  - package-ecosystem: "helm"
+    directory: "/charts/adsb-ultrafeeder"
     schedule:
       interval: "weekly"
     groups:
@@ -108,6 +118,12 @@ updates:
     directory: "/charts/mysql"
     schedule:
       interval: "weekly"
+    ignore:
+      # Stay on 8.0 for now; minor/major upgrades need a planned migration.
+      - dependency-name: "mysql"
+        update-types:
+          - "version-update:semver-minor"
+          - "version-update:semver-major"
     groups:
       dependencies:
         patterns:
@@ -116,6 +132,11 @@ updates:
     directory: "/charts/postgres"
     schedule:
       interval: "weekly"
+    ignore:
+      # Major upgrades need a dump/restore migration.
+      - dependency-name: "postgres"
+        update-types:
+          - "version-update:semver-major"
     groups:
       dependencies:
         patterns:
