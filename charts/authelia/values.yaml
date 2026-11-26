@@ -1,6 +1,7 @@
 authelia:
   image:
-    tag: "4.39.19"
+    repository: authelia/authelia
+    tag: "4.39.28"
 
   pod:
     extraVolumes:
