@@ -5,15 +5,58 @@ on:
     branches: ["main"]
     paths:
       - "apps/weather/**"
+      - ".github/workflows/weather.yml"
   pull_request:
     branches: ["main"]
     paths:
       - "apps/weather/**"
+      - ".github/workflows/weather.yml"
   workflow_dispatch:
 
 jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: weather
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    defaults:
+      run:
+        working-directory: apps/weather
+    env:
+      HOLFUY_API_KEY: test-key
+      LFV_URL: https://example.invalid/lfv
+      POSTGRES_URL: postgresql://postgres:postgres@localhost:5432/weather
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v10
+        with:
+          enable-cache: true
+
+      - name: Install Python
+        run: uv python install
+
+      - name: Install dependencies
+        run: uv sync
+
+      - name: Run tests
+        run: uv run --no-sync pytest -q
+
   build-and-release:
     name: Build, Push, and Release
+    needs: test
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     permissions:
