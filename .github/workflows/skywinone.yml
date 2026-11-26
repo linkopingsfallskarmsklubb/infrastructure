@@ -5,15 +5,35 @@ on:
     branches: ["main"]
     paths:
       - "apps/skywinone/**"
+      - ".github/workflows/skywinone.yml"
   pull_request:
     branches: ["main"]
     paths:
       - "apps/skywinone/**"
+      - ".github/workflows/skywinone.yml"
   workflow_dispatch:
 
 jobs:
+  test:
+    name: Build image
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build image
+        uses: docker/build-push-action@v6
+        with:
+          context: apps/skywinone
+          push: false
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
   build-and-release:
     name: Build, Push, and Release
+    needs: test
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     permissions:

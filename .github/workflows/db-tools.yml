@@ -5,15 +5,33 @@ on:
     branches: ["main"]
     paths:
       - "apps/db-tools/**"
+      - ".github/workflows/db-tools.yml"
   pull_request:
     branches: ["main"]
     paths:
       - "apps/db-tools/**"
+      - ".github/workflows/db-tools.yml"
   workflow_dispatch:
 
 jobs:
+  test:
+    name: Lint scripts
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/db-tools
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: ShellCheck
+        run: shellcheck --severity=error scripts/*.sh
+
+      - name: Bash syntax check
+        run: for f in scripts/*.sh; do bash -n "$f"; done
+
   build-and-release:
     name: Build, Push, and Release
+    needs: test
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     permissions:

@@ -5,15 +5,48 @@ on:
     branches: ["main"]
     paths:
       - "apps/ellen/**"
+      - ".github/workflows/ellen.yml"
   pull_request:
     branches: ["main"]
     paths:
       - "apps/ellen/**"
+      - ".github/workflows/ellen.yml"
   workflow_dispatch:
 
 jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/ellen
+    env:
+      INSIDAN_API_URL: https://example.invalid
+      INSIDAN_TOKEN_URL: https://example.invalid/token
+      INSIDAN_CLIENT_ID: test
+      INSIDAN_CLIENT_SECRET: test
+      GOOGLE_SPREADSHEET_ID: test
+      GOOGLE_APPLICATION_CREDENTIALS: "{}"
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v10
+        with:
+          enable-cache: true
+
+      - name: Install Python
+        run: uv python install
+
+      - name: Install dependencies
+        run: uv sync
+
+      - name: Run tests
+        run: uv run --no-sync pytest -q
+
   build-and-release:
     name: Build, Push, and Release
+    needs: test
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     permissions:
